@@ -1,0 +1,2522 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+  <title>ABO Partner App - 암웨이 비즈니스 지원</title>
+
+  <!-- PWA & Mobile Web Meta Tags -->
+  <link rel="manifest" href="manifest.json">
+  <link rel="icon" type="image/png" href="icons/favicon.png">
+  <link rel="apple-touch-icon" href="icons/icon-192.png">
+  <meta name="theme-color" content="#0f172a">
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="apple-mobile-web-app-title" content="ABO Partner">
+
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <!-- Google Fonts: Outfit & Noto Sans KR -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;700;900&family=Outfit:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <!-- Lucide Icons (Web Component & Script) -->
+  <script src="https://unpkg.com/lucide@latest"></script>
+  
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          fontFamily: {
+            sans: ['Noto Sans KR', 'Outfit', 'sans-serif'],
+            outfit: ['Outfit', 'sans-serif'],
+          },
+          colors: {
+            amway: {
+              50: '#f4f7f5',
+              100: '#e4eae5',
+              200: '#cbdad0',
+              300: '#a3beae',
+              400: '#759b84',
+              500: '#567f68',
+              600: '#426450',
+              700: '#365142',
+              800: '#2c4236',
+              900: '#25372d',
+              950: '#131e19',
+            },
+            darkBg: '#0f172a',
+            glassBg: 'rgba(30, 41, 59, 0.7)',
+            glassBorder: 'rgba(255, 255, 255, 0.08)'
+          },
+          boxShadow: {
+            'glass': '0 8px 32px 0 rgba(0, 0, 0, 0.37)',
+            'premium': '0 20px 40px -15px rgba(0, 0, 0, 0.5)',
+          }
+        }
+      }
+    }
+  </script>
+  <style>
+    body {
+      background: linear-gradient(135deg, #0f172a 0%, #1e1b4b 100%);
+      min-height: 100vh;
+      color: #f1f5f9;
+      overflow-x: hidden;
+    }
+    
+    /* 탭 트랜지션 효과 */
+    .tab-content {
+      display: none;
+      opacity: 0;
+      transform: translateY(10px);
+      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+    .tab-content.active {
+      display: block;
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    /* 커스텀 스크롤바 */
+    ::-webkit-scrollbar {
+      width: 6px;
+    }
+    ::-webkit-scrollbar-track {
+      background: rgba(15, 23, 42, 0.5);
+    }
+    ::-webkit-scrollbar-thumb {
+      background: rgba(86, 127, 104, 0.5);
+      border-radius: 999px;
+    }
+    ::-webkit-scrollbar-thumb:hover {
+      background: rgba(86, 127, 104, 0.8);
+    }
+
+    /* 글래스모피즘 기본 스타일 */
+    .glass-card {
+      background: rgba(30, 41, 59, 0.7);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+    }
+
+    /* 포스터 이미지 줌 애니메이션 */
+    .poster-card img {
+      transition: transform 0.5s ease;
+    }
+    .poster-card:hover img {
+      transform: scale(1.05);
+    }
+
+    /* 스크롤바 숨김 클래스 */
+    .no-scrollbar::-webkit-scrollbar {
+      display: none;
+    }
+    .no-scrollbar {
+      -ms-overflow-style: none;  /* IE and Edge */
+      scrollbar-width: none;  /* Firefox */
+    }
+  </style>
+</head>
+<body class="flex justify-center items-center font-sans py-0 md:py-8 px-0 md:px-4">
+
+  <!-- Mobile Device Container -->
+  <div class="relative w-full max-w-md h-[100dvh] md:h-[840px] md:rounded-[40px] md:border-[8px] md:border-slate-800 bg-[#0b0f19] flex flex-col overflow-hidden shadow-premium">
+    
+    <!-- Status Bar Simulation for mobile view -->
+    <div class="bg-slate-950/60 px-6 py-2.5 flex justify-between items-center text-xs text-slate-400 font-outfit select-none shrink-0 z-20">
+      <span id="status-bar-time">13:37</span>
+      <div class="flex items-center gap-1.5">
+        <i data-lucide="signal" class="w-3.5 h-3.5"></i>
+        <i data-lucide="wifi" class="w-3.5 h-3.5"></i>
+        <i data-lucide="battery" class="w-4 h-4"></i>
+      </div>
+    </div>
+
+    <!-- App Header -->
+    <header class="bg-slate-900/40 backdrop-blur-md border-b border-white/5 py-4 px-5 flex justify-between items-center z-20 shrink-0">
+      <div class="flex items-center gap-2">
+        <div class="w-8 h-8 rounded-lg bg-gradient-to-tr from-amway-500 to-emerald-400 flex items-center justify-center shadow-lg shadow-emerald-500/20">
+          <i data-lucide="compass" class="w-4.5 h-4.5 text-white"></i>
+        </div>
+        <div>
+          <h1 class="text-sm font-bold text-white tracking-wide">ABO PARTNER</h1>
+          <p class="text-[9px] text-amway-400 font-medium tracking-widest font-outfit">TEAM COMMUNITY</p>
+        </div>
+      </div>
+      <div class="flex items-center gap-2">
+        <!-- 📲 PWA Install Button -->
+        <button id="pwa-install-header-btn" onclick="triggerPWAInstall()" class="px-2.5 py-1.5 rounded-xl bg-emerald-500/10 text-emerald-400 hover:bg-emerald-500/20 transition text-[10px] font-bold flex items-center gap-1" title="스마트폰에 앱 설치">
+          <i data-lucide="smartphone" class="w-3.5 h-3.5"></i> 앱 설치
+        </button>
+        <!-- 👑 Admin Button (hidden by default) -->
+        <button id="admin-menu-btn" onclick="openAdminPanel()" class="hidden px-2.5 py-1.5 rounded-xl bg-amber-500/10 text-amber-400 hover:bg-amber-500/20 transition text-[10px] font-bold flex items-center gap-1">
+          <i data-lucide="crown" class="w-3.5 h-3.5"></i> 파트너 관리
+        </button>
+        <!-- Logout Button -->
+        <button id="logout-btn" onclick="handleLogout()" class="p-2 rounded-full hover:bg-white/5 text-slate-400 hover:text-slate-200 transition" title="로그아웃">
+          <i data-lucide="log-out" class="w-4.5 h-4.5"></i>
+        </button>
+        <button id="noti-badge-btn" onclick="openNotificationModal()" class="relative p-2 rounded-full hover:bg-white/5 transition text-slate-300">
+          <i data-lucide="bell" class="w-5 h-5"></i>
+          <span class="absolute top-1.5 right-1.5 w-2 h-2 rounded-full bg-emerald-500 ring-2 ring-slate-900"></span>
+        </button>
+      </div>
+    </header>
+
+    <!-- Main Content Scroll Area -->
+    <main class="flex-1 overflow-y-auto pb-24 relative z-10 px-4 pt-4">
+
+      <!-- 1. HOME TAB -->
+      <section id="tab-home" class="tab-content active space-y-5">
+        <!-- Hero User Card -->
+        <div class="p-5 rounded-3xl bg-gradient-to-br from-amway-800/80 to-slate-900/90 border border-white/10 relative overflow-hidden shadow-lg">
+          <div class="absolute -right-10 -top-10 w-32 h-32 rounded-full bg-amway-500/20 blur-2xl"></div>
+          <div class="relative z-10 flex justify-between items-start">
+            <div>
+              <span class="text-xs text-amway-300 font-medium px-2 py-0.5 rounded-full bg-amway-950/60 border border-amway-800/40">VIP 파트너</span>
+              <h2 class="text-xl font-bold text-white mt-2">안녕하세요, 김리더 님!</h2>
+              <p class="text-xs text-slate-400 mt-1">오늘도 파트너님들의 성장을 응원합니다.</p>
+            </div>
+            <div class="w-12 h-12 rounded-full bg-slate-800 border-2 border-amway-400 flex items-center justify-center text-white font-bold font-outfit">
+              ABO
+            </div>
+          </div>
+          
+          <div class="mt-5 grid grid-cols-2 gap-3 pt-4 border-t border-white/5">
+            <div class="bg-white/5 p-3 rounded-2xl flex items-center gap-3">
+              <div class="p-2 rounded-xl bg-amway-500/20 text-amway-300"><i data-lucide="users" class="w-4 h-4"></i></div>
+              <div>
+                <p class="text-[10px] text-slate-400">내 소비자 그룹</p>
+                <p class="text-sm font-bold text-white">24 명</p>
+              </div>
+            </div>
+            <div class="bg-white/5 p-3 rounded-2xl flex items-center gap-3">
+              <div class="p-2 rounded-xl bg-amber-500/20 text-amber-300"><i data-lucide="calendar" class="w-4 h-4"></i></div>
+              <div>
+                <p class="text-[10px] text-slate-400">이달의 일정</p>
+                <p class="text-sm font-bold text-white">5 건</p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- 5TB 팀 구글 드라이브 자료실 연결 배너 -->
+        <div onclick="openGoogleDriveHub()" class="bg-gradient-to-r from-blue-950/60 to-slate-900 border border-blue-500/30 p-4 rounded-3xl flex items-center justify-between cursor-pointer hover:border-blue-500 transition shadow-lg shadow-blue-950/40 group">
+          <div class="flex items-center gap-3">
+            <div class="w-10 h-10 rounded-2xl bg-blue-500/20 text-blue-400 flex items-center justify-center shrink-0 group-hover:scale-105 transition">
+              <i data-lucide="hard-drive" class="w-5 h-5"></i>
+            </div>
+            <div>
+              <div class="flex items-center gap-1.5">
+                <h4 class="text-xs font-bold text-white">팀 구글 드라이브 5TB 자료실</h4>
+                <span class="text-[8px] px-1.5 py-0.5 rounded bg-blue-500/20 text-blue-300 font-semibold">공유 스토리지</span>
+              </div>
+              <p class="text-[10px] text-slate-400 mt-0.5">모든 강의 음원, 최신 사업설명 PPT, 카탈로그</p>
+            </div>
+          </div>
+          <button class="px-3 py-1.5 rounded-xl bg-blue-500 hover:bg-blue-600 text-white text-[10px] font-bold shadow transition flex items-center gap-1 shrink-0">
+            <i data-lucide="external-link" class="w-3 h-3"></i> 접속
+          </button>
+        </div>
+
+        <!-- Today's Schedule Card -->
+        <div class="glass-card rounded-3xl p-5">
+          <div class="flex justify-between items-center mb-4">
+            <h3 class="font-bold text-white flex items-center gap-2 text-sm">
+              <i data-lucide="calendar" class="w-4.5 h-4.5 text-emerald-400"></i>
+              오늘의 주요 일정
+            </h3>
+            <button onclick="switchTab('schedule')" class="text-xs text-amway-400 hover:text-amway-300 flex items-center gap-0.5">
+              전체보기 <i data-lucide="chevron-right" class="w-3 h-3"></i>
+            </button>
+          </div>
+          <!-- Schedule Item -->
+          <div class="space-y-3">
+            <div class="bg-slate-900/60 p-3.5 rounded-2xl border border-white/5 flex justify-between items-center">
+              <div class="flex gap-3">
+                <div class="flex flex-col items-center justify-center w-10 h-10 rounded-xl bg-emerald-500/10 text-emerald-400 border border-emerald-500/20 shrink-0">
+                  <span class="text-[10px] uppercase font-bold font-outfit">Today</span>
+                  <span class="text-sm font-bold font-outfit">08</span>
+                </div>
+                <div>
+                  <h4 class="text-xs font-bold text-slate-200">화요 리더십 세미나 (Zoom)</h4>
+                  <p class="text-[10px] text-slate-400 mt-0.5">20:00 - 21:30 | 강사: 박미경 EDG</p>
+                </div>
+              </div>
+              <button onclick="triggerImmediatePush('화요 리더십 세미나', '오늘 20:00에 줌 세미나가 시작됩니다. 잊지 말고 참여하세요!')" class="p-2 rounded-xl bg-white/5 hover:bg-emerald-500/20 text-emerald-400 transition" title="알림 시뮬레이션">
+                <i data-lucide="bell" class="w-4 h-4"></i>
+              </button>
+            </div>
+            <div class="bg-slate-900/60 p-3.5 rounded-2xl border border-white/5 flex justify-between items-center">
+              <div class="flex gap-3">
+                <div class="flex flex-col items-center justify-center w-10 h-10 rounded-xl bg-amber-500/10 text-amber-400 border border-amber-500/20 shrink-0">
+                  <span class="text-[10px] font-bold font-outfit">D-2</span>
+                  <span class="text-sm font-bold font-outfit">10</span>
+                </div>
+                <div>
+                  <h4 class="text-xs font-bold text-slate-200">퀸 쿠킹 홈미팅</h4>
+                  <p class="text-[10px] text-slate-400 mt-0.5">11:00 - 13:00 | 강남 A P 및 줌라이브</p>
+                </div>
+              </div>
+              <button onclick="triggerImmediatePush('퀸 쿠킹 홈미팅', '내일 오전 11시에 쿠킹클래스가 진행됩니다. 재료 준비물 등을 확인하세요.')" class="p-2 rounded-xl bg-white/5 hover:bg-amber-500/20 text-amber-400 transition" title="알림 시뮬레이션">
+                <i data-lucide="bell" class="w-4 h-4"></i>
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Featured Media (Today's Recommend) -->
+        <div class="glass-card rounded-3xl p-5">
+          <div class="flex justify-between items-center mb-4">
+            <h3 class="font-bold text-white flex items-center gap-2 text-sm">
+              <i data-lucide="play-circle" class="w-4.5 h-4.5 text-emerald-400"></i>
+              오늘의 추천 음원/강의
+            </h3>
+            <button onclick="switchTab('audio')" class="text-xs text-amway-400 hover:text-amway-300 flex items-center gap-0.5">
+              전체보기 <i data-lucide="chevron-right" class="w-3 h-3"></i>
+            </button>
+          </div>
+          <!-- Card Content -->
+          <div class="relative rounded-2xl overflow-hidden aspect-video group">
+            <img src="https://images.unsplash.com/photo-1516280440614-37939bbacd6a?q=80&w=600&auto=format&fit=crop" alt="Recommended Video" class="w-full h-full object-cover group-hover:scale-105 transition duration-500">
+            <div class="absolute inset-0 bg-gradient-to-t from-slate-950 via-slate-900/40 to-transparent flex flex-col justify-end p-4">
+              <span class="text-[10px] font-bold text-emerald-400 uppercase tracking-widest">Business Mastery</span>
+              <h4 class="text-sm font-bold text-white mt-1 line-clamp-1">네트워크 마케팅 자산 소득의 본질</h4>
+              <p class="text-[11px] text-slate-300 mt-0.5">강사: 최선우 Double Diamond (28분)</p>
+              
+              <div class="flex justify-between items-center mt-3 pt-3 border-t border-white/10">
+                <button onclick="openYoutubeMock('https://youtu.be/dummy-link')" class="flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-emerald-500 hover:bg-emerald-600 text-white text-xs font-bold transition">
+                  <i data-lucide="play" class="w-3 h-3 fill-current"></i> 유튜브 재생
+                </button>
+                <div class="flex gap-2">
+                  <button onclick="toggleSummaryCard('summary-home-featured')" class="p-2 rounded-full bg-slate-800/80 hover:bg-slate-700 text-slate-300 transition text-xs flex items-center gap-1">
+                    <i data-lucide="file-text" class="w-3.5 h-3.5"></i> 요약
+                  </button>
+                  <button onclick="copyToClipboard('https://youtu.be/dummy-link')" class="p-2 rounded-full bg-slate-800/80 hover:bg-slate-700 text-slate-300 transition">
+                    <i data-lucide="share-2" class="w-3.5 h-3.5"></i>
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+          <!-- 5 Line Summary Accordion -->
+          <div id="summary-home-featured" class="hidden mt-3 p-4 bg-slate-900/80 border border-emerald-500/20 rounded-2xl text-xs text-slate-300 space-y-2 animate-fade-in">
+            <p class="font-bold text-emerald-400 mb-1 flex items-center gap-1"><i data-lucide="check-square" class="w-3.5 h-3.5"></i> 핵심 5줄 요약 카드</p>
+            <p>1. 직장인은 수입을 만들지만, ABO는 매월 불어나는 평생 자산을 구축합니다.</p>
+            <p>2. 암웨이 제품은 단순 소비가 아닌 사업의 밑거름이자 자본이 됩니다.</p>
+            <p>3. 진정한 복제는 리더의 솔선수범과 지속성에서 시작됩니다.</p>
+            <p>4. 스폰서와의 긴밀한 상담을 통해 매월 팀의 방향성을 교정해야 합니다.</p>
+            <p>5. 매월 열리는 랠리 세미나는 팀의 열정을 동기화하는 가장 빠른 지름길입니다.</p>
+          </div>
+        </div>
+
+        <!-- Latest Recipes -->
+        <div class="glass-card rounded-3xl p-5">
+          <div class="flex justify-between items-center mb-4">
+            <h3 class="font-bold text-white flex items-center gap-2 text-sm">
+              <i data-lucide="utensils" class="w-4.5 h-4.5 text-emerald-400"></i>
+              최신 퀸 쿠킹 레시피
+            </h3>
+            <button onclick="switchTab('cooking')" class="text-xs text-amway-400 hover:text-amway-300 flex items-center gap-0.5">
+              전체보기 <i data-lucide="chevron-right" class="w-3 h-3"></i>
+            </button>
+          </div>
+          <div class="grid grid-cols-2 gap-3">
+            <div onclick="openRecipeDetail('dak')" class="bg-slate-900/60 rounded-2xl overflow-hidden border border-white/5 hover:border-emerald-500/30 transition cursor-pointer">
+              <img src="https://images.unsplash.com/photo-1598515214211-89d3c73ae83b?q=80&w=300&auto=format&fit=crop" alt="Recipe 1" class="w-full h-24 object-cover">
+              <div class="p-2.5">
+                <span class="text-[9px] text-emerald-400 font-bold font-outfit uppercase">Main Dish</span>
+                <h4 class="text-xs font-bold text-slate-200 truncate mt-0.5">무수 퀸 닭볶음탕</h4>
+                <p class="text-[10px] text-slate-400 mt-1">난이도: 보통 | 40분</p>
+              </div>
+            </div>
+            <div onclick="openRecipeDetail('chococake')" class="bg-slate-900/60 rounded-2xl overflow-hidden border border-white/5 hover:border-emerald-500/30 transition cursor-pointer">
+              <img src="https://images.unsplash.com/photo-1606313564200-e75d5e30476c?q=80&w=300&auto=format&fit=crop" alt="Recipe 2" class="w-full h-24 object-cover">
+              <div class="p-2.5">
+                <span class="text-[9px] text-emerald-400 font-bold font-outfit uppercase">Baking</span>
+                <h4 class="text-xs font-bold text-slate-200 truncate mt-0.5">퀸 초코 브라우니</h4>
+                <p class="text-[10px] text-slate-400 mt-1">난이도: 쉬움 | 25분</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+      <!-- 2. AUDIO LIBRARY TAB -->
+      <section id="tab-audio" class="tab-content">
+        
+        <!-- 1단계: 카테고리 선택 화면 (Grid View) -->
+        <div id="audio-category-grid-view" class="space-y-4">
+          <div class="pb-1">
+            <h3 class="text-sm font-bold text-white flex items-center gap-1.5">
+              <i data-lucide="folder-heart" class="w-4.5 h-4.5 text-emerald-400"></i>
+              음원 카테고리 선택
+            </h3>
+            <p class="text-[10px] text-slate-400 mt-1">학습하고자 하는 비즈니스 폴더를 선택하세요.</p>
+          </div>
+          
+          <div class="flex flex-col gap-2.5">
+            <!-- 01. 10분 Show AW -->
+            <div onclick="selectAudioFolder('show_aw', '10분 Show AW')" class="glass-card rounded-2xl py-3 px-4 flex items-center justify-between hover:border-emerald-500/50 hover:bg-slate-800/80 transition duration-300 cursor-pointer group relative overflow-hidden">
+              <div class="flex items-center gap-3">
+                <span class="text-xs font-bold text-emerald-400 font-outfit min-w-[18px]">01</span>
+                <div class="w-10 h-10 rounded-full bg-emerald-500/10 text-emerald-400 flex items-center justify-center shrink-0">
+                  <i data-lucide="clock" class="w-5 h-5"></i>
+                </div>
+                <h4 class="text-xs font-bold text-slate-200 group-hover:text-white transition duration-300">10분 Show AW</h4>
+              </div>
+              <i data-lucide="chevron-right" class="w-4 h-4 text-slate-500 group-hover:text-emerald-400 transform group-hover:translate-x-0.5 transition-all"></i>
+            </div>
+
+            <!-- 02. 사업설명 -->
+            <div onclick="selectAudioFolder('business', '사업설명')" class="glass-card rounded-2xl py-3 px-4 flex items-center justify-between hover:border-emerald-500/50 hover:bg-slate-800/80 transition duration-300 cursor-pointer group relative overflow-hidden">
+              <div class="flex items-center gap-3">
+                <span class="text-xs font-bold text-emerald-400 font-outfit min-w-[18px]">02</span>
+                <div class="w-10 h-10 rounded-full bg-emerald-500/10 text-emerald-400 flex items-center justify-center shrink-0">
+                  <i data-lucide="presentation" class="w-5 h-5"></i>
+                </div>
+                <h4 class="text-xs font-bold text-slate-200 group-hover:text-white transition duration-300">사업설명</h4>
+              </div>
+              <i data-lucide="chevron-right" class="w-4 h-4 text-slate-500 group-hover:text-emerald-400 transform group-hover:translate-x-0.5 transition-all"></i>
+            </div>
+
+            <!-- 03. 제품 & 제품 이야기 -->
+            <div onclick="selectAudioFolder('product', '제품 & 제품 이야기')" class="glass-card rounded-2xl py-3 px-4 flex items-center justify-between hover:border-emerald-500/50 hover:bg-slate-800/80 transition duration-300 cursor-pointer group relative overflow-hidden">
+              <div class="flex items-center gap-3">
+                <span class="text-xs font-bold text-emerald-400 font-outfit min-w-[18px]">03</span>
+                <div class="w-10 h-10 rounded-full bg-emerald-500/10 text-emerald-400 flex items-center justify-center shrink-0">
+                  <i data-lucide="package" class="w-5 h-5"></i>
+                </div>
+                <h4 class="text-xs font-bold text-slate-200 group-hover:text-white transition duration-300">제품 & 제품 이야기</h4>
+              </div>
+              <i data-lucide="chevron-right" class="w-4 h-4 text-slate-500 group-hover:text-emerald-400 transform group-hover:translate-x-0.5 transition-all"></i>
+            </div>
+
+            <!-- 04. Amway 비전 & 트렌드 -->
+            <div onclick="selectAudioFolder('vision', 'Amway 비전 & 트렌드')" class="glass-card rounded-2xl py-3 px-4 flex items-center justify-between hover:border-emerald-500/50 hover:bg-slate-800/80 transition duration-300 cursor-pointer group relative overflow-hidden">
+              <div class="flex items-center gap-3">
+                <span class="text-xs font-bold text-emerald-400 font-outfit min-w-[18px]">04</span>
+                <div class="w-10 h-10 rounded-full bg-emerald-500/10 text-emerald-400 flex items-center justify-center shrink-0">
+                  <i data-lucide="trending-up" class="w-5 h-5"></i>
+                </div>
+                <h4 class="text-xs font-bold text-slate-200 group-hover:text-white transition duration-300">Amway 비전 & 트렌드</h4>
+              </div>
+              <i data-lucide="chevron-right" class="w-4 h-4 text-slate-500 group-hover:text-emerald-400 transform group-hover:translate-x-0.5 transition-all"></i>
+            </div>
+
+            <!-- 05. S.L.M & 국내외 초청특강 -->
+            <div onclick="selectAudioFolder('speeches', 'S.L.M & 국내외 초청특강')" class="glass-card rounded-2xl py-3 px-4 flex items-center justify-between hover:border-emerald-500/50 hover:bg-slate-800/80 transition duration-300 cursor-pointer group relative overflow-hidden">
+              <div class="flex items-center gap-3">
+                <span class="text-xs font-bold text-emerald-400 font-outfit min-w-[18px]">05</span>
+                <div class="w-10 h-10 rounded-full bg-emerald-500/10 text-emerald-400 flex items-center justify-center shrink-0">
+                  <i data-lucide="mic" class="w-5 h-5"></i>
+                </div>
+                <h4 class="text-xs font-bold text-slate-200 group-hover:text-white transition duration-300">S.L.M & 국내외 초청특강</h4>
+              </div>
+              <i data-lucide="chevron-right" class="w-4 h-4 text-slate-500 group-hover:text-emerald-400 transform group-hover:translate-x-0.5 transition-all"></i>
+            </div>
+
+            <!-- 06. 세미나 하이라이트 -->
+            <div onclick="selectAudioFolder('highlights', '세미나 하이라이트')" class="glass-card rounded-2xl py-3 px-4 flex items-center justify-between hover:border-emerald-500/50 hover:bg-slate-800/80 transition duration-300 cursor-pointer group relative overflow-hidden">
+              <div class="flex items-center gap-3">
+                <span class="text-xs font-bold text-emerald-400 font-outfit min-w-[18px]">06</span>
+                <div class="w-10 h-10 rounded-full bg-emerald-500/10 text-emerald-400 flex items-center justify-center shrink-0">
+                  <i data-lucide="star" class="w-5 h-5"></i>
+                </div>
+                <h4 class="text-xs font-bold text-slate-200 group-hover:text-white transition duration-300">세미나 하이라이트</h4>
+              </div>
+              <i data-lucide="chevron-right" class="w-4 h-4 text-slate-500 group-hover:text-emerald-400 transform group-hover:translate-x-0.5 transition-all"></i>
+            </div>
+
+            <!-- 07. 시스템 -->
+            <div onclick="selectAudioFolder('system', '시스템')" class="glass-card rounded-2xl py-3 px-4 flex items-center justify-between hover:border-emerald-500/50 hover:bg-slate-800/80 transition duration-300 cursor-pointer group relative overflow-hidden">
+              <div class="flex items-center gap-3">
+                <span class="text-xs font-bold text-emerald-400 font-outfit min-w-[18px]">07</span>
+                <div class="w-10 h-10 rounded-full bg-emerald-500/10 text-emerald-400 flex items-center justify-center shrink-0">
+                  <i data-lucide="settings" class="w-5 h-5"></i>
+                </div>
+                <h4 class="text-xs font-bold text-slate-200 group-hover:text-white transition duration-300">시스템</h4>
+              </div>
+              <i data-lucide="chevron-right" class="w-4 h-4 text-slate-500 group-hover:text-emerald-400 transform group-hover:translate-x-0.5 transition-all"></i>
+            </div>
+
+            <!-- 08. 리더미팅 & 특별미팅 -->
+            <div onclick="selectAudioFolder('leader_meeting', '리더미팅 & 특별미팅')" class="glass-card rounded-2xl py-3 px-4 flex items-center justify-between hover:border-emerald-500/50 hover:bg-slate-800/80 transition duration-300 cursor-pointer group relative overflow-hidden">
+              <div class="flex items-center gap-3">
+                <span class="text-xs font-bold text-emerald-400 font-outfit min-w-[18px]">08</span>
+                <div class="w-10 h-10 rounded-full bg-emerald-500/10 text-emerald-400 flex items-center justify-center shrink-0">
+                  <i data-lucide="users" class="w-5 h-5"></i>
+                </div>
+                <h4 class="text-xs font-bold text-slate-200 group-hover:text-white transition duration-300">리더미팅 & 특별미팅</h4>
+              </div>
+              <i data-lucide="chevron-right" class="w-4 h-4 text-slate-500 group-hover:text-emerald-400 transform group-hover:translate-x-0.5 transition-all"></i>
+            </div>
+
+            <!-- 09. DAG Millennials Program -->
+            <div onclick="selectAudioFolder('millennials', 'DAG Millennials Program')" class="glass-card rounded-2xl py-3 px-4 flex items-center justify-between hover:border-emerald-500/50 hover:bg-slate-800/80 transition duration-300 cursor-pointer group relative overflow-hidden">
+              <div class="flex items-center gap-3">
+                <span class="text-xs font-bold text-emerald-400 font-outfit min-w-[18px]">09</span>
+                <div class="w-10 h-10 rounded-full bg-emerald-500/10 text-emerald-400 flex items-center justify-center shrink-0">
+                  <i data-lucide="zap" class="w-5 h-5"></i>
+                </div>
+                <h4 class="text-xs font-bold text-slate-200 group-hover:text-white transition duration-300">DAG Millennials Program</h4>
+              </div>
+              <i data-lucide="chevron-right" class="w-4 h-4 text-slate-500 group-hover:text-emerald-400 transform group-hover:translate-x-0.5 transition-all"></i>
+            </div>
+          </div>
+        </div>
+
+        <!-- 2단계: 카테고리별 상세 음원 리스트 화면 (Detail View) -->
+        <div id="audio-category-detail-view" class="hidden space-y-4">
+          <!-- Detail Header: Back button & Title -->
+          <div class="flex items-center justify-between pb-2 border-b border-white/5">
+            <button onclick="goBackToAudioCategories()" class="flex items-center gap-1 text-xs text-slate-400 hover:text-white transition font-medium">
+              <i data-lucide="arrow-left" class="w-4 h-4"></i> 뒤로가기
+            </button>
+            <h3 id="selected-category-title" class="text-xs font-bold text-emerald-400 font-outfit truncate max-w-[200px]">S.L.M & 국내외 초청특강</h3>
+            <div class="w-12"></div> <!-- Spacer for balance -->
+          </div>
+
+          <!-- Search Bar inside detail view -->
+          <div class="relative">
+            <span class="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none text-slate-400">
+              <i data-lucide="search" class="w-4 h-4"></i>
+            </span>
+            <input type="text" id="audio-search" oninput="filterAudioList()" placeholder="제목 또는 강사명 검색..." class="w-full pl-10 pr-4 py-2.5 bg-slate-900/80 border border-white/10 rounded-2xl text-xs text-white focus:outline-none focus:border-emerald-500 placeholder-slate-500">
+          </div>
+
+          <!-- Audio List Container -->
+          <div id="audio-list-container" class="space-y-4">
+          <!-- Audio Item: 내 삶의 주도권은 나에게 있다 -->
+          <div class="glass-card rounded-2xl p-4 audio-item" data-category="speeches" data-title="내 삶의 주도권은 나에게 있다" data-speaker="강설화">
+            <div class="flex gap-3">
+              <!-- Thumbnail -->
+              <div class="w-20 h-20 rounded-xl overflow-hidden relative shrink-0">
+                <img src="https://images.unsplash.com/photo-1507525428034-b723cf961d3e?q=80&w=150" class="w-full h-full object-cover">
+                <div class="absolute inset-0 bg-black/40 flex items-center justify-center">
+                  <i data-lucide="play" class="w-6 h-6 text-white opacity-85"></i>
+                </div>
+              </div>
+              <!-- Content & Action Buttons -->
+              <div class="flex-1 min-w-0">
+                <div class="flex justify-between items-start">
+                  <span class="text-[9px] font-bold text-emerald-400 uppercase font-outfit">S.L.M & 국내외 초청특강</span>
+                  <span class="text-[9px] text-slate-400 font-outfit">32:40</span>
+                </div>
+                <h4 class="text-xs font-bold text-slate-200 mt-1 line-clamp-1">내 삶의 주도권은 나에게 있다</h4>
+                <p class="text-[10px] text-slate-400 mt-0.5">강사: 강설화 DIA</p>
+                
+                <!-- Interactive Buttons -->
+                <div class="flex gap-1.5 mt-2 flex-wrap">
+                  <button onclick="openYoutubeMock('https://youtu.be/pOHJTLdNwuA')" class="px-2.5 py-1 bg-red-500/10 text-red-400 hover:bg-red-500/20 rounded-lg text-[10px] font-bold transition flex items-center gap-1">
+                    <i data-lucide="youtube" class="w-3.5 h-3.5"></i> 유튜브 재생
+                  </button>
+                  <button onclick="toggleSummaryCard('summary-audio-new')" class="px-2.5 py-1 bg-slate-800 text-slate-300 hover:bg-slate-700 rounded-lg text-[10px] font-bold transition flex items-center gap-0.5">
+                    <i data-lucide="file-text" class="w-3.5 h-3.5"></i> 5줄 요약
+                  </button>
+                  <button onclick="shareKakao('내 삶의 주도권은 나에게 있다', '강설화 DIA', 'https://youtu.be/pOHJTLdNwuA')" class="px-2.5 py-1 bg-amber-400/10 text-amber-300 hover:bg-amber-400/20 rounded-lg text-[10px] font-bold transition flex items-center gap-1" title="카카오톡 공유">
+                    <i data-lucide="message-circle" class="w-3.5 h-3.5 text-amber-400"></i> 카톡 공유
+                  </button>
+                </div>
+              </div>
+              <!-- Standard Share/Copy Button -->
+              <button onclick="copyToClipboard('https://youtu.be/pOHJTLdNwuA')" class="p-2 text-slate-400 hover:text-emerald-400 shrink-0 self-start" title="링크 복사">
+                <i data-lucide="share-2" class="w-4 h-4"></i>
+              </button>
+            </div>
+            
+            <!-- 5 Line Summary Box -->
+            <div id="summary-audio-new" class="hidden mt-3 p-3 bg-slate-950/80 border border-emerald-500/20 rounded-xl text-[11px] text-slate-300 space-y-1.5 animate-fade-in">
+              <div class="flex flex-col gap-1 pb-1.5 border-b border-white/5 mb-1.5">
+                <span class="text-[10px] text-emerald-400 font-bold flex items-center gap-1">
+                  <i data-lucide="check-square" class="w-3.5 h-3.5"></i> 핵심 5줄 요약 카드
+                </span>
+                <span class="text-[9px] text-slate-400 bg-slate-900/60 py-0.5 px-1.5 rounded-md border border-white/5">
+                  🎯 추천 대상: 동기부여가 필요한 신규 파트너 및 비즈니스 검토자
+                </span>
+              </div>
+              <p>1. 삶의 변화는 내가 삶의 주도권을 갖기로 결단하는 순간 시작된다.</p>
+              <p>2. 암웨이 비즈니스를 통한 시간적·경제적 자유와 선택의 기회.</p>
+              <p>3. 환경과 핑계를 넘어서 목표를 향해 나아가는 마인드셋.</p>
+              <p>4. 팀과 시스템 안에서 함께 성장하는 네트워크의 힘.</p>
+              <p>5. 포기하지 않고 꾸준히 실행할 때 완성되는 성공 스토리.</p>
+            </div>
+          </div>
+          <!-- Audio Item 1 -->
+          <div class="glass-card rounded-2xl p-4 audio-item" data-category="business" data-title="네트워크 마케팅 자산 소득의 본질" data-speaker="최선우">
+            <div class="flex gap-3">
+              <div class="w-20 h-20 rounded-xl overflow-hidden relative shrink-0">
+                <img src="https://images.unsplash.com/photo-1516280440614-37939bbacd6a?q=80&w=150" class="w-full h-full object-cover">
+                <div class="absolute inset-0 bg-black/40 flex items-center justify-center">
+                  <i data-lucide="play" class="w-6 h-6 text-white opacity-85"></i>
+                </div>
+              </div>
+              <div class="flex-1 min-w-0">
+                <div class="flex justify-between items-start">
+                  <span class="text-[9px] font-bold text-emerald-400 uppercase font-outfit">사업설명</span>
+                  <span class="text-[9px] text-slate-400 font-outfit">28:15</span>
+                </div>
+                <h4 class="text-xs font-bold text-slate-200 mt-1 line-clamp-1">네트워크 마케팅 자산 소득의 본질</h4>
+                <p class="text-[10px] text-slate-400 mt-0.5">강사: 최선우 Double Diamond</p>
+                <div class="flex gap-2 mt-2">
+                  <button onclick="openYoutubeMock('https://youtu.be/dummy1')" class="px-2.5 py-1 bg-emerald-500/20 text-emerald-400 hover:bg-emerald-500/30 rounded-lg text-[10px] font-bold transition">유튜브 연결</button>
+                  <button onclick="toggleSummaryCard('summary-audio-1')" class="px-2.5 py-1 bg-slate-800 text-slate-300 hover:bg-slate-700 rounded-lg text-[10px] font-bold transition flex items-center gap-0.5"><i data-lucide="file-text" class="w-3 h-3"></i> 5줄 요약</button>
+                </div>
+              </div>
+              <button onclick="copyToClipboard('https://youtu.be/dummy1')" class="p-2 text-slate-400 hover:text-emerald-400 shrink-0 self-start">
+                <i data-lucide="share-2" class="w-4 h-4"></i>
+              </button>
+            </div>
+            <!-- 5 Line Summary Box -->
+            <div id="summary-audio-1" class="hidden mt-3 p-3 bg-slate-950/80 border border-emerald-500/20 rounded-xl text-[11px] text-slate-300 space-y-1.5">
+              <p>1. 직장인은 수입을 만들지만, ABO는 평생 연금성 자산을 구축합니다.</p>
+              <p>2. 고품질 암웨이 제품 소비가 수입이 되는 독특한 무자본 비즈니스 모델.</p>
+              <p>3. 지속성 있는 네트워킹은 정직과 복제 시스템 구축에서 출발합니다.</p>
+              <p>4. 스폰서와의 정기적 맵 상담을 바탕으로 주간 미팅 루틴을 준수해야 합니다.</p>
+              <p>5. 매월 랠리 세미나 참석은 전체 팀의 성장 동력을 하나로 묶는 핵심 수단입니다.</p>
+            </div>
+          </div>
+
+          <!-- Audio Item 2 -->
+          <div class="glass-card rounded-2xl p-4 audio-item" data-category="product" data-title="유기농 뉴트리라이트 농장의 비밀과 비타민 C" data-speaker="이은주">
+            <div class="flex gap-3">
+              <div class="w-20 h-20 rounded-xl overflow-hidden relative shrink-0">
+                <img src="https://images.unsplash.com/photo-1574316071802-0d684efa7bf5?q=80&w=150" class="w-full h-full object-cover">
+                <div class="absolute inset-0 bg-black/40 flex items-center justify-center">
+                  <i data-lucide="play" class="w-6 h-6 text-white opacity-85"></i>
+                </div>
+              </div>
+              <div class="flex-1 min-w-0">
+                <div class="flex justify-between items-start">
+                  <span class="text-[9px] font-bold text-emerald-400 uppercase font-outfit">제품 & 제품 이야기</span>
+                  <span class="text-[9px] text-slate-400 font-outfit">18:40</span>
+                </div>
+                <h4 class="text-xs font-bold text-slate-200 mt-1 line-clamp-1">유기농 뉴트리라이트 농장의 비밀과 비타민 C</h4>
+                <p class="text-[10px] text-slate-400 mt-0.5">강사: 이은주 영양학 박사</p>
+                <div class="flex gap-2 mt-2">
+                  <button onclick="openYoutubeMock('https://youtu.be/dummy2')" class="px-2.5 py-1 bg-emerald-500/20 text-emerald-400 hover:bg-emerald-500/30 rounded-lg text-[10px] font-bold transition">유튜브 연결</button>
+                  <button onclick="toggleSummaryCard('summary-audio-2')" class="px-2.5 py-1 bg-slate-800 text-slate-300 hover:bg-slate-700 rounded-lg text-[10px] font-bold transition flex items-center gap-0.5"><i data-lucide="file-text" class="w-3 h-3"></i> 5줄 요약</button>
+                </div>
+              </div>
+              <button onclick="copyToClipboard('https://youtu.be/dummy2')" class="p-2 text-slate-400 hover:text-emerald-400 shrink-0 self-start">
+                <i data-lucide="share-2" class="w-4 h-4"></i>
+              </button>
+            </div>
+            <!-- 5 Line Summary Box -->
+            <div id="summary-audio-2" class="hidden mt-3 p-3 bg-slate-950/80 border border-emerald-500/20 rounded-xl text-[11px] text-slate-300 space-y-1.5">
+              <p>1. 암웨이 뉴트리라이트는 씨앗부터 완제품까지 친환경 유기농법을 고집합니다.</p>
+              <p>2. 레이크뷰, 엘 페탈 등 직영 농장에서 무당벌레와 지렁이로 토양을 살립니다.</p>
+              <p>3. 아세로라 체리는 비타민 C 함량이 가장 우수한 시점에 당일 수확·가공됩니다.</p>
+              <p>4. 합성 비타민과 차원이 다른 천연 식물영양소(파이토케미컬)가 듬뿍 포함됩니다.</p>
+              <p>5. 하루 단 한 알로 몸을 보호하고 활성산소를 억제하는 항산화 자산을 키우세요.</p>
+            </div>
+          </div>
+
+          <!-- Audio Item 3 -->
+          <div class="glass-card rounded-2xl p-4 audio-item" data-category="system" data-title="포기하지 않는 열정, 성공으로 가는 10가지 태도" data-speaker="성호준">
+            <div class="flex gap-3">
+              <div class="w-20 h-20 rounded-xl overflow-hidden relative shrink-0">
+                <img src="https://images.unsplash.com/photo-1522071820081-009f0129c71c?q=80&w=150" class="w-full h-full object-cover">
+                <div class="absolute inset-0 bg-black/40 flex items-center justify-center">
+                  <i data-lucide="play" class="w-6 h-6 text-white opacity-85"></i>
+                </div>
+              </div>
+              <div class="flex-1 min-w-0">
+                <div class="flex justify-between items-start">
+                  <span class="text-[9px] font-bold text-emerald-400 uppercase font-outfit">시스템</span>
+                  <span class="text-[9px] text-slate-400 font-outfit">35:10</span>
+                </div>
+                <h4 class="text-xs font-bold text-slate-200 mt-1 line-clamp-1">포기하지 않는 열정, 성공으로 가는 10가지 태도</h4>
+                <p class="text-[10px] text-slate-400 mt-0.5">강사: 성호준 Crown Ambassador</p>
+                <div class="flex gap-2 mt-2">
+                  <button onclick="openYoutubeMock('https://youtu.be/dummy3')" class="px-2.5 py-1 bg-emerald-500/20 text-emerald-400 hover:bg-emerald-500/30 rounded-lg text-[10px] font-bold transition">유튜브 연결</button>
+                  <button onclick="toggleSummaryCard('summary-audio-3')" class="px-2.5 py-1 bg-slate-800 text-slate-300 hover:bg-slate-700 rounded-lg text-[10px] font-bold transition flex items-center gap-0.5"><i data-lucide="file-text" class="w-3 h-3"></i> 5줄 요약</button>
+                </div>
+              </div>
+              <button onclick="copyToClipboard('https://youtu.be/dummy3')" class="p-2 text-slate-400 hover:text-emerald-400 shrink-0 self-start">
+                <i data-lucide="share-2" class="w-4 h-4"></i>
+              </button>
+            </div>
+            <!-- 5 Line Summary Box -->
+            <div id="summary-audio-3" class="hidden mt-3 p-3 bg-slate-950/80 border border-emerald-500/20 rounded-xl text-[11px] text-slate-300 space-y-1.5">
+              <p>1. 재능이 아닌 올바른 '태도(Attitude)'가 사업 성패의 90%를 좌우합니다.</p>
+              <p>2. 비난과 거절은 내 발전을 돕는 영양소이자 보석을 다듬는 망치입니다.</p>
+              <p>3. 텐코어(10 Core) 루틴을 매일 체크하며 스스로 동기를 매일 활성화하십시오.</p>
+              <p>4. 스몰 리딩 그룹을 스스로 운영하며 스폰서의 그늘에서 자립을 꾀하세요.</p>
+            </div>
+          </div>
+
+          <!-- Audio Item 4 (Local) -->
+          <div class="glass-card rounded-2xl p-4 audio-item" data-category="system" data-title="네트워크 마케팅 시스템의 이해와 복제 원리" data-speaker="김복제">
+            <div class="flex gap-3">
+              <div onclick="playLocalAudio('audio/system_audio_01.mp3', '네트워크 마케팅 시스템의 이해와 복제 원리', '김복제 리더님')" class="w-20 h-20 rounded-xl overflow-hidden relative shrink-0 cursor-pointer group">
+                <img src="https://images.unsplash.com/photo-1478737270239-2f02b77fc618?q=80&w=150" class="w-full h-full object-cover group-hover:scale-105 transition duration-300">
+                <div class="absolute inset-0 bg-black/40 flex items-center justify-center">
+                  <i data-lucide="play" class="w-6 h-6 text-white opacity-85 group-hover:scale-110 transition duration-300"></i>
+                </div>
+              </div>
+              <div class="flex-1 min-w-0">
+                <div class="flex justify-between items-start">
+                  <span class="text-[9px] font-bold text-emerald-400 uppercase font-outfit">시스템</span>
+                  <span class="text-[9px] text-slate-400 font-outfit">45:20</span>
+                </div>
+                <h4 class="text-xs font-bold text-slate-200 mt-1 line-clamp-1">네트워크 마케팅 시스템의 이해와 복제 원리</h4>
+                <p class="text-[10px] text-slate-400 mt-0.5">강사: 김복제 리더님</p>
+                
+                <div class="flex gap-1.5 mt-2 flex-wrap">
+                  <button onclick="playLocalAudio('audio/system_audio_01.mp3', '네트워크 마케팅 시스템의 이해와 복제 원리', '김복제 리더님')" class="px-2.5 py-1 bg-emerald-500/10 text-emerald-400 hover:bg-emerald-500/20 rounded-lg text-[10px] font-bold transition flex items-center gap-1">
+                    <i data-lucide="play" class="w-3.5 h-3.5 fill-current"></i> 바로 듣기
+                  </button>
+                  <button onclick="toggleSummaryCard('summary-audio-system-local')" class="px-2.5 py-1 bg-slate-800 text-slate-300 hover:bg-slate-700 rounded-lg text-[10px] font-bold transition flex items-center gap-0.5">
+                    <i data-lucide="file-text" class="w-3.5 h-3.5"></i> 5줄 요약
+                  </button>
+                  <button onclick="shareKakao('네트워크 마케팅 시스템의 이해와 복제 원리', '김복제 리더님', window.location.href)" class="px-2.5 py-1 bg-amber-400/10 text-amber-300 hover:bg-amber-400/20 rounded-lg text-[10px] font-bold transition flex items-center gap-1" title="카카오톡 공유">
+                    <i data-lucide="message-circle" class="w-3.5 h-3.5 text-amber-400"></i> 카톡 공유
+                  </button>
+                </div>
+              </div>
+              <button onclick="copyToClipboard('[ABO Partner] 네트워크 마케팅 시스템의 이해와 복제 원리 (강사: 김복제 리더님)')" class="p-2 text-slate-400 hover:text-emerald-400 shrink-0 self-start" title="정보 복사">
+                <i data-lucide="share-2" class="w-4 h-4"></i>
+              </button>
+            </div>
+            
+            <div id="summary-audio-system-local" class="hidden mt-3 p-3 bg-slate-950/80 border border-emerald-500/20 rounded-xl text-[11px] text-slate-300 space-y-1.5 animate-fade-in">
+              <div class="flex flex-col gap-1 pb-1.5 border-b border-white/5 mb-1.5">
+                <span class="text-[10px] text-emerald-400 font-bold flex items-center gap-1">
+                  <i data-lucide="check-square" class="w-3.5 h-3.5"></i> 핵심 5줄 요약 카드
+                </span>
+                <span class="text-[9px] text-slate-400 bg-slate-900/60 py-0.5 px-1.5 rounded-md border border-white/5">
+                  🎯 추천 대상: 기본 시스템을 체계적으로 복제하고 싶은 신규 및 기존 사업자
+                </span>
+              </div>
+              <p>1. 시스템은 성공의 지름길이자 지속 가능한 비즈니스의 핵심이다.</p>
+              <p>2. 단순하고 명확한 행동 수칙을 통해 누구나 쉽게 복제할 수 있는 구조를 만든다.</p>
+              <p>3. 미팅 참석과 음원 듣기를 통한 일관된 마인드셋 유지.</p>
+              <p>4. 스폰서와의 지속적인 상담 및 피드백 루프의 중요성.</p>
+              <p>5. 배운 것을 파트너에게 그대로 전달하고 가르치는 리더십의 완성.</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- 3. PRODUCT POSTER TAB -->
+      <section id="tab-product" class="tab-content space-y-4">
+        <!-- Brand Filters -->
+        <div class="flex gap-2 overflow-x-auto pb-1 shrink-0">
+          <button onclick="filterProductBrand('all')" class="brand-btn px-4 py-1.5 rounded-full bg-emerald-500 text-white font-medium text-xs whitespace-nowrap transition">전체</button>
+          <button onclick="filterProductBrand('nutrilite')" class="brand-btn px-4 py-1.5 rounded-full bg-slate-800 text-slate-300 font-medium text-xs whitespace-nowrap transition">뉴트리라이트</button>
+          <button onclick="filterProductBrand('artistry')" class="brand-btn px-4 py-1.5 rounded-full bg-slate-800 text-slate-300 font-medium text-xs whitespace-nowrap transition">아티스트리</button>
+          <button onclick="filterProductBrand('homecare')" class="brand-btn px-4 py-1.5 rounded-full bg-slate-800 text-slate-300 font-medium text-xs whitespace-nowrap transition">홈/퍼스널케어</button>
+        </div>
+
+        <!-- Poster Cards Grid -->
+        <div id="product-grid" class="grid grid-cols-2 gap-3">
+          <!-- Product Card 1 -->
+          <div class="glass-card rounded-2xl overflow-hidden poster-card flex flex-col justify-between" data-brand="nutrilite">
+            <div class="relative cursor-pointer" onclick="openLightbox('Double X', 'https://images.unsplash.com/photo-1584017911766-d451b3d0e843?q=80&w=400')">
+              <img src="https://images.unsplash.com/photo-1584017911766-d451b3d0e843?q=80&w=400" alt="Double X" class="w-full h-40 object-cover">
+              <div class="absolute top-2 left-2 px-2 py-0.5 rounded-md bg-emerald-500/80 backdrop-blur-sm text-[8px] font-bold text-white uppercase tracking-wider">Nutrilite</div>
+              <div class="absolute inset-0 bg-black/20 opacity-0 hover:opacity-100 transition flex items-center justify-center">
+                <i data-lucide="zoom-in" class="w-6 h-6 text-white"></i>
+              </div>
+            </div>
+            <div class="p-3">
+              <h4 class="text-xs font-bold text-slate-200">더블엑스 종합 비타민</h4>
+              <p class="text-[9px] text-slate-400 mt-1 line-clamp-1">14가지 비타민 & 10가지 미네랄 함유</p>
+              <div class="flex justify-between items-center mt-3 pt-2.5 border-t border-white/5">
+                <button onclick="triggerDownloadMock('더블엑스_홍보포스터.png')" class="text-[10px] text-amway-400 hover:text-amway-300 flex items-center gap-1 font-bold">
+                  <i data-lucide="download" class="w-3.5 h-3.5"></i> 다운로드
+                </button>
+                <button onclick="copyToClipboard('https://amway.co.kr/product/double-x')" class="p-1.5 rounded-lg bg-white/5 hover:bg-slate-700 text-slate-300 transition">
+                  <i data-lucide="share-2" class="w-3 h-3"></i>
+                </button>
+              </div>
+            </div>
+          </div>
+
+          <!-- Product Card 2 -->
+          <div class="glass-card rounded-2xl overflow-hidden poster-card flex flex-col justify-between" data-brand="artistry">
+            <div class="relative cursor-pointer" onclick="openLightbox('Artistry Vitamin C+HA', 'https://images.unsplash.com/photo-1608248597279-f99d160bfcbc?q=80&w=400')">
+              <img src="https://images.unsplash.com/photo-1608248597279-f99d160bfcbc?q=80&w=400" alt="Vitamin C+HA" class="w-full h-40 object-cover">
+              <div class="absolute top-2 left-2 px-2 py-0.5 rounded-md bg-emerald-500/80 backdrop-blur-sm text-[8px] font-bold text-white uppercase tracking-wider">Artistry</div>
+              <div class="absolute inset-0 bg-black/20 opacity-0 hover:opacity-100 transition flex items-center justify-center">
+                <i data-lucide="zoom-in" class="w-6 h-6 text-white"></i>
+              </div>
+            </div>
+            <div class="p-3">
+              <h4 class="text-xs font-bold text-slate-200">아티스트리 비타민C+HA</h4>
+              <p class="text-[9px] text-slate-400 mt-1 line-clamp-1">더블 히알루론산으로 빛나는 광채 수분탄력</p>
+              <div class="flex justify-between items-center mt-3 pt-2.5 border-t border-white/5">
+                <button onclick="triggerDownloadMock('비타민CHA_홍보포스터.png')" class="text-[10px] text-amway-400 hover:text-amway-300 flex items-center gap-1 font-bold">
+                  <i data-lucide="download" class="w-3.5 h-3.5"></i> 다운로드
+                </button>
+                <button onclick="copyToClipboard('https://amway.co.kr/product/artistry-vitc')" class="p-1.5 rounded-lg bg-white/5 hover:bg-slate-700 text-slate-300 transition">
+                  <i data-lucide="share-2" class="w-3 h-3"></i>
+                </button>
+              </div>
+            </div>
+          </div>
+
+          <!-- Product Card 3 -->
+          <div class="glass-card rounded-2xl overflow-hidden poster-card flex flex-col justify-between" data-brand="homecare">
+            <div class="relative cursor-pointer" onclick="openLightbox('Dish Drops', 'https://images.unsplash.com/photo-1563453392212-326f5e854473?q=80&w=400')">
+              <img src="https://images.unsplash.com/photo-1563453392212-326f5e854473?q=80&w=400" alt="Dish Drops" class="w-full h-40 object-cover">
+              <div class="absolute top-2 left-2 px-2 py-0.5 rounded-md bg-emerald-500/80 backdrop-blur-sm text-[8px] font-bold text-white uppercase tracking-wider">Homecare</div>
+              <div class="absolute inset-0 bg-black/20 opacity-0 hover:opacity-100 transition flex items-center justify-center">
+                <i data-lucide="zoom-in" class="w-6 h-6 text-white"></i>
+              </div>
+            </div>
+            <div class="p-3">
+              <h4 class="text-xs font-bold text-slate-200">디쉬 드랍스 식기세정제</h4>
+              <p class="text-[9px] text-slate-400 mt-1 line-clamp-1">피부 자극이 적고 세척력이 강한 친환경 세제</p>
+              <div class="flex justify-between items-center mt-3 pt-2.5 border-t border-white/5">
+                <button onclick="triggerDownloadMock('디쉬드랍스_홍보포스터.png')" class="text-[10px] text-amway-400 hover:text-amway-300 flex items-center gap-1 font-bold">
+                  <i data-lucide="download" class="w-3.5 h-3.5"></i> 다운로드
+                </button>
+                <button onclick="copyToClipboard('https://amway.co.kr/product/dish-drops')" class="p-1.5 rounded-lg bg-white/5 hover:bg-slate-700 text-slate-300 transition">
+                  <i data-lucide="share-2" class="w-3 h-3"></i>
+                </button>
+              </div>
+            </div>
+          </div>
+
+          <!-- Product Card 4 -->
+          <div class="glass-card rounded-2xl overflow-hidden poster-card flex flex-col justify-between" data-brand="nutrilite">
+            <div class="relative cursor-pointer" onclick="openLightbox('Nutrilite Protein', 'https://images.unsplash.com/photo-1593095948071-474c5cc2989d?q=80&w=400')">
+              <img src="https://images.unsplash.com/photo-1593095948071-474c5cc2989d?q=80&w=400" alt="Protein" class="w-full h-40 object-cover">
+              <div class="absolute top-2 left-2 px-2 py-0.5 rounded-md bg-emerald-500/80 backdrop-blur-sm text-[8px] font-bold text-white uppercase tracking-wider">Nutrilite</div>
+              <div class="absolute inset-0 bg-black/20 opacity-0 hover:opacity-100 transition flex items-center justify-center">
+                <i data-lucide="zoom-in" class="w-6 h-6 text-white"></i>
+              </div>
+            </div>
+            <div class="p-3">
+              <h4 class="text-xs font-bold text-slate-200">푸로틴 단백질 파우더</h4>
+              <p class="text-[9px] text-slate-400 mt-1 line-clamp-1">순수 대두, 밀, 완두 배합의 식물성 9종 아미노산</p>
+              <div class="flex justify-between items-center mt-3 pt-2.5 border-t border-white/5">
+                <button onclick="triggerDownloadMock('푸로틴_홍보포스터.png')" class="text-[10px] text-amway-400 hover:text-amway-300 flex items-center gap-1 font-bold">
+                  <i data-lucide="download" class="w-3.5 h-3.5"></i> 다운로드
+                </button>
+                <button onclick="copyToClipboard('https://amway.co.kr/product/protein')" class="p-1.5 rounded-lg bg-white/5 hover:bg-slate-700 text-slate-300 transition">
+                  <i data-lucide="share-2" class="w-3 h-3"></i>
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- 4. SCHEDULE TAB -->
+      <section id="tab-schedule" class="tab-content space-y-4">
+        <!-- Monthly Calendar UI Mock -->
+        <div class="glass-card rounded-3xl p-4">
+          <div class="flex justify-between items-center mb-3">
+            <h4 class="text-sm font-bold text-white flex items-center gap-1.5">
+              <i data-lucide="calendar" class="w-4 h-4 text-emerald-400"></i>
+              2026년 8월
+            </h4>
+            <div class="flex gap-2">
+              <button class="p-1 rounded-lg hover:bg-white/5 text-slate-400"><i data-lucide="chevron-left" class="w-4 h-4"></i></button>
+              <button class="p-1 rounded-lg hover:bg-white/5 text-slate-400"><i data-lucide="chevron-right" class="w-4 h-4"></i></button>
+            </div>
+          </div>
+          <!-- Days of Week -->
+          <div class="grid grid-cols-7 gap-1 text-center text-[10px] text-slate-500 font-bold mb-1">
+            <span>일</span><span>월</span><span>화</span><span>수</span><span>목</span><span>금</span><span>토</span>
+          </div>
+          <!-- Calendar Days -->
+          <div class="grid grid-cols-7 gap-1 text-center text-xs font-semibold">
+            <!-- Blank days or previous month -->
+            <span class="text-slate-700 py-1.5">27</span>
+            <span class="text-slate-700 py-1.5">28</span>
+            <span class="text-slate-700 py-1.5">29</span>
+            <span class="text-slate-700 py-1.5">30</span>
+            <span class="text-slate-700 py-1.5">31</span>
+            <span class="text-slate-400 py-1.5">1</span>
+            <span class="text-slate-400 py-1.5">2</span>
+            
+            <span class="text-slate-400 py-1.5">3</span>
+            <span class="text-slate-400 py-1.5">4</span>
+            <span class="text-slate-400 py-1.5">5</span>
+            <span class="text-slate-400 py-1.5">6</span>
+            <span class="text-slate-400 py-1.5">7</span>
+            <!-- 8th (Today) -->
+            <span class="relative py-1.5 text-white flex justify-center">
+              <span class="absolute inset-1.5 rounded-lg bg-emerald-500/20 ring-1 ring-emerald-500/50 flex items-center justify-center w-6 h-6">8</span>
+              <span class="absolute bottom-1 w-1 h-1 rounded-full bg-emerald-400"></span>
+            </span>
+            <span class="text-slate-400 py-1.5">9</span>
+            
+            <span class="relative py-1.5 text-slate-400 flex justify-center">
+              <span class="w-6 h-6 flex items-center justify-center">10</span>
+              <span class="absolute bottom-1 w-1 h-1 rounded-full bg-amber-400"></span>
+            </span>
+            <span class="text-slate-400 py-1.5">11</span>
+            <span class="text-slate-400 py-1.5">12</span>
+            <span class="text-slate-400 py-1.5">13</span>
+            <span class="text-slate-400 py-1.5">14</span>
+            <span class="text-slate-400 py-1.5">15</span>
+            <span class="text-slate-400 py-1.5">16</span>
+
+            <span class="text-slate-400 py-1.5">17</span>
+            <span class="text-slate-400 py-1.5">18</span>
+            <span class="relative py-1.5 text-slate-400 flex justify-center">
+              <span class="w-6 h-6 flex items-center justify-center">19</span>
+              <span class="absolute bottom-1 w-1 h-1 rounded-full bg-emerald-400"></span>
+            </span>
+            <span class="text-slate-400 py-1.5">20</span>
+            <span class="text-slate-400 py-1.5">21</span>
+            <span class="text-slate-400 py-1.5">22</span>
+            <span class="text-slate-400 py-1.5">23</span>
+
+            <span class="text-slate-400 py-1.5">24</span>
+            <span class="relative py-1.5 text-slate-400 flex justify-center">
+              <span class="w-6 h-6 flex items-center justify-center">25</span>
+              <span class="absolute bottom-1 w-1 h-1 rounded-full bg-purple-400"></span>
+            </span>
+            <span class="text-slate-400 py-1.5">26</span>
+            <span class="text-slate-400 py-1.5">27</span>
+            <span class="text-slate-400 py-1.5">28</span>
+            <span class="text-slate-400 py-1.5">29</span>
+            <span class="text-slate-400 py-1.5">30</span>
+          </div>
+        </div>
+
+        <!-- Notification Config / Push Simulator Info -->
+        <div class="p-4 rounded-2xl bg-emerald-950/20 border border-emerald-500/20 flex items-center justify-between">
+          <div class="flex items-center gap-3">
+            <div class="p-2.5 rounded-xl bg-emerald-500/10 text-emerald-400">
+              <i data-lucide="bell-ring" class="w-5 h-5"></i>
+            </div>
+            <div>
+              <h5 class="text-xs font-bold text-slate-200">일정 전날 자동 알림 설정</h5>
+              <p class="text-[10px] text-slate-400 mt-0.5">매일 저녁 20:00에 다음 날 일정을 미리 알려줍니다.</p>
+            </div>
+          </div>
+          <!-- Toggle Switch -->
+          <label class="relative inline-flex items-center cursor-pointer select-none">
+            <input type="checkbox" id="push-toggle" onchange="togglePushPermission()" class="sr-only peer">
+            <div class="w-9 h-5 bg-slate-700 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-slate-300 after:border after:rounded-full after:h-4 after:w-4 after:transition-all peer-checked:bg-emerald-500"></div>
+          </label>
+        </div>
+
+        <!-- Schedule Cards List -->
+        <div class="space-y-3">
+          <h4 class="text-xs font-bold text-slate-300 uppercase tracking-widest pl-1">이달의 일정 리스트</h4>
+
+          <!-- Schedule 1 -->
+          <div class="glass-card rounded-2xl p-4 flex gap-4 items-start">
+            <div class="flex flex-col items-center justify-center w-12 h-12 rounded-xl bg-emerald-500/10 border border-emerald-500/20 text-emerald-400 shrink-0 font-outfit">
+              <span class="text-[9px] uppercase font-bold">Aug</span>
+              <span class="text-base font-extrabold leading-none mt-0.5">08</span>
+            </div>
+            <div class="flex-1 min-w-0">
+              <span class="text-[8px] font-bold text-emerald-400 uppercase tracking-wider">세미나</span>
+              <h4 class="text-xs font-bold text-slate-200 mt-0.5">화요 리더십 세미나</h4>
+              <p class="text-[10px] text-slate-400 mt-1 flex items-center gap-1"><i data-lucide="clock" class="w-3.5 h-3.5"></i> 20:00 - 21:30</p>
+              <p class="text-[10px] text-slate-400 mt-0.5 flex items-center gap-1"><i data-lucide="map-pin" class="w-3.5 h-3.5"></i> 온라인 Zoom (ID: 885-321-432)</p>
+              
+              <div class="flex gap-2 mt-3 pt-3 border-t border-white/5">
+                <button onclick="triggerImmediatePush('화요 리더십 세미나', '오늘 20:00에 시작하는 화요 리더십 줌 세미나 링크가 활성화되었습니다. 참석하십시오!')" class="px-2.5 py-1 bg-emerald-500 text-white rounded-lg text-[10px] font-bold flex items-center gap-1 transition">
+                  <i data-lucide="bell" class="w-3 h-3"></i> 알림즉시테스트
+                </button>
+                <button onclick="copyToClipboard('Zoom Link: https://zoom.us/j/885321432')" class="px-2.5 py-1 bg-slate-800 text-slate-300 hover:bg-slate-700 rounded-lg text-[10px] font-bold transition flex items-center gap-1">
+                  <i data-lucide="link" class="w-3 h-3"></i> 링크복사
+                </button>
+              </div>
+            </div>
+          </div>
+
+          <!-- Schedule 2 -->
+          <div class="glass-card rounded-2xl p-4 flex gap-4 items-start">
+            <div class="flex flex-col items-center justify-center w-12 h-12 rounded-xl bg-amber-500/10 border border-amber-500/20 text-amber-400 shrink-0 font-outfit">
+              <span class="text-[9px] uppercase font-bold">Aug</span>
+              <span class="text-base font-extrabold leading-none mt-0.5">10</span>
+            </div>
+            <div class="flex-1 min-w-0">
+              <span class="text-[8px] font-bold text-amber-400 uppercase tracking-wider">쿠킹 미팅</span>
+              <h4 class="text-xs font-bold text-slate-200 mt-0.5">퀸 쿠킹 홈미팅</h4>
+              <p class="text-[10px] text-slate-400 mt-1 flex items-center gap-1"><i data-lucide="clock" class="w-3.5 h-3.5"></i> 11:00 - 13:00</p>
+              <p class="text-[10px] text-slate-400 mt-0.5 flex items-center gap-1"><i data-lucide="map-pin" class="w-3.5 h-3.5"></i> 강남 암웨이 브랜드 센터(ABC)</p>
+              
+              <div class="flex gap-2 mt-3 pt-3 border-t border-white/5">
+                <button onclick="triggerImmediatePush('퀸 쿠킹 홈미팅 알림', '내일 11시 강남 ABC에서 열리는 쿠킹미팅 준비물은 개인 앞치마입니다.')" class="px-2.5 py-1 bg-emerald-500 text-white rounded-lg text-[10px] font-bold flex items-center gap-1 transition">
+                  <i data-lucide="bell" class="w-3 h-3"></i> 알림즉시테스트
+                </button>
+                <button onclick="copyToClipboard('강남 ABC 찾아오시는길: 서울 강남구 테헤란로 123')" class="px-2.5 py-1 bg-slate-800 text-slate-300 hover:bg-slate-700 rounded-lg text-[10px] font-bold transition flex items-center gap-1">
+                  <i data-lucide="map" class="w-3 h-3"></i> 주소복사
+                </button>
+              </div>
+            </div>
+          </div>
+
+          <!-- Schedule 3 -->
+          <div class="glass-card rounded-2xl p-4 flex gap-4 items-start">
+            <div class="flex flex-col items-center justify-center w-12 h-12 rounded-xl bg-emerald-500/10 border border-emerald-500/20 text-emerald-400 shrink-0 font-outfit">
+              <span class="text-[9px] uppercase font-bold">Aug</span>
+              <span class="text-base font-extrabold leading-none mt-0.5">19</span>
+            </div>
+            <div class="flex-1 min-w-0">
+              <span class="text-[8px] font-bold text-emerald-400 uppercase tracking-wider">세미나</span>
+              <h4 class="text-xs font-bold text-slate-200 mt-0.5">이달의 랠리(Rally) 페스티벌</h4>
+              <p class="text-[10px] text-slate-400 mt-1 flex items-center gap-1"><i data-lucide="clock" class="w-3.5 h-3.5"></i> 14:00 - 18:00</p>
+              <p class="text-[10px] text-slate-400 mt-0.5 flex items-center gap-1"><i data-lucide="map-pin" class="w-3.5 h-3.5"></i> 그랜드 인터컨티넨탈 호텔 서울</p>
+              
+              <div class="flex gap-2 mt-3 pt-3 border-t border-white/5">
+                <button onclick="triggerImmediatePush('이달의 랠리 페스티벌', '다음 주 수요일 이달의 랠리 축제가 성대하게 개최됩니다! 티켓 발권을 미리 확인하세요.')" class="px-2.5 py-1 bg-emerald-500 text-white rounded-lg text-[10px] font-bold flex items-center gap-1 transition">
+                  <i data-lucide="bell" class="w-3 h-3"></i> 알림즉시테스트
+                </button>
+                <button onclick="copyToClipboard('그랜드 인터컨티넨탈 호텔 그랜드볼룸')" class="px-2.5 py-1 bg-slate-800 text-slate-300 hover:bg-slate-700 rounded-lg text-[10px] font-bold transition flex items-center gap-1">
+                  <i data-lucide="link" class="w-3 h-3"></i> 주소복사
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- 5. COOKING & RECIPE TAB -->
+      <section id="tab-cooking" class="tab-content space-y-4">
+        <!-- Search & Filter -->
+        <div class="space-y-3">
+          <div class="relative">
+            <span class="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none text-slate-400">
+              <i data-lucide="search" class="w-4 h-4"></i>
+            </span>
+            <input type="text" id="recipe-search" oninput="filterRecipeList()" placeholder="요리 이름 또는 재료 검색..." class="w-full pl-10 pr-4 py-2.5 bg-slate-900/80 border border-white/10 rounded-2xl text-xs text-white focus:outline-none focus:border-emerald-500 placeholder-slate-500">
+          </div>
+          <!-- Recipe Filter Buttons -->
+          <div class="flex gap-2 overflow-x-auto pb-1 shrink-0">
+            <button onclick="filterRecipeCategory('all')" class="recipe-btn px-4 py-1.5 rounded-full bg-emerald-500 text-white font-medium text-xs whitespace-nowrap transition">전체</button>
+            <button onclick="filterRecipeCategory('main_dish')" class="recipe-btn px-4 py-1.5 rounded-full bg-slate-800 text-slate-300 font-medium text-xs whitespace-nowrap transition">메인요리</button>
+            <button onclick="filterRecipeCategory('baking')" class="recipe-btn px-4 py-1.5 rounded-full bg-slate-800 text-slate-300 font-medium text-xs whitespace-nowrap transition">베이킹/디저트</button>
+            <button onclick="filterRecipeCategory('snack')" class="recipe-btn px-4 py-1.5 rounded-full bg-slate-800 text-slate-300 font-medium text-xs whitespace-nowrap transition">건강/간편식</button>
+          </div>
+        </div>
+
+        <!-- Recipe Grid -->
+        <div id="recipe-grid" class="grid grid-cols-2 gap-3">
+          <!-- Recipe Item 1 -->
+          <div onclick="openRecipeDetail('dak')" class="glass-card rounded-2xl overflow-hidden cursor-pointer flex flex-col justify-between recipe-card-item" data-category="main_dish" data-title="무수 퀸 닭볶음탕" data-ingredients="닭고기 감자 당근 양파 대파 양념장">
+            <div class="relative">
+              <img src="https://images.unsplash.com/photo-1598515214211-89d3c73ae83b?q=80&w=300" alt="Dak" class="w-full h-32 object-cover">
+              <div class="absolute top-2 left-2 px-2 py-0.5 rounded-md bg-emerald-500/80 backdrop-blur-sm text-[8px] font-bold text-white uppercase tracking-wider">Main Dish</div>
+            </div>
+            <div class="p-3">
+              <h4 class="text-xs font-bold text-slate-200">무수 퀸 닭볶음탕</h4>
+              <p class="text-[9px] text-slate-400 mt-1 line-clamp-1">물을 넣지 않고 본래의 즙으로 우려낸 맛</p>
+              <div class="flex justify-between items-center mt-3 pt-2.5 border-t border-white/5 text-[9px] text-slate-400 font-bold">
+                <span>난이도: 보통</span>
+                <span class="text-emerald-400">40분 소요</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Recipe Item 2 -->
+          <div onclick="openRecipeDetail('chococake')" class="glass-card rounded-2xl overflow-hidden cursor-pointer flex flex-col justify-between recipe-card-item" data-category="baking" data-title="퀸 초코 브라우니" data-ingredients="초콜릿 밀가루 설탕 버터 달걀 베이킹파우더">
+            <div class="relative">
+              <img src="https://images.unsplash.com/photo-1606313564200-e75d5e30476c?q=80&w=300" alt="Brownie" class="w-full h-32 object-cover">
+              <div class="absolute top-2 left-2 px-2 py-0.5 rounded-md bg-emerald-500/80 backdrop-blur-sm text-[8px] font-bold text-white uppercase tracking-wider">Baking</div>
+            </div>
+            <div class="p-3">
+              <h4 class="text-xs font-bold text-slate-200">퀸 초코 브라우니</h4>
+              <p class="text-[9px] text-slate-400 mt-1 line-clamp-1">인덕션 팬 기능으로 만드는 노오븐 베이킹</p>
+              <div class="flex justify-between items-center mt-3 pt-2.5 border-t border-white/5 text-[9px] text-slate-400 font-bold">
+                <span>난이도: 쉬움</span>
+                <span class="text-emerald-400">25분 소요</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Recipe Item 3 -->
+          <div onclick="openRecipeDetail('japchae')" class="glass-card rounded-2xl overflow-hidden cursor-pointer flex flex-col justify-between recipe-card-item" data-category="main_dish" data-title="원팬 명품 잡채" data-ingredients="당면 소고기 시금치 당근 버섯 양파 간장 참기름">
+            <div class="relative">
+              <img src="https://images.unsplash.com/photo-1534422298391-e4f8c172dddb?q=80&w=300" alt="Japchae" class="w-full h-32 object-cover">
+              <div class="absolute top-2 left-2 px-2 py-0.5 rounded-md bg-emerald-500/80 backdrop-blur-sm text-[8px] font-bold text-white uppercase tracking-wider">Main Dish</div>
+            </div>
+            <div class="p-3">
+              <h4 class="text-xs font-bold text-slate-200">원팬 명품 잡채</h4>
+              <p class="text-[9px] text-slate-400 mt-1 line-clamp-1">재료를 따로 볶지 않고 퀸 냄비 하나로 완성</p>
+              <div class="flex justify-between items-center mt-3 pt-2.5 border-t border-white/5 text-[9px] text-slate-400 font-bold">
+                <span>난이도: 보통</span>
+                <span class="text-emerald-400">20분 소요</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Recipe Item 4 -->
+          <div onclick="openRecipeDetail('salmon')" class="glass-card rounded-2xl overflow-hidden cursor-pointer flex flex-col justify-between recipe-card-item" data-category="snack" data-title="연어 레몬 저온찜" data-ingredients="연어 레몬 아스파라거스 로즈마리 올리브유 소금 후추">
+            <div class="relative">
+              <img src="https://images.unsplash.com/photo-1467003909585-2f8a72700288?q=80&w=300" alt="Salmon" class="w-full h-32 object-cover">
+              <div class="absolute top-2 left-2 px-2 py-0.5 rounded-md bg-emerald-500/80 backdrop-blur-sm text-[8px] font-bold text-white uppercase tracking-wider">Healthy Diet</div>
+            </div>
+            <div class="p-3">
+              <h4 class="text-xs font-bold text-slate-200">연어 레몬 저온찜</h4>
+              <p class="text-[9px] text-slate-400 mt-1 line-clamp-1">영양소 파괴를 최소화하는 퀸 저온스팀 요리</p>
+              <div class="flex justify-between items-center mt-3 pt-2.5 border-t border-white/5 text-[9px] text-slate-400 font-bold">
+                <span>난이도: 쉬움</span>
+                <span class="text-emerald-400">15분 소요</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+    </main>
+
+    <!-- Local Audio Player Bar -->
+    <div id="local-audio-player" class="absolute bottom-[60px] inset-x-0 bg-slate-900/95 backdrop-blur-md border-t border-emerald-500/20 px-4 py-3 flex flex-col gap-2 z-20 transition-all duration-300 transform translate-y-full opacity-0 hidden">
+      <!-- Audio Element -->
+      <audio id="main-audio-element" preload="metadata"></audio>
+      
+      <!-- Player Upper Panel: Title & Control -->
+      <div class="flex items-center justify-between gap-3">
+        <div class="flex items-center gap-2.5 min-w-0">
+          <div class="w-9 h-9 rounded-lg bg-emerald-500/10 text-emerald-400 flex items-center justify-center shrink-0">
+            <i data-lucide="music" class="w-5 h-5"></i>
+          </div>
+          <div class="min-w-0">
+            <h5 id="player-track-title" class="text-xs font-bold text-slate-200 truncate">재생 중인 음원이 없습니다</h5>
+            <p id="player-track-speaker" class="text-[10px] text-slate-400 truncate">-</p>
+          </div>
+        </div>
+        
+        <div class="flex items-center gap-2 shrink-0">
+          <button id="player-play-btn" onclick="toggleAudioPlay()" class="w-8 h-8 rounded-full bg-emerald-500 hover:bg-emerald-600 text-white flex items-center justify-center transition">
+            <i id="player-play-icon" data-lucide="play" class="w-4 h-4 fill-current"></i>
+          </button>
+          <button onclick="closeAudioPlayer()" class="p-1.5 rounded-full hover:bg-white/5 text-slate-400 hover:text-white transition">
+            <i data-lucide="x" class="w-4 h-4"></i>
+          </button>
+        </div>
+      </div>
+      
+      <!-- Player Lower Panel: Progress Slider & Time -->
+      <div class="flex items-center gap-3 text-[10px] font-outfit text-slate-400">
+        <span id="player-current-time">00:00</span>
+        <div class="flex-1 relative flex items-center group cursor-pointer">
+          <input type="range" id="player-progress" min="0" max="100" value="0" oninput="seekAudio()" class="w-full h-1 bg-slate-750 rounded-lg appearance-none cursor-pointer accent-emerald-500 focus:outline-none">
+        </div>
+        <span id="player-duration">00:00</span>
+      </div>
+    </div>
+
+    <!-- Bottom Navigation Bar -->
+    <nav class="absolute bottom-0 inset-x-0 bg-slate-900/90 backdrop-blur-lg border-t border-white/10 py-2.5 px-3 flex justify-around items-center z-20">
+      <button onclick="switchTab('home')" id="nav-home" class="nav-item active flex flex-col items-center gap-1 text-emerald-400 transition-colors">
+        <i data-lucide="home" class="w-5 h-5"></i>
+        <span class="text-[9px] font-bold">홈</span>
+      </button>
+      <button onclick="switchTab('audio')" id="nav-audio" class="nav-item flex flex-col items-center gap-1 text-slate-400 hover:text-slate-200 transition-colors">
+        <i data-lucide="music-4" class="w-5 h-5"></i>
+        <span class="text-[9px] font-bold">음원공유</span>
+      </button>
+      <button onclick="switchTab('product')" id="nav-product" class="nav-item flex flex-col items-center gap-1 text-slate-400 hover:text-slate-200 transition-colors">
+        <i data-lucide="image" class="w-5 h-5"></i>
+        <span class="text-[9px] font-bold">홍보자료</span>
+      </button>
+      <button onclick="switchTab('schedule')" id="nav-schedule" class="nav-item flex flex-col items-center gap-1 text-slate-400 hover:text-slate-200 transition-colors">
+        <i data-lucide="calendar-days" class="w-5 h-5"></i>
+        <span class="text-[9px] font-bold">스케줄</span>
+      </button>
+      <button onclick="switchTab('cooking')" id="nav-cooking" class="nav-item flex flex-col items-center gap-1 text-slate-400 hover:text-slate-200 transition-colors">
+        <i data-lucide="utensils-crosskey" class="w-5 h-5"></i>
+        <span class="text-[9px] font-bold">레시피</span>
+      </button>
+    </nav>
+
+    <!-- LOGIN / REGISTER SCREEN (Cover Overlay) -->
+    <div id="login-screen" class="absolute inset-0 bg-[#0b0f19] flex flex-col justify-between p-6 z-50 animate-fade-in">
+      <div class="my-auto space-y-6">
+        <!-- Logo -->
+        <div class="text-center space-y-2">
+          <div class="w-12 h-12 rounded-xl bg-gradient-to-tr from-amway-500 to-emerald-400 flex items-center justify-center mx-auto shadow-lg shadow-emerald-500/20">
+            <i data-lucide="compass" class="w-6 h-6 text-white animate-spin-slow"></i>
+          </div>
+          <div>
+            <h2 class="text-lg font-bold text-white tracking-wide">ABO PARTNER</h2>
+            <p class="text-[10px] text-amway-400 font-bold tracking-widest font-outfit">TEAM COMMUNITY</p>
+          </div>
+        </div>
+
+        <!-- Mode Toggle Tabs -->
+        <div class="bg-slate-900 p-1 rounded-2xl flex border border-white/5">
+          <button onclick="toggleLoginMode('login')" id="btn-mode-login" class="flex-1 py-2 text-xs font-bold rounded-xl bg-emerald-500 text-white transition-all">로그인</button>
+          <button onclick="toggleLoginMode('register')" id="btn-mode-register" class="flex-1 py-2 text-xs font-bold rounded-xl text-slate-400 transition-all">회원가입</button>
+        </div>
+
+        <!-- Forms Container -->
+        <div class="space-y-4">
+          <!-- Common Name Field (Visible on Register Only) -->
+          <div id="form-group-name" class="hidden space-y-1">
+            <label class="text-[10px] text-slate-400 font-bold">이름</label>
+            <div class="relative">
+              <span class="absolute inset-y-0 left-0 pl-3 flex items-center text-slate-500"><i data-lucide="user" class="w-4 h-4"></i></span>
+              <input type="text" id="auth-name" placeholder="홍길동" class="w-full pl-9 pr-4 py-2.5 bg-slate-900 border border-white/10 rounded-xl text-xs text-white focus:outline-none focus:border-emerald-500 placeholder-slate-600">
+            </div>
+          </div>
+
+          <!-- Email Field -->
+          <div class="space-y-1">
+            <label class="text-[10px] text-slate-400 font-bold">이메일 주소</label>
+            <div class="relative">
+              <span class="absolute inset-y-0 left-0 pl-3 flex items-center text-slate-500"><i data-lucide="mail" class="w-4 h-4"></i></span>
+              <input type="email" id="auth-email" placeholder="example@abo.com" class="w-full pl-9 pr-4 py-2.5 bg-slate-900 border border-white/10 rounded-xl text-xs text-white focus:outline-none focus:border-emerald-500 placeholder-slate-600">
+            </div>
+          </div>
+
+          <!-- Password Field -->
+          <div class="space-y-1">
+            <label class="text-[10px] text-slate-400 font-bold">비밀번호</label>
+            <div class="relative">
+              <span class="absolute inset-y-0 left-0 pl-3 flex items-center text-slate-500"><i data-lucide="lock" class="w-4 h-4"></i></span>
+              <input type="password" id="auth-password" placeholder="••••••••" class="w-full pl-9 pr-4 py-2.5 bg-slate-900 border border-white/10 rounded-xl text-xs text-white focus:outline-none focus:border-emerald-500 placeholder-slate-600">
+            </div>
+          </div>
+
+          <!-- Team Invite Code Field (Register Only) -->
+          <div id="form-group-invite" class="hidden space-y-1">
+            <div class="flex justify-between items-center">
+              <label class="text-[10px] text-amber-400 font-bold flex items-center gap-1">
+                <i data-lucide="key" class="w-3 h-3"></i> 팀 비밀 초대 코드 (선택)
+              </label>
+              <span class="text-[8px] text-slate-500">입력 시 즉시 자동 승인</span>
+            </div>
+            <div class="relative">
+              <span class="absolute inset-y-0 left-0 pl-3 flex items-center text-amber-500"><i data-lucide="shield-check" class="w-4 h-4"></i></span>
+              <input type="text" id="auth-invite-code" placeholder="예: DIAMOND2026" class="w-full pl-9 pr-4 py-2.5 bg-slate-900 border border-amber-500/30 rounded-xl text-xs text-amber-200 focus:outline-none focus:border-amber-400 uppercase placeholder-slate-600">
+            </div>
+            <p class="text-[8px] text-slate-500 pl-1">초대 코드가 없으면 가입 후 2인 총괄 관리자의 승인을 기다려야 합니다.</p>
+          </div>
+
+          <!-- Login Submit Button -->
+          <button onclick="handleAuthAction()" id="btn-auth-submit" class="w-full py-3 bg-emerald-500 hover:bg-emerald-600 text-white font-bold text-xs rounded-xl shadow-lg transition">로그인하기</button>
+        </div>
+
+        <!-- Social Mocks -->
+        <div class="space-y-3">
+          <div class="flex items-center gap-2 text-slate-600 text-[10px] font-bold">
+            <div class="h-[1px] bg-slate-800 flex-1"></div>
+            <span>또는 간편 로그인</span>
+            <div class="h-[1px] bg-slate-800 flex-1"></div>
+          </div>
+          <div class="grid grid-cols-2 gap-2">
+            <button onclick="handleSocialMock('카카오톡')" class="py-2.5 bg-[#FEE500] hover:bg-[#FDD835] text-[#3c1e1e] font-bold text-[10px] rounded-xl flex items-center justify-center gap-1.5 transition">
+              <i data-lucide="message-circle" class="w-3.5 h-3.5 fill-current"></i> 카카오 로그인
+            </button>
+            <button onclick="handleSocialMock('구글')" class="py-2.5 bg-white hover:bg-slate-100 text-slate-800 border border-slate-200 font-bold text-[10px] rounded-xl flex items-center justify-center gap-1.5 transition">
+              <i data-lucide="chrome" class="w-3.5 h-3.5 text-red-500"></i> 구글 로그인
+            </button>
+          </div>
+        </div>
+
+        <!-- PWA Quick Install Banner -->
+        <div class="pt-1">
+          <button onclick="triggerPWAInstall()" class="w-full py-2.5 rounded-xl bg-gradient-to-r from-emerald-600/30 to-teal-600/30 hover:from-emerald-600/40 hover:to-teal-600/40 border border-emerald-500/40 text-emerald-300 font-bold text-[11px] transition flex items-center justify-center gap-2 shadow-lg">
+            <i data-lucide="smartphone" class="w-4 h-4 text-emerald-400"></i> 스마트폰 홈화면에 앱 설치하기
+          </button>
+          <p class="text-[9px] text-slate-500 text-center mt-1">스토어 다운로드 없이 즉시 스마트폰 전용 앱으로 설치됩니다.</p>
+        </div>
+      </div>
+
+      <!-- Test Tip Panel -->
+      <div class="p-3 bg-slate-900 border border-white/5 rounded-2xl">
+        <h5 class="text-[10px] font-bold text-emerald-400 flex items-center gap-1"><i data-lucide="info" class="w-3 h-3"></i> 테스트 계정 안내</h5>
+        <div class="grid grid-cols-3 gap-2 mt-1 text-[8px] text-slate-400">
+          <div>
+            <p class="font-bold text-purple-400">👑 총괄 마스터 1 (나)</p>
+            <p class="mt-0.5">ID: admin@abo.com</p>
+            <p>PW: admin</p>
+          </div>
+          <div>
+            <p class="font-bold text-purple-400">👑 총괄 마스터 2 (파트너)</p>
+            <p class="mt-0.5">ID: master2@abo.com</p>
+            <p>PW: manager</p>
+          </div>
+          <div>
+            <p class="font-bold text-emerald-400">👤 일반 파트너</p>
+            <p class="mt-0.5">ID: user@abo.com</p>
+            <p>PW: user</p>
+          </div>
+        </div>
+        <div class="mt-2 pt-2 border-t border-white/5 flex justify-between items-center text-[8px]">
+          <span class="text-amber-400 font-bold">🔑 현재 팀 비밀 초대 코드:</span>
+          <span class="bg-amber-500/20 text-amber-300 font-mono font-bold px-2 py-0.5 rounded border border-amber-500/30">DIAMOND2026</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- 👑 ADMIN PARTNER MANAGEMENT PANEL (Cover Overlay) -->
+    <div id="admin-panel" class="absolute inset-0 bg-[#0b0f19] flex flex-col z-40 hidden">
+      <!-- Admin Header -->
+      <header class="bg-slate-900/60 backdrop-blur-md border-b border-white/5 py-4 px-5 flex justify-between items-center shrink-0">
+        <div class="flex items-center gap-2">
+          <div class="w-8 h-8 rounded-lg bg-amber-500/10 text-amber-500 flex items-center justify-center">
+            <i data-lucide="crown" class="w-4.5 h-4.5"></i>
+          </div>
+          <div>
+            <h3 class="text-sm font-bold text-white tracking-wide">👑 파트너 권한 관리</h3>
+            <p class="text-[9px] text-amber-400 font-medium tracking-wider">ADMIN PANEL</p>
+          </div>
+        </div>
+        <button onclick="closeAdminPanel()" class="p-2 rounded-full hover:bg-white/5 text-slate-400 hover:text-white transition">
+          <i data-lucide="x" class="w-5 h-5"></i>
+        </button>
+      </header>
+
+      <!-- Scrollable Admin Content -->
+      <div class="flex-1 overflow-y-auto p-4 space-y-4">
+        <!-- 2인 총괄 마스터 안내 카드 -->
+        <div class="bg-gradient-to-r from-purple-950/40 to-slate-900 border border-purple-500/20 p-3.5 rounded-2xl flex items-center justify-between">
+          <div class="space-y-0.5">
+            <div class="flex items-center gap-1.5">
+              <span class="text-[9px] px-2 py-0.5 rounded bg-purple-500/20 text-purple-300 font-bold">2인 총괄 체계</span>
+              <h4 class="text-xs font-bold text-white">공동 최고 관리자 운영 모드</h4>
+            </div>
+            <p class="text-[9px] text-slate-400">나 & 구글 드라이브 관리자 2인이 파트너 승인 및 권한을 총괄합니다.</p>
+          </div>
+          <div class="w-8 h-8 rounded-full bg-purple-500/20 text-purple-300 flex items-center justify-center shrink-0">
+            <i data-lucide="shield-alert" class="w-4 h-4"></i>
+          </div>
+        </div>
+
+        <!-- 팀 초대 코드 관리 카드 -->
+        <div class="bg-slate-900 border border-amber-500/30 p-3.5 rounded-2xl space-y-2">
+          <div class="flex justify-between items-center">
+            <span class="text-[10px] font-bold text-amber-400 flex items-center gap-1">
+              <i data-lucide="key" class="w-3.5 h-3.5"></i> 팀 비밀 초대 코드 관리
+            </span>
+            <button onclick="changeTeamInviteCode()" class="text-[9px] text-slate-400 hover:text-amber-300 font-bold">코드 변경</button>
+          </div>
+          <div class="flex items-center gap-2">
+            <div class="flex-1 bg-black/40 border border-white/5 py-2 px-3 rounded-xl flex items-center justify-between">
+              <span id="current-invite-code-display" class="font-mono font-bold text-amber-300 text-sm tracking-wider">DIAMOND2026</span>
+              <span class="text-[8px] text-slate-500">입력자 즉시 승인</span>
+            </div>
+            <button onclick="copyInviteCode()" class="px-3 py-2 bg-amber-500 hover:bg-amber-600 text-slate-950 font-bold text-xs rounded-xl flex items-center gap-1 transition">
+              <i data-lucide="copy" class="w-3.5 h-3.5"></i> 복사
+            </button>
+          </div>
+        </div>
+
+        <!-- Summary widgets -->
+        <div class="grid grid-cols-4 gap-1.5 text-center">
+          <div class="bg-slate-900 border border-white/5 p-2 rounded-xl">
+            <p class="text-[7px] text-slate-400 font-bold">전체</p>
+            <p id="admin-stat-total" class="text-xs font-bold text-white mt-0.5">6명</p>
+          </div>
+          <div class="bg-slate-900 border border-amber-500/20 p-2 rounded-xl">
+            <p class="text-[7px] text-amber-400 font-bold">승인 대기</p>
+            <p id="admin-stat-pending" class="text-xs font-bold text-amber-400 mt-0.5">1명</p>
+          </div>
+          <div class="bg-slate-900 border border-white/5 p-2 rounded-xl">
+            <p class="text-[7px] text-emerald-400 font-bold">정회원</p>
+            <p id="admin-stat-users" class="text-xs font-bold text-emerald-400 mt-0.5">3명</p>
+          </div>
+          <div class="bg-slate-900 border border-white/5 p-2 rounded-xl">
+            <p class="text-[7px] text-purple-400 font-bold">마스터</p>
+            <p id="admin-stat-admins" class="text-xs font-bold text-purple-400 mt-0.5">2명</p>
+          </div>
+        </div>
+
+        <!-- Admin Tab Switch (승인 대기 vs 파트너 목록) -->
+        <div class="flex bg-slate-900 p-1 rounded-xl border border-white/5">
+          <button onclick="switchAdminTab('partners')" id="btn-admin-tab-partners" class="flex-1 py-1.5 text-[11px] font-bold rounded-lg bg-emerald-500 text-white transition">
+            정회원 목록
+          </button>
+          <button onclick="switchAdminTab('pending')" id="btn-admin-tab-pending" class="flex-1 py-1.5 text-[11px] font-bold rounded-lg text-slate-400 hover:text-white transition flex items-center justify-center gap-1">
+            승인 대기 <span id="badge-pending-count" class="px-1.5 py-0.2 rounded-full bg-amber-500 text-slate-950 text-[9px] font-bold">1</span>
+          </button>
+        </div>
+
+        <!-- Search Bar -->
+        <div class="relative">
+          <span class="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none text-slate-500">
+            <i data-lucide="search" class="w-4 h-4"></i>
+          </span>
+          <input type="text" id="admin-search-input" oninput="renderAdminPartnersList()" placeholder="파트너 이름 또는 이메일 검색..." class="w-full pl-10 pr-4 py-2 bg-slate-900 border border-white/10 rounded-xl text-xs text-white focus:outline-none focus:border-emerald-500 placeholder-slate-600">
+        </div>
+
+        <!-- Partners list container -->
+        <div id="admin-partners-list" class="space-y-2">
+          <!-- Dynamic partner list items go here -->
+        </div>
+      </div>
+    </div>
+
+    <!-- ADMIN CONFIRM KICK OUT DIALOG (Custom Modal) -->
+    <div id="admin-confirm-modal" class="fixed inset-0 bg-black/80 backdrop-blur-sm z-[60] flex items-center justify-center p-4 hidden">
+      <div class="bg-slate-900 border border-white/10 rounded-3xl max-w-xs w-full p-5 text-center shadow-2xl space-y-4 animate-fade-in">
+        <div class="w-12 h-12 rounded-full bg-red-500/10 text-red-500 flex items-center justify-center mx-auto">
+          <i data-lucide="user-minus" class="w-6 h-6"></i>
+        </div>
+        <div>
+          <h3 class="text-sm font-bold text-white">파트너 강제 탈퇴 처리</h3>
+          <p class="text-xs text-slate-400 mt-2 leading-relaxed">
+            정말로 <span id="confirm-kick-name" class="font-bold text-white">이파트너</span> 님을 탈퇴 처리하시겠습니까? 탈퇴 승인 시 멤버 그룹에서 제외됩니다.
+          </p>
+        </div>
+        <div class="flex gap-2">
+          <button onclick="closeAdminConfirmModal()" class="flex-1 py-2 bg-slate-800 hover:bg-slate-700 text-slate-300 text-xs font-bold rounded-xl transition">취소</button>
+          <button onclick="confirmKickOutAction()" class="flex-1 py-2 bg-red-600 hover:bg-red-500 text-white text-xs font-bold rounded-xl transition">탈퇴 처리</button>
+        </div>
+      </div>
+    </div>
+
+  <!-- LIGHTBOX / FULLSCREEN IMAGE MODAL -->
+  <div id="lightbox" class="fixed inset-0 bg-black/90 backdrop-blur-sm z-50 hidden flex-col justify-center items-center p-4">
+    <button onclick="closeLightbox()" class="absolute top-6 right-6 p-2 rounded-full bg-white/10 text-white hover:bg-white/20 transition">
+      <i data-lucide="x" class="w-6 h-6"></i>
+    </button>
+    <div class="max-w-md w-full flex flex-col items-center">
+      <img id="lightbox-img" src="" alt="Full Poster" class="max-h-[70vh] w-auto rounded-2xl object-contain shadow-2xl">
+      <h3 id="lightbox-title" class="text-white text-lg font-bold mt-4"></h3>
+      <div class="flex gap-4 mt-6">
+        <button onclick="triggerDownloadMock('poster.png')" class="px-5 py-2.5 bg-emerald-500 hover:bg-emerald-600 text-white text-xs font-bold rounded-full flex items-center gap-2 transition">
+          <i data-lucide="download" class="w-4 h-4"></i> 이미지 저장하기
+        </button>
+        <button onclick="copyToClipboard(document.getElementById('lightbox-img').src)" class="px-5 py-2.5 bg-slate-800 hover:bg-slate-700 text-slate-300 text-xs font-bold rounded-full flex items-center gap-2 transition">
+          <i data-lucide="share-2" class="w-4 h-4"></i> 링크 복사
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- RECIPE DETAIL MODAL -->
+  <div id="recipe-modal" class="fixed inset-0 bg-black/80 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4">
+    <div class="bg-slate-900 border border-white/10 rounded-3xl max-w-sm w-full max-h-[85vh] overflow-y-auto shadow-2xl">
+      <div class="relative h-48 w-full">
+        <img id="recipe-modal-image" src="" class="w-full h-full object-cover">
+        <div class="absolute inset-0 bg-gradient-to-t from-slate-900 to-transparent"></div>
+        <button onclick="closeRecipeModal()" class="absolute top-4 right-4 p-2 rounded-full bg-slate-950/70 text-white hover:bg-slate-900 transition">
+          <i data-lucide="x" class="w-4 h-4"></i>
+        </button>
+        <div class="absolute bottom-4 left-5 right-5">
+          <span id="recipe-modal-category" class="text-[9px] font-bold text-emerald-400 uppercase tracking-widest font-outfit">Category</span>
+          <h3 id="recipe-modal-title" class="text-lg font-bold text-white mt-1">요리 이름</h3>
+        </div>
+      </div>
+      
+      <div class="p-5 space-y-4">
+        <!-- Ingredients Section -->
+        <div>
+          <h4 class="text-xs font-bold text-slate-300 flex items-center gap-1.5 mb-2.5">
+            <i data-lucide="shopping-basket" class="w-4 h-4 text-emerald-400"></i>
+            필수 준비 재료 (체크하며 확인하세요)
+          </h4>
+          <div id="recipe-modal-ingredients" class="grid grid-cols-2 gap-2 text-[11px] text-slate-400">
+            <!-- Dynamic Ingredients List with checkboxes -->
+          </div>
+        </div>
+
+        <!-- Cooking Steps -->
+        <div>
+          <h4 class="text-xs font-bold text-slate-300 flex items-center gap-1.5 mb-2.5">
+            <i data-lucide="list-ordered" class="w-4 h-4 text-emerald-400"></i>
+            퀸 냄비 조리 순서
+          </h4>
+          <div id="recipe-modal-steps" class="space-y-3 text-[11px] text-slate-300">
+            <!-- Dynamic steps -->
+          </div>
+        </div>
+
+        <!-- Chef's Tip -->
+        <div class="p-3.5 bg-emerald-950/20 border border-emerald-500/20 rounded-2xl">
+          <h5 class="text-xs font-bold text-emerald-400 flex items-center gap-1 mb-1">
+            <i data-lucide="sparkles" class="w-3.5 h-3.5"></i>
+            암웨이 퀸(Queen) 핵심 비법
+          </h5>
+          <p id="recipe-modal-tip" class="text-[10px] text-slate-300 leading-relaxed"></p>
+        </div>
+        
+        <!-- Button actions -->
+        <div class="flex gap-3 pt-2">
+          <button onclick="copyToClipboard('퀸 레시피 링크가 복사되었습니다.')" class="flex-1 py-2.5 bg-slate-800 hover:bg-slate-700 text-slate-300 text-xs font-bold rounded-xl flex items-center justify-center gap-1.5 transition">
+            <i data-lucide="share-2" class="w-3.5 h-3.5"></i> 카카오톡/링크 공유
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- NOTIFICATION SIMULATOR MODAL -->
+  <div id="noti-modal" class="fixed inset-0 bg-black/75 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4">
+    <div class="bg-slate-900 border border-white/10 rounded-3xl max-w-xs w-full p-5 text-center shadow-xl space-y-4">
+      <div class="w-12 h-12 rounded-full bg-emerald-500/10 text-emerald-400 flex items-center justify-center mx-auto">
+        <i data-lucide="bell" class="w-6 h-6"></i>
+      </div>
+      <div>
+        <h3 class="text-sm font-bold text-white">팀 알림 소식 받기</h3>
+        <p class="text-xs text-slate-400 mt-2 leading-relaxed">
+          브라우저 알림 권한을 승인하시면 비즈니스 미팅, 신제품 및 쿠킹 레시피 행사 전날 푸시 알림을 즉시 받아보실 수 있습니다.
+        </p>
+      </div>
+      <div class="flex gap-2">
+        <button onclick="closeNotificationModal()" class="flex-1 py-2 bg-slate-800 hover:bg-slate-700 text-slate-300 text-xs font-bold rounded-xl transition">나중에</button>
+        <button onclick="requestPushNotificationPermission()" class="flex-1 py-2 bg-emerald-500 hover:bg-emerald-600 text-white text-xs font-bold rounded-xl transition">알림 설정</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- TOAST FEEDBACK PANEL -->
+  <div id="toast" class="fixed bottom-6 right-6 px-4 py-3 rounded-2xl bg-slate-900 border border-emerald-500/30 shadow-2xl flex items-center gap-2.5 transform translate-y-20 opacity-0 transition duration-300 z-50 pointer-events-none">
+    <div class="p-1 rounded-lg bg-emerald-500/20 text-emerald-400">
+      <i data-lucide="check" class="w-4 h-4"></i>
+    </div>
+    <span id="toast-message" class="text-xs font-bold text-slate-200">클립보드에 복사되었습니다.</span>
+  </div>
+
+  <!-- MOCK PLAYER OR ACTION MODAL -->
+  <div id="youtube-modal" class="fixed inset-0 bg-black/80 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4">
+    <div class="bg-slate-900 border border-white/10 rounded-3xl max-w-sm w-full p-5 text-center shadow-xl space-y-4">
+      <div class="w-12 h-12 rounded-full bg-red-500/10 text-red-500 flex items-center justify-center mx-auto">
+        <i data-lucide="youtube" class="w-6 h-6"></i>
+      </div>
+      <div>
+        <h3 class="text-sm font-bold text-white">유튜브 앱/브라우저로 이동</h3>
+        <p class="text-xs text-slate-400 mt-2 leading-relaxed">
+          외부 유튜브 링크로 즉시 연결됩니다.<br>
+          <span class="text-emerald-400" id="youtube-mock-url"></span>
+        </p>
+      </div>
+      <div class="flex gap-2">
+        <button onclick="closeYoutubeModal()" class="flex-1 py-2 bg-slate-800 hover:bg-slate-700 text-slate-300 text-xs font-bold rounded-xl transition">취소</button>
+        <a id="youtube-direct-link" href="#" target="_blank" onclick="closeYoutubeModal()" class="flex-1 py-2 bg-red-600 hover:bg-red-500 text-white text-xs font-bold rounded-xl transition inline-block">이동하기</a>
+      </div>
+    </div>
+  </div>
+
+  <!-- Custom Scripts for Interactions -->
+  <script>
+    // Lucide Icons 초기화
+    lucide.createIcons();
+
+    // 탭 스위칭 로직
+    function switchTab(tabName) {
+      // 1. 모든 탭 컨텐츠 비활성화
+      const tabs = document.querySelectorAll('.tab-content');
+      tabs.forEach(tab => {
+        tab.classList.remove('active');
+      });
+
+      // 2. 모든 네비게이션 버튼 비활성화
+      const navItems = document.querySelectorAll('.nav-item');
+      navItems.forEach(item => {
+        item.classList.remove('text-emerald-400');
+        item.classList.add('text-slate-400');
+        item.classList.remove('active');
+      });
+
+      // 3. 선택한 탭 활성화
+      const activeTab = document.getElementById(`tab-${tabName}`);
+      if(activeTab) {
+        activeTab.classList.add('active');
+      }
+
+      // 4. 선택한 네비게이션 버튼 활성화
+      const activeNav = document.getElementById(`nav-${tabName}`);
+      if(activeNav) {
+        activeNav.classList.remove('text-slate-400');
+        activeNav.classList.add('text-emerald-400');
+        activeNav.classList.add('active');
+      }
+
+      // 스크롤 상단으로 이동
+      document.querySelector('main').scrollTop = 0;
+
+      // 음원 탭에 진입하면 카테고리 목록 화면을 디폴트로 노출
+      if (tabName === 'audio') {
+        goBackToAudioCategories();
+      }
+    }
+
+    // 5줄 요약 아코디언 토글
+    function toggleSummaryCard(summaryId) {
+      const summaryDiv = document.getElementById(summaryId);
+      if(summaryDiv.classList.contains('hidden')) {
+        summaryDiv.classList.remove('hidden');
+        summaryDiv.classList.add('block');
+      } else {
+        summaryDiv.classList.remove('block');
+        summaryDiv.classList.add('hidden');
+      }
+    }
+
+    // 클립보드 복사 & 토스트 피드백
+    function copyToClipboard(text) {
+      navigator.clipboard.writeText(text).then(() => {
+        showToast("공유용 단축 링크가 복사되었습니다!");
+      }).catch(err => {
+        // Fallback
+        showToast("링크가 복사되었습니다!");
+      });
+    }
+
+    // 카카오톡 공유 (Web Share API 및 클립보드 폴백 지원)
+    function shareKakao(title, speaker, url) {
+      const shareText = `[ABO Partner Audio Hub]\n🍀 ${title}\n- 강사: ${speaker}\n- 추천 대상: 동기부여가 필요한 신규 파트너 및 비즈니스 검토자\n\n지금 청취해 보세요:\n${url}`;
+      
+      if (navigator.share) {
+        navigator.share({
+          title: title,
+          text: shareText,
+          url: url
+        }).then(() => {
+          showToast("공유가 완료되었습니다!");
+        }).catch(() => {
+          // Fallback on cancel or error
+          navigator.clipboard.writeText(shareText).then(() => {
+            showToast("카카오톡 공유 내용이 복사되었습니다!");
+          });
+        });
+      } else {
+        navigator.clipboard.writeText(shareText).then(() => {
+          showToast("카카오톡 공유 내용이 복사되었습니다!");
+        }).catch(() => {
+          showToast("링크가 복사되었습니다!");
+        });
+      }
+    }
+
+    function showToast(message) {
+      const toast = document.getElementById('toast');
+      const toastMsg = document.getElementById('toast-message');
+      toastMsg.innerText = message;
+      
+      toast.classList.remove('translate-y-20', 'opacity-0');
+      toast.classList.add('translate-y-0', 'opacity-100');
+
+      setTimeout(() => {
+        toast.classList.remove('translate-y-0', 'opacity-100');
+        toast.classList.add('translate-y-20', 'opacity-0');
+      }, 2500);
+    }
+
+    // 제품 탭 필터링
+    function filterProductBrand(brand) {
+      // 필터 버튼 스타일 전환
+      const buttons = document.querySelectorAll('.brand-btn');
+      buttons.forEach(btn => {
+        if(btn.innerText.includes(brand === 'all' ? '전체' : brand === 'nutrilite' ? '뉴트리라이트' : brand === 'artistry' ? '아티스트리' : '홈/퍼스널')) {
+          btn.classList.add('bg-emerald-500', 'text-white');
+          btn.classList.remove('bg-slate-800', 'text-slate-300');
+        } else {
+          btn.classList.remove('bg-emerald-500', 'text-white');
+          btn.classList.add('bg-slate-800', 'text-slate-300');
+        }
+      });
+
+      // 카드 노출 토글
+      const cards = document.querySelectorAll('#product-grid > div');
+      cards.forEach(card => {
+        if (brand === 'all' || card.getAttribute('data-brand') === brand) {
+          card.style.display = 'flex';
+        } else {
+          card.style.display = 'none';
+        }
+      });
+    }
+
+    let selectedAudioCategory = 'all';
+
+    function selectAudioFolder(category, categoryName) {
+      selectedAudioCategory = category;
+      
+      // Update selected category header text
+      document.getElementById('selected-category-title').innerText = categoryName;
+      
+      // Reset search input
+      document.getElementById('audio-search').value = '';
+      
+      // Apply filters
+      applyAudioFilters(category);
+      
+      // Hide Grid View, Show Detail View
+      document.getElementById('audio-category-grid-view').classList.add('hidden');
+      document.getElementById('audio-category-detail-view').classList.remove('hidden');
+      
+      // Scroll to top of list container
+      document.querySelector('main').scrollTop = 0;
+    }
+
+    function goBackToAudioCategories() {
+      selectedAudioCategory = 'all';
+      
+      // Hide Detail View, Show Grid View
+      document.getElementById('audio-category-detail-view').classList.add('hidden');
+      document.getElementById('audio-category-grid-view').classList.remove('hidden');
+      
+      // Scroll to top
+      document.querySelector('main').scrollTop = 0;
+    }
+
+    function filterAudioList() {
+      applyAudioFilters(selectedAudioCategory);
+    }
+
+    function applyAudioFilters(category) {
+      const searchVal = document.getElementById('audio-search').value.toLowerCase();
+      const items = document.querySelectorAll('.audio-item');
+      let visibleCount = 0;
+
+      items.forEach(item => {
+        const itemCategory = item.getAttribute('data-category');
+        const title = item.getAttribute('data-title').toLowerCase();
+        const speaker = item.getAttribute('data-speaker').toLowerCase();
+
+        const matchCategory = (category === 'all' || itemCategory === category);
+        const matchSearch = (title.includes(searchVal) || speaker.includes(searchVal));
+
+        if(matchCategory && matchSearch) {
+          item.style.display = 'block';
+          visibleCount++;
+        } else {
+          item.style.display = 'none';
+        }
+      });
+
+      // No results fallback handling
+      let fallbackDiv = document.getElementById('audio-empty-fallback');
+      if (visibleCount === 0) {
+        if (!fallbackDiv) {
+          const listContainer = document.getElementById('audio-list-container');
+          fallbackDiv = document.createElement('div');
+          fallbackDiv.id = 'audio-empty-fallback';
+          fallbackDiv.className = 'glass-card rounded-2xl p-8 text-center text-xs text-slate-400 flex flex-col items-center justify-center gap-2 animate-fade-in';
+          fallbackDiv.innerHTML = `
+            <i data-lucide="folder-open" class="w-8 h-8 text-slate-500 mb-1"></i>
+            <p class="font-bold text-slate-300">등록된 음원이 없습니다</p>
+            <p class="text-[10px]">새로운 교육 자료가 곧 업데이트될 예정입니다.</p>
+          `;
+          listContainer.appendChild(fallbackDiv);
+          lucide.createIcons();
+        } else {
+          fallbackDiv.classList.remove('hidden');
+          fallbackDiv.classList.add('flex');
+        }
+      } else {
+        if (fallbackDiv) {
+          fallbackDiv.classList.add('hidden');
+          fallbackDiv.classList.remove('flex');
+        }
+      }
+    }
+
+    // 유튜브 목업 오픈
+    function openYoutubeMock(url) {
+      document.getElementById('youtube-mock-url').innerText = url;
+      document.getElementById('youtube-direct-link').href = url;
+      document.getElementById('youtube-modal').classList.remove('hidden');
+    }
+    function closeYoutubeModal() {
+      document.getElementById('youtube-modal').classList.add('hidden');
+    }
+
+    // 이미지 라이트박스 오픈
+    function openLightbox(title, imgUrl) {
+      document.getElementById('lightbox-title').innerText = title;
+      document.getElementById('lightbox-img').src = imgUrl;
+      document.getElementById('lightbox').classList.remove('hidden');
+      document.getElementById('lightbox').classList.add('flex');
+    }
+
+    function closeLightbox() {
+      document.getElementById('lightbox').classList.remove('flex');
+      document.getElementById('lightbox').classList.add('hidden');
+    }
+
+    // 제품 이미지 다운로드 시뮬레이션
+    function triggerDownloadMock(fileName) {
+      showToast(`${fileName} 파일이 성공적으로 다운로드되었습니다.`);
+    }
+
+    // 쿠킹 탭 필터링
+    function filterRecipeCategory(category) {
+      const buttons = document.querySelectorAll('.recipe-btn');
+      buttons.forEach(btn => {
+        if(btn.innerText.includes(category === 'all' ? '전체' : category === 'main_dish' ? '메인요리' : category === 'baking' ? '베이킹' : '건강/간편')) {
+          btn.classList.add('bg-emerald-500', 'text-white');
+          btn.classList.remove('bg-slate-800', 'text-slate-300');
+        } else {
+          btn.classList.remove('bg-emerald-500', 'text-white');
+          btn.classList.add('bg-slate-800', 'text-slate-300');
+        }
+      });
+
+      applyRecipeFilters(category);
+    }
+
+    let activeRecipeCategory = 'all';
+
+    function filterRecipeList() {
+      applyRecipeFilters(activeRecipeCategory);
+    }
+
+    function applyRecipeFilters(category) {
+      activeRecipeCategory = category;
+      const searchVal = document.getElementById('recipe-search').value.toLowerCase();
+      const items = document.querySelectorAll('.recipe-card-item');
+
+      items.forEach(item => {
+        const itemCategory = item.getAttribute('data-category');
+        const title = item.getAttribute('data-title').toLowerCase();
+        const ingredients = item.getAttribute('data-ingredients').toLowerCase();
+
+        const matchCategory = (category === 'all' || itemCategory === category);
+        const matchSearch = (title.includes(searchVal) || ingredients.includes(searchVal));
+
+        if(matchCategory && matchSearch) {
+          item.style.display = 'flex';
+        } else {
+          item.style.display = 'none';
+        }
+      });
+    }
+
+    // 레시피 세부 데이터
+    const recipeData = {
+      dak: {
+        title: "무수 퀸 닭볶음탕",
+        category: "Main Dish",
+        image: "https://images.unsplash.com/photo-1598515214211-89d3c73ae83b?q=80&w=500",
+        ingredients: ["토막 닭고기 1마리", "감자 2개", "당근 1개", "양파 1개", "대파 1대", "간장 4T", "고추장 3T", "고춧가루 2T", "올리고당 2T", "다진 마늘 1T"],
+        steps: [
+          "닭고기는 찬물에 깨끗이 씻은 후 끓는 물에 데쳐 불순물을 씻어냅니다.",
+          "퀸 냄비(대형 후라이팬 또는 스튜포트)에 준비한 감자, 당근, 양파와 닭고기를 순서대로 담습니다.",
+          "비법 양념장을 골고루 끼얹은 뒤, 퀸 냄비 뚜껑을 덮습니다.",
+          "암웨이 인덕션 7단에서 끓여 김이 솔솔 나고 뚜껑이 돌며 수분밀봉(수봉) 현상이 나타나면, 화력을 4단으로 줄여 25분간 익힙니다.",
+          "뚜껑을 열고 어슷 썬 대파를 얹은 뒤 잘 섞어 양념이 자작해질 때까지 3분간 더 조려줍니다."
+        ],
+        tip: "암웨이 퀸 냄비는 7중 결합 구조로 정밀 밀착 설계되어 자체 수분으로 조리하는 무수(無水) 요리가 가능합니다. 따로 물을 넣지 않아도 채소 본연의 영양 가치와 맛이 그대로 우러납니다."
+      },
+      chococake: {
+        title: "퀸 초코 브라우니",
+        category: "Baking",
+        image: "https://images.unsplash.com/photo-1606313564200-e75d5e30476c?q=80&w=500",
+        ingredients: ["다크 초콜릿 150g", "버터 80g", "달걀 2개", "설탕 70g", "중력분 60g", "코코아 가루 15g", "호두 또는 초코칩 적당량"],
+        steps: [
+          "다크 초콜릿과 버터는 소형 소스팬에 넣고 중탕으로 부드럽게 녹여 준비합니다.",
+          "볼에 달걀과 설탕을 넣어 거품기로 뽀얗게 섞어 준 후, 녹인 초콜릿과 버터를 함께 섞어줍니다.",
+          "중력분과 코코아 가루를 체 쳐서 넣고 가볍게 섞은 뒤 호두를 추가합니다.",
+          "퀸 대형 프라이팬 바닥에 유심지를 깔고 반죽을 부어 평평하게 만듭니다.",
+          "인덕션 팬 요리 모드 170도에서 25분간 구운 뒤 이쑤시개로 찔러보아 묻어나는 것이 없으면 꺼내어 식힙니다."
+        ],
+        tip: "오븐 없이 암웨이 퀸 프라이팬과 인덕션의 팬 모드를 활용해 구우면 겉은 쫀득하고 속은 촉촉한 리얼 초콜릿 브라우니를 가장 간편하게 즐기실 수 있습니다."
+      },
+      japchae: {
+        title: "원팬 명품 잡채",
+        category: "Main Dish",
+        image: "https://images.unsplash.com/photo-1534422298391-e4f8c172dddb?q=80&w=500",
+        ingredients: ["당면 200g (미리 불린 것)", "소고기 100g", "시금치 1/2단", "당근 1/2개", "양파 1/2개", "표고버섯 3개", "양념 (간장 4T, 설탕 2T, 참기름 2T, 통깨 약간)"],
+        steps: [
+          "당면은 따뜻한 물에 30분 이상 충분히 불려 준비해 둡니다.",
+          "양파, 당근, 버섯은 얇게 채 썰고 소고기는 핏물을 빼 채 썰어둡니다.",
+          "대형 프라이팬 바닥에 고기, 버섯, 양파, 당근을 넓게 깔아줍니다.",
+          "그 위에 불린 당면과 시금치를 얹고, 분량의 잡채 양념 소스를 골고루 뿌려줍니다.",
+          "뚜껑을 덮고 인덕션 7단에서 수봉이 일어날 때까지 가열한 후, 4단으로 줄여 8분간 가열한 뒤 꺼내어 참기름과 깨를 얹어 무칩니다."
+        ],
+        tip: "원팬 잡채는 여러 번 팬을 바꾸며 볶고 데치는 수고로움 없이, 채소의 즙과 최소한의 양념만으로 당면을 삶아 기름기가 적고 건강한 잡채를 한 번에 만들 수 있는 혁신적인 퀸 요리법입니다."
+      },
+      salmon: {
+        title: "연어 레몬 저온찜",
+        category: "Healthy Diet",
+        image: "https://images.unsplash.com/photo-1467003909585-2f8a72700288?q=80&w=500",
+        ingredients: ["연어 스테이크용 2조각", "레몬 1개", "아스파라거스 4개", "방울토마토 5개", "로즈마리 1줄기", "올리브 오일 1T", "허브 솔트 약간"],
+        steps: [
+          "연어는 키친타올로 물기를 제거하고 올리브 오일과 허브 솔트를 골고루 발라 밑간을 합니다.",
+          "레몬은 얇게 슬라이스하고 아스파라거스는 단단한 밑동을 제거합니다.",
+          "퀸 중형 스튜포트 바닥에 슬라이스한 레몬을 깔고 그 위에 밑간한 연어를 얹습니다.",
+          "주변에 아스파라거스와 방울토마토, 로즈마리를 넣은 후 뚜껑을 닫습니다.",
+          "인덕션 5단에서 약 15분간 저온 스팀으로 서서히 가열하여 촉촉하게 쪄냅니다."
+        ],
+        tip: "암웨이 퀸의 저온 무수 조리는 연어의 풍부한 불포화지방산(오메가-3)의 산화를 방지하고, 수분이 빠져나가지 않아 퍽퍽하지 않고 극도로 부드러운 고급 스테이크 식감을 구현합니다."
+      }
+    };
+
+    function openRecipeDetail(recipeKey) {
+      const data = recipeData[recipeKey];
+      if(!data) return;
+
+      document.getElementById('recipe-modal-title').innerText = data.title;
+      document.getElementById('recipe-modal-category').innerText = data.category;
+      document.getElementById('recipe-modal-image').src = data.image;
+      document.getElementById('recipe-modal-tip').innerText = data.tip;
+
+      // 재료 채우기
+      const ingDiv = document.getElementById('recipe-modal-ingredients');
+      ingDiv.innerHTML = '';
+      data.ingredients.forEach((ing, index) => {
+        const item = document.createElement('label');
+        item.className = 'flex items-center gap-2 cursor-pointer hover:text-slate-200 transition';
+        item.innerHTML = `
+          <input type="checkbox" class="rounded border-slate-700 bg-slate-800 text-emerald-500 focus:ring-emerald-500/20 w-3.5 h-3.5">
+          <span>${ing}</span>
+        `;
+        ingDiv.appendChild(item);
+      });
+
+      // 조리순서 채우기
+      const stepsDiv = document.getElementById('recipe-modal-steps');
+      stepsDiv.innerHTML = '';
+      data.steps.forEach((step, index) => {
+        const stepItem = document.createElement('div');
+        stepItem.className = 'flex gap-2.5 items-start';
+        stepItem.innerHTML = `
+          <span class="flex items-center justify-center w-5 h-5 rounded-full bg-emerald-500/10 text-emerald-400 font-bold shrink-0 text-[9px] mt-0.5">${index + 1}</span>
+          <p class="leading-relaxed flex-1">${step}</p>
+        `;
+        stepsDiv.appendChild(stepItem);
+      });
+
+      document.getElementById('recipe-modal').classList.remove('hidden');
+    }
+
+    function closeRecipeModal() {
+      document.getElementById('recipe-modal').classList.add('hidden');
+    }
+
+    // 푸시알림 모달 토글
+    function openNotificationModal() {
+      document.getElementById('noti-modal').classList.remove('hidden');
+    }
+
+    function closeNotificationModal() {
+      document.getElementById('noti-modal').classList.add('hidden');
+    }
+
+    // 브라우저 Push Notification 설정
+    function requestPushNotificationPermission() {
+      closeNotificationModal();
+      
+      if (!('Notification' in window)) {
+        showToast("이 브라우저는 데스크톱 알림을 지원하지 않습니다.");
+        return;
+      }
+
+      Notification.requestPermission().then(permission => {
+        const toggle = document.getElementById('push-toggle');
+        if (permission === 'granted') {
+          if(toggle) toggle.checked = true;
+          showToast("알림 수신 권한이 허용되었습니다!");
+          
+          // 첫 웰컴 알림 발송
+          new Notification("ABO Partner App", {
+            body: "성공적으로 푸시 알림 설정이 완료되었습니다! 미팅 소식을 받아보세요.",
+            icon: "https://images.unsplash.com/photo-1516280440614-37939bbacd6a?q=80&w=64"
+          });
+        } else {
+          if(toggle) toggle.checked = false;
+          showToast("알림 수신 권한이 거부되었습니다.");
+        }
+      });
+    }
+
+    function togglePushPermission() {
+      const toggle = document.getElementById('push-toggle');
+      if (toggle.checked) {
+        requestPushNotificationPermission();
+      } else {
+        showToast("알림 수신 설정이 해제되었습니다.");
+      }
+    }
+
+    // 시뮬레이터 즉시 푸시 테스트
+    function triggerImmediatePush(title, message) {
+      if (Notification.permission === 'granted') {
+        new Notification(title, {
+          body: message,
+          icon: "https://images.unsplash.com/photo-1516280440614-37939bbacd6a?q=80&w=64"
+        });
+        showToast("기기에 푸시 알림이 발송되었습니다!");
+      } else {
+        // 권한이 없으면 설정 유도 모달 오픈
+        openNotificationModal();
+      }
+    }
+
+    // ==========================================
+    // 로그인 / 회원가입 및 역할 기반 권한 관리 (RBAC)
+    // ==========================================
+
+    // ==========================================
+    // 2인 총괄 마스터 및 초대 코드 기반 사용자 데이터 (localStorage 연동)
+    // ==========================================
+    let teamInviteCode = 'DIAMOND2026';
+    let currentAdminTab = 'partners'; // 'partners' 또는 'pending'
+
+    const defaultPartnersData = [
+      { id: 1, name: "총괄마스터 1(나)", email: "admin@abo.com", password: "admin", role: "super_admin", status: "approved", date: "2026-01-01" },
+      { id: 2, name: "총괄마스터 2(파트너)", email: "master2@abo.com", password: "manager", role: "super_admin", status: "approved", date: "2026-01-01" },
+      { id: 3, name: "김리더", email: "user@abo.com", password: "user", role: "user", status: "approved", date: "2026-02-15" },
+      { id: 4, name: "이파트너", email: "partner1@abo.com", password: "password", role: "user", status: "approved", date: "2026-08-01" },
+      { id: 5, name: "박파트너", email: "partner2@abo.com", password: "password", role: "user", status: "approved", date: "2026-08-10" },
+      { id: 6, name: "신규신청자(코드없음)", email: "pending@abo.com", password: "password", role: "guest", status: "pending", date: "2026-10-23" }
+    ];
+
+    let partnersData = [...defaultPartnersData];
+
+    // localStorage 불러오기
+    function loadStoredData() {
+      const savedPartners = localStorage.getItem('abo_partners_data');
+      if (savedPartners) {
+        try {
+          partnersData = JSON.parse(savedPartners);
+        } catch (e) {
+          console.error('[Storage] partnersData 파싱 실패', e);
+        }
+      }
+      const savedInviteCode = localStorage.getItem('abo_invite_code');
+      if (savedInviteCode) {
+        teamInviteCode = savedInviteCode;
+      }
+      const savedDriveUrl = localStorage.getItem('abo_drive_url');
+      if (savedDriveUrl) {
+        googleDriveFolderUrl = savedDriveUrl;
+      }
+    }
+
+    // localStorage 저장 헬퍼
+    function savePartnersData() {
+      localStorage.setItem('abo_partners_data', JSON.stringify(partnersData));
+    }
+
+    function saveInviteCode() {
+      localStorage.setItem('abo_invite_code', teamInviteCode);
+    }
+
+    let currentUser = null;
+    let authMode = 'login';
+    let kickPartnerId = null;
+
+    // 초기 실행 시 저장된 세션 복원 및 초기화
+    window.addEventListener('DOMContentLoaded', () => {
+      loadStoredData();
+      initRealClock();
+
+      const savedUser = localStorage.getItem('abo_current_user');
+      if (savedUser) {
+        try {
+          currentUser = JSON.parse(savedUser);
+          updateUIAfterLogin();
+        } catch (e) {
+          handleLogout();
+        }
+      } else {
+        handleLogout();
+      }
+    });
+
+    function toggleLoginMode(mode) {
+      authMode = mode;
+      const btnLogin = document.getElementById('btn-mode-login');
+      const btnRegister = document.getElementById('btn-mode-register');
+      const nameGroup = document.getElementById('form-group-name');
+      const submitBtn = document.getElementById('btn-auth-submit');
+
+      // 입력 필드 초기화
+      document.getElementById('auth-email').value = '';
+      document.getElementById('auth-password').value = '';
+      document.getElementById('auth-name').value = '';
+
+      const inviteGroup = document.getElementById('form-group-invite');
+      if (mode === 'login') {
+        btnLogin.className = 'flex-1 py-2 text-xs font-bold rounded-xl bg-emerald-500 text-white transition-all';
+        btnRegister.className = 'flex-1 py-2 text-xs font-bold rounded-xl text-slate-400 hover:text-slate-200 transition-all';
+        nameGroup.classList.add('hidden');
+        if (inviteGroup) inviteGroup.classList.add('hidden');
+        submitBtn.innerText = '로그인하기';
+      } else {
+        btnLogin.className = 'flex-1 py-2 text-xs font-bold rounded-xl text-slate-400 hover:text-slate-200 transition-all';
+        btnRegister.className = 'flex-1 py-2 text-xs font-bold rounded-xl bg-emerald-500 text-white transition-all';
+        nameGroup.classList.remove('hidden');
+        if (inviteGroup) inviteGroup.classList.remove('hidden');
+        submitBtn.innerText = '회원가입 신청하기';
+      }
+      lucide.createIcons();
+    }
+
+    function handleAuthAction() {
+      const emailInput = document.getElementById('auth-email').value.trim();
+      const passwordInput = document.getElementById('auth-password').value.trim();
+      
+      if (!emailInput || !passwordInput) {
+        showToast("이메일과 비밀번호를 입력해주세요.");
+        return;
+      }
+
+      if (authMode === 'login') {
+        // 로그인 처리
+        const user = partnersData.find(u => u.email === emailInput && u.password === passwordInput);
+        if (user) {
+          // 승인 대기 계정 체크
+          if (user.status === 'pending') {
+            showToast("현재 총괄 관리자(2인) 승인 대기 중인 계정입니다. 승인 후 이용 가능합니다.");
+            return;
+          }
+          currentUser = user;
+          localStorage.setItem('abo_current_user', JSON.stringify(currentUser));
+          updateUIAfterLogin();
+          showToast(`${currentUser.name} 님, 환영합니다!`);
+        } else {
+          showToast("이메일 또는 비밀번호가 일치하지 않습니다.");
+        }
+      } else {
+        // 회원가입 처리
+        const nameInput = document.getElementById('auth-name').value.trim();
+        const inviteInput = (document.getElementById('auth-invite-code')?.value || '').trim().toUpperCase();
+
+        if (!nameInput) {
+          showToast("이름을 입력해주세요.");
+          return;
+        }
+
+        // 중복 가입 체크
+        if (partnersData.some(u => u.email === emailInput)) {
+          showToast("이미 가입된 이메일 주소입니다.");
+          return;
+        }
+
+        // 비밀 초대 코드 검증
+        let isCodeValid = (inviteInput === teamInviteCode);
+
+        const newUser = {
+          id: partnersData.length + 1,
+          name: nameInput,
+          email: emailInput,
+          password: passwordInput,
+          role: isCodeValid ? 'user' : 'guest',
+          status: isCodeValid ? 'approved' : 'pending',
+          date: new Date().toISOString().split('T')[0]
+        };
+
+        partnersData.push(newUser);
+        savePartnersData();
+
+        if (isCodeValid) {
+          currentUser = newUser;
+          localStorage.setItem('abo_current_user', JSON.stringify(currentUser));
+          updateUIAfterLogin();
+          showToast("팀 초대 코드 확인 완료! 정회원으로 즉시 자동 승인되었습니다.");
+        } else {
+          showToast("가입 신청 완료! 총괄 관리자 2인의 승인 대기 목록에 등록되었습니다.");
+          toggleLoginMode('login');
+        }
+      }
+    }
+
+    function handleSocialMock(platform) {
+      // 소셜 간편 로그인 MOCK 처리
+      currentUser = partnersData.find(u => u.email === 'user@abo.com'); // 기본 일반 사용자 계정으로 로그인 처리
+      localStorage.setItem('abo_current_user', JSON.stringify(currentUser));
+      updateUIAfterLogin();
+      showToast(`${platform} 간편 로그인 성공! 김리더 계정으로 접속합니다.`);
+    }
+
+    function updateUIAfterLogin() {
+      // 1. 로그인 창 숨김
+      document.getElementById('login-screen').classList.add('hidden');
+
+      // 2. 홈 화면 웰컴 메시지 김리더 이름 커스터마이징
+      const greetingHeading = document.querySelector('#tab-home h2');
+      if (greetingHeading) {
+        greetingHeading.innerText = `안녕하세요, ${currentUser.name} 님!`;
+      }
+
+      // 3. 역할 기반 어드민 메뉴 제어
+      const adminBtn = document.getElementById('admin-menu-btn');
+      if (currentUser.role === 'admin' || currentUser.role === 'super_admin') {
+        adminBtn.classList.remove('hidden');
+        adminBtn.classList.add('flex');
+      } else {
+        adminBtn.classList.add('hidden');
+        adminBtn.classList.remove('flex');
+      }
+      
+      // 4. Lucide 아이콘 리프레시
+      lucide.createIcons();
+    }
+
+    function handleLogout() {
+      currentUser = null;
+      localStorage.removeItem('abo_current_user');
+      
+      // 1. 입력 폼 초기화
+      document.getElementById('auth-email').value = '';
+      document.getElementById('auth-password').value = '';
+      document.getElementById('auth-name').value = '';
+      
+      // 2. 로그인 스크린 띄우기
+      document.getElementById('login-screen').classList.remove('hidden');
+      toggleLoginMode('login');
+
+      // 3. 어드민 버튼 숨김
+      document.getElementById('admin-menu-btn').classList.add('hidden');
+      
+      // 4. 어드민 패널 닫기
+      closeAdminPanel();
+      
+      showToast("로그아웃되었습니다.");
+    }
+
+    // 어드민 패널 토글
+    function openAdminPanel() {
+      if (!currentUser || (currentUser.role !== 'admin' && currentUser.role !== 'super_admin')) {
+        showToast("관리자 권한이 필요합니다.");
+        return;
+      }
+      document.getElementById('admin-panel').classList.remove('hidden');
+      document.getElementById('admin-panel').classList.add('flex');
+      document.getElementById('admin-search-input').value = '';
+      renderAdminPartnersList();
+    }
+
+    function closeAdminPanel() {
+      document.getElementById('admin-panel').classList.add('hidden');
+      document.getElementById('admin-panel').classList.remove('flex');
+    }
+
+    // 구글 드라이브 5TB 자료실 열기
+    let googleDriveFolderUrl = "https://drive.google.com/drive/folders/1"; // 기본 드라이브 폴더 링크
+
+    function openGoogleDriveHub() {
+      // 구글 드라이브 공유 폴더 새 창 열기 (앱 내 웹뷰 혹은 브라우저)
+      window.open(googleDriveFolderUrl, '_blank');
+      showToast("팀 5TB 구글 드라이브 자료실로 연결되었습니다.");
+    }
+
+    function setGoogleDriveLink() {
+      const newUrl = prompt("연결할 5TB 구글 드라이브 공유 폴더의 링크(URL)를 입력하세요:", googleDriveFolderUrl);
+      if (newUrl && newUrl.trim()) {
+        googleDriveFolderUrl = newUrl.trim();
+        localStorage.setItem('abo_drive_url', googleDriveFolderUrl);
+        showToast("구글 드라이브 공유 링크가 성공적으로 갱신되었습니다!");
+      }
+    }
+
+    // 팀 초대 코드 복사 및 변경
+    function copyInviteCode() {
+      navigator.clipboard.writeText(teamInviteCode).then(() => {
+        showToast(`팀 초대 코드 [${teamInviteCode}] 가 클립보드에 복사되었습니다!`);
+      }).catch(() => {
+        showToast(`초대 코드: ${teamInviteCode}`);
+      });
+    }
+
+    function changeTeamInviteCode() {
+      const newCode = prompt("새로운 팀 비밀 초대 코드를 입력하세요:", teamInviteCode);
+      if (newCode && newCode.trim()) {
+        teamInviteCode = newCode.trim().toUpperCase();
+        saveInviteCode();
+        document.getElementById('current-invite-code-display').innerText = teamInviteCode;
+        showToast(`초대 코드가 [${teamInviteCode}] 로 변경되었습니다!`);
+      }
+    }
+
+    // 어드민 탭 전환 (정회원 목록 vs 승인 대기자)
+    function switchAdminTab(tab) {
+      currentAdminTab = tab;
+      const btnPartners = document.getElementById('btn-admin-tab-partners');
+      const btnPending = document.getElementById('btn-admin-tab-pending');
+      
+      if (tab === 'partners') {
+        btnPartners.className = 'flex-1 py-1.5 text-[11px] font-bold rounded-lg bg-emerald-500 text-white transition';
+        btnPending.className = 'flex-1 py-1.5 text-[11px] font-bold rounded-lg text-slate-400 hover:text-white transition flex items-center justify-center gap-1';
+      } else {
+        btnPartners.className = 'flex-1 py-1.5 text-[11px] font-bold rounded-lg text-slate-400 hover:text-white transition';
+        btnPending.className = 'flex-1 py-1.5 text-[11px] font-bold rounded-lg bg-amber-500 text-slate-950 font-bold transition flex items-center justify-center gap-1';
+      }
+      renderAdminPartnersList();
+    }
+
+    // 가입 승인 처리
+    function approvePartner(id) {
+      const partner = partnersData.find(p => p.id === id);
+      if (partner) {
+        partner.status = 'approved';
+        partner.role = 'user';
+        savePartnersData();
+        showToast(`'${partner.name}' 파트너 가입이 정회원으로 승인되었습니다!`);
+        renderAdminPartnersList();
+      }
+    }
+
+    // 파트너 렌더링
+    function renderAdminPartnersList() {
+      const searchVal = document.getElementById('admin-search-input').value.toLowerCase().trim();
+      const listContainer = document.getElementById('admin-partners-list');
+      listContainer.innerHTML = '';
+
+      let totalCount = 0;
+      let userCount = 0;
+      let adminCount = 0;
+
+      // 통계 계산
+      partnersData.forEach(p => {
+        totalCount++;
+        if (p.role === 'admin' || p.role === 'super_admin') adminCount++;
+        else userCount++;
+      });
+
+      document.getElementById('admin-stat-total').innerText = `${totalCount}명`;
+      document.getElementById('admin-stat-users').innerText = `${userCount}명`;
+      document.getElementById('admin-stat-admins').innerText = `${adminCount}명`;
+
+      // 필터링 적용 및 목록 출력
+      partnersData.forEach(p => {
+        if (p.name.toLowerCase().includes(searchVal) || p.email.toLowerCase().includes(searchVal)) {
+          const item = document.createElement('div');
+          item.className = 'glass-card rounded-2xl p-4 flex justify-between items-center border border-white/5 hover:border-white/10 transition-all';
+          
+          const isMaster = (p.role === 'admin' || p.role === 'super_admin');
+          const roleBadgeColor = isMaster ? 'bg-amber-500/10 text-amber-400 border-amber-500/20' : 'bg-emerald-500/10 text-emerald-400 border-emerald-500/20';
+          const roleBadgeName = p.role === 'super_admin' ? '총괄마스터' : p.role === 'admin' ? '관리자' : '일반';
+
+          item.innerHTML = `
+            <div class="space-y-1">
+              <div class="flex items-center gap-2">
+                <span class="text-xs font-bold text-slate-200">${p.name}</span>
+                <span class="text-[8px] px-1.5 py-0.5 rounded border ${roleBadgeColor} font-bold">${roleBadgeName}</span>
+              </div>
+              <p class="text-[10px] text-slate-500 font-outfit">${p.email}</p>
+              <p class="text-[9px] text-slate-600">가입일: ${p.date}</p>
+            </div>
+            ${!isMaster ? `
+            <button onclick="openAdminConfirmModal(${p.id}, '${p.name}')" class="px-2.5 py-1.5 bg-red-500/10 hover:bg-red-500/20 text-red-400 hover:text-red-300 rounded-xl text-[10px] font-bold transition flex items-center gap-1">
+              <i data-lucide="user-minus" class="w-3.5 h-3.5"></i> 탈퇴
+            </button>
+            ` : ''}
+          `;
+          listContainer.appendChild(item);
+        }
+      });
+      lucide.createIcons();
+    }
+
+    // 탈퇴 컨펌 모달 제어
+    function openAdminConfirmModal(id, name) {
+      kickPartnerId = id;
+      document.getElementById('confirm-kick-name').innerText = name;
+      document.getElementById('admin-confirm-modal').classList.remove('hidden');
+    }
+
+    function closeAdminConfirmModal() {
+      kickPartnerId = null;
+      document.getElementById('admin-confirm-modal').classList.add('hidden');
+    }
+
+    function confirmKickOutAction() {
+      if (kickPartnerId !== null) {
+        partnersData = partnersData.filter(p => p.id !== kickPartnerId);
+        savePartnersData();
+        showToast("탈퇴 처리가 완료되었습니다.");
+        closeAdminConfirmModal();
+        renderAdminPartnersList();
+      }
+    }
+
+    // ==========================================
+    // 로컬 오디오 재생 제어 로직
+    // ==========================================
+    const audioElement = document.getElementById('main-audio-element');
+    const playerBar = document.getElementById('local-audio-player');
+    const playBtn = document.getElementById('player-play-btn');
+    const trackTitle = document.getElementById('player-track-title');
+    const trackSpeaker = document.getElementById('player-track-speaker');
+    const currentTimeText = document.getElementById('player-current-time');
+    const durationTimeText = document.getElementById('player-duration');
+    const progressBar = document.getElementById('player-progress');
+
+    let isAudioPlaying = false;
+
+    // 로컬 오디오 재생 시작
+    function playLocalAudio(src, title, speaker) {
+      if (!audioElement) return;
+
+      // 같은 곡이고 재생 중이라면 일시정지, 멈춰있다면 다시 재생
+      if (audioElement.getAttribute('data-current-src') === src) {
+        toggleAudioPlay();
+        return;
+      }
+
+      // 새 오디오 설정
+      audioElement.src = src;
+      audioElement.setAttribute('data-current-src', src);
+      trackTitle.innerText = title;
+      trackSpeaker.innerText = speaker;
+
+      // UI 보이기 및 슬라이더 초기화
+      playerBar.classList.remove('hidden');
+      setTimeout(() => {
+        playerBar.classList.remove('translate-y-full', 'opacity-0');
+        playerBar.classList.add('translate-y-0', 'opacity-100');
+      }, 50);
+
+      progressBar.value = 0;
+      currentTimeText.innerText = "00:00";
+      durationTimeText.innerText = "00:00";
+
+      // 오디오 로드 및 재생
+      audioElement.load();
+      const playPromise = audioElement.play();
+
+      if (playPromise !== undefined) {
+        playPromise.then(() => {
+          setPlayState(true);
+        }).catch(error => {
+          console.warn("오디오 재생 실패 (더미 파일 또는 권한 이슈):", error);
+          setPlayState(true);
+          showToast("로컬 음원이 연결되었습니다! (파일 교체 시 청취 가능)");
+        });
+      }
+    }
+
+    // 재생/일시정지 토글
+    function toggleAudioPlay() {
+      if (!audioElement || !audioElement.src) return;
+
+      if (audioElement.paused) {
+        audioElement.play().then(() => {
+          setPlayState(true);
+        }).catch(err => {
+          setPlayState(true);
+        });
+      } else {
+        audioElement.pause();
+        setPlayState(false);
+      }
+    }
+
+    // 재생 상태 UI 업데이트
+    function setPlayState(isPlaying) {
+      isAudioPlaying = isPlaying;
+      if (isPlaying) {
+        playBtn.classList.remove('bg-emerald-500', 'hover:bg-emerald-600');
+        playBtn.classList.add('bg-amber-500', 'hover:bg-amber-600');
+        playBtn.innerHTML = '<i id="player-play-icon" data-lucide="pause" class="w-4 h-4 fill-current"></i>';
+      } else {
+        playBtn.classList.remove('bg-amber-500', 'hover:bg-amber-600');
+        playBtn.classList.add('bg-emerald-500', 'hover:bg-emerald-600');
+        playBtn.innerHTML = '<i id="player-play-icon" data-lucide="play" class="w-4 h-4 fill-current"></i>';
+      }
+      lucide.createIcons();
+    }
+
+    // 플레이어 닫기
+    function closeAudioPlayer() {
+      if (audioElement) {
+        audioElement.pause();
+        audioElement.src = '';
+        audioElement.removeAttribute('data-current-src');
+      }
+      setPlayState(false);
+      
+      playerBar.classList.remove('translate-y-0', 'opacity-100');
+      playerBar.classList.add('translate-y-full', 'opacity-0');
+      setTimeout(() => {
+        playerBar.classList.add('hidden');
+      }, 300);
+    }
+
+    // 재생 구간 이동
+    function seekAudio() {
+      if (!audioElement || !audioElement.duration) return;
+      const seekTime = (progressBar.value / 100) * audioElement.duration;
+      audioElement.currentTime = seekTime;
+    }
+
+    // 재생 시간 업데이트 이벤트 핸들러
+    if (audioElement) {
+      audioElement.addEventListener('timeupdate', () => {
+        if (!audioElement.duration) return;
+        const current = audioElement.currentTime;
+        const duration = audioElement.duration;
+        
+        progressBar.value = (current / duration) * 100;
+        currentTimeText.innerText = formatAudioTime(current);
+      });
+
+      audioElement.addEventListener('loadedmetadata', () => {
+        durationTimeText.innerText = formatAudioTime(audioElement.duration);
+      });
+
+      audioElement.addEventListener('ended', () => {
+        setPlayState(false);
+        progressBar.value = 0;
+        currentTimeText.innerText = "00:00";
+      });
+    }
+
+    // 재생 시간 포맷팅 (MM:SS)
+    function formatAudioTime(secs) {
+      if (isNaN(secs)) return "00:00";
+      const m = Math.floor(secs / 60).toString().padStart(2, '0');
+      const s = Math.floor(secs % 60).toString().padStart(2, '0');
+      return `${m}:${s}`;
+    }
+
+    // ==========================================
+    // 실시간 모바일 상태 표시줄 시계 (PWA UX)
+    // ==========================================
+    function initRealClock() {
+      const clockEl = document.getElementById('status-bar-time');
+      if (!clockEl) return;
+      function updateTime() {
+        const now = new Date();
+        const hours = String(now.getHours()).padStart(2, '0');
+        const minutes = String(now.getMinutes()).padStart(2, '0');
+        clockEl.innerText = `${hours}:${minutes}`;
+      }
+      updateTime();
+      setInterval(updateTime, 30000);
+    }
+
+    // ==========================================
+    // PWA 스마트폰 홈 화면 설치 제어
+    // ==========================================
+    let deferredPrompt = null;
+    window.addEventListener('beforeinstallprompt', (e) => {
+      e.preventDefault();
+      deferredPrompt = e;
+      console.log('[PWA] beforeinstallprompt event captured');
+    });
+
+    function triggerPWAInstall() {
+      if (deferredPrompt) {
+        deferredPrompt.prompt();
+        deferredPrompt.userChoice.then((choiceResult) => {
+          if (choiceResult.outcome === 'accepted') {
+            showToast("스마트폰에 앱이 성공적으로 설치되었습니다!");
+          }
+          deferredPrompt = null;
+        });
+      } else {
+        // iOS Safari 및 일반 브라우저 안내
+        const isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent) && !window.MSStream;
+        if (isIOS) {
+          showToast("아이폰: 브라우저 하단 공유(사각형+화살표) 클릭 후 [홈 화면에 추가]를 눌러주세요.");
+        } else {
+          showToast("브라우저 메뉴(⋮)를 누르고 [앱 설치] 또는 [홈 화면에 추가]를 선택하세요.");
+        }
+      }
+    }
+
+    // ==========================================
+    // PWA Service Worker 등록
+    // ==========================================
+    if ('serviceWorker' in navigator) {
+      window.addEventListener('load', () => {
+        navigator.serviceWorker.register('./service-worker.js')
+          .then(reg => {
+            console.log('[PWA] ServiceWorker registered with scope:', reg.scope);
+          })
+          .catch(err => {
+            console.warn('[PWA] ServiceWorker registration error:', err);
+          });
+      });
+    }
+  </script>
+</body>
+</html>
