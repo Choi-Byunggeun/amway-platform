@@ -203,21 +203,21 @@
           </div>
         </div>
 
-        <!-- 5TB 팀 구글 드라이브 자료실 연결 배너 -->
-        <div onclick="openGoogleDriveHub()" class="bg-gradient-to-r from-blue-950/60 to-slate-900 border border-blue-500/30 p-4 rounded-3xl flex items-center justify-between cursor-pointer hover:border-blue-500 transition shadow-lg shadow-blue-950/40 group">
+        <!-- 5TB sFuNe 팀 구글 드라이브 자료실 연결 배너 -->
+        <div onclick="openGoogleDriveHub()" class="bg-gradient-to-r from-emerald-950/70 to-slate-900 border border-emerald-500/40 p-4 rounded-3xl flex items-center justify-between cursor-pointer hover:border-emerald-500 transition shadow-lg shadow-emerald-950/40 group">
           <div class="flex items-center gap-3">
-            <div class="w-10 h-10 rounded-2xl bg-blue-500/20 text-blue-400 flex items-center justify-center shrink-0 group-hover:scale-105 transition">
+            <div class="w-10 h-10 rounded-2xl bg-emerald-500/20 text-emerald-400 flex items-center justify-center shrink-0 group-hover:scale-105 transition">
               <i data-lucide="hard-drive" class="w-5 h-5"></i>
             </div>
             <div>
               <div class="flex items-center gap-1.5">
-                <h4 class="text-xs font-bold text-white">팀 구글 드라이브 5TB 자료실</h4>
-                <span class="text-[8px] px-1.5 py-0.5 rounded bg-blue-500/20 text-blue-300 font-semibold">공유 스토리지</span>
+                <h4 class="text-xs font-bold text-white">sFuNe 5TB 클라우드 자료실</h4>
+                <span class="text-[8px] px-1.5 py-0.5 rounded bg-emerald-500/20 text-emerald-300 font-semibold">1. sFuNe 연동</span>
               </div>
-              <p class="text-[10px] text-slate-400 mt-0.5">모든 강의 음원, 최신 사업설명 PPT, 카탈로그</p>
+              <p class="text-[10px] text-slate-400 mt-0.5">13대 전체 자료실 및 6개 음원 폴더 실시간 연결</p>
             </div>
           </div>
-          <button class="px-3 py-1.5 rounded-xl bg-blue-500 hover:bg-blue-600 text-white text-[10px] font-bold shadow transition flex items-center gap-1 shrink-0">
+          <button class="px-3 py-1.5 rounded-xl bg-emerald-500 hover:bg-emerald-600 text-white text-[10px] font-bold shadow transition flex items-center gap-1 shrink-0">
             <i data-lucide="external-link" class="w-3 h-3"></i> 접속
           </button>
         </div>
@@ -347,357 +347,384 @@
     </section>
 
       <!-- 2. AUDIO LIBRARY TAB -->
-      <section id="tab-audio" class="tab-content">
-        
-        <!-- 1단계: 카테고리 선택 화면 (Grid View) -->
-        <div id="audio-category-grid-view" class="space-y-4">
-          <div class="pb-1">
-            <h3 class="text-sm font-bold text-white flex items-center gap-1.5">
-              <i data-lucide="folder-heart" class="w-4.5 h-4.5 text-emerald-400"></i>
-              음원 카테고리 선택
-            </h3>
-            <p class="text-[10px] text-slate-400 mt-1">학습하고자 하는 비즈니스 폴더를 선택하세요.</p>
+      <!-- 2. sFuNe CLOUD & AUDIO LIBRARY TAB -->
+      <section id="tab-audio" class="tab-content space-y-4">
+        <!-- Section Title & sFuNe Top Banner -->
+        <div class="p-4 rounded-3xl bg-gradient-to-r from-emerald-950/80 to-slate-900 border border-emerald-500/30 shadow-lg">
+          <div class="flex items-center justify-between">
+            <div class="flex items-center gap-2.5">
+              <div class="w-9 h-9 rounded-2xl bg-emerald-500/20 text-emerald-400 flex items-center justify-center shrink-0">
+                <i data-lucide="cloud-lightning" class="w-5 h-5"></i>
+              </div>
+              <div>
+                <h3 class="text-sm font-bold text-white flex items-center gap-1.5">
+                  sFuNe 비즈니스 자료실
+                  <span class="text-[9px] px-2 py-0.5 rounded-full bg-emerald-500/20 text-emerald-300 font-normal">드라이브 연동</span>
+                </h3>
+                <p class="text-[10px] text-slate-400 mt-0.5">구글 드라이브 `1. sFuNe` 13개 폴더 및 음원 실시간 연결</p>
+              </div>
+            </div>
+            <button onclick="openGdriveFolder('1gl-bye7jUjFT7fCWiTH7uI7NyVNggPxD')" class="px-2.5 py-1.5 rounded-xl bg-emerald-500/20 hover:bg-emerald-500/30 text-emerald-300 text-[10px] font-bold border border-emerald-500/40 transition flex items-center gap-1 shrink-0" title="구글 드라이브 최상위 폴더 열기">
+              <i data-lucide="external-link" class="w-3 h-3"></i> 전체 드라이브
+            </button>
           </div>
-          
-          <div class="flex flex-col gap-2.5">
-            <!-- 01. 10분 Show AW -->
-            <div onclick="selectAudioFolder('show_aw', '10분 Show AW')" class="glass-card rounded-2xl py-3 px-4 flex items-center justify-between hover:border-emerald-500/50 hover:bg-slate-800/80 transition duration-300 cursor-pointer group relative overflow-hidden">
-              <div class="flex items-center gap-3">
-                <span class="text-xs font-bold text-emerald-400 font-outfit min-w-[18px]">01</span>
-                <div class="w-10 h-10 rounded-full bg-emerald-500/10 text-emerald-400 flex items-center justify-center shrink-0">
-                  <i data-lucide="clock" class="w-5 h-5"></i>
+        </div>
+
+        <!-- Mode Toggle Tabs (12 음원 vs 전체 13개 폴더) -->
+        <div class="bg-slate-900/90 p-1 rounded-2xl flex border border-white/5">
+          <button onclick="switchSfuneView('audio')" id="sfune-tab-audio-btn" class="flex-1 py-2 text-xs font-bold rounded-xl bg-emerald-500 text-white transition flex items-center justify-center gap-1.5 shadow">
+            <i data-lucide="headphones" class="w-3.5 h-3.5"></i> 12. 음원 자료실 (6개 분야)
+          </button>
+          <button onclick="switchSfuneView('all')" id="sfune-tab-all-btn" class="flex-1 py-2 text-xs font-bold rounded-xl text-slate-400 hover:text-white transition flex items-center justify-center gap-1.5">
+            <i data-lucide="folder-tree" class="w-3.5 h-3.5"></i> 전체 sFuNe 폴더 (13개)
+          </button>
+        </div>
+
+        <!-- VIEW A: 12 음원 자료실 하위 6개 카테고리 -->
+        <div id="sfune-audio-subfolders-view" class="space-y-3 animate-fade-in">
+          <div class="flex items-center justify-between px-1">
+            <p class="text-[11px] text-slate-400">학습할 오디오 강의 분야를 선택하세요.</p>
+            <button onclick="openGdriveFolder('1fSL-UoXLpnFwCFZqOXSISg81ulbpSfGi')" class="text-[10px] text-emerald-400 hover:text-emerald-300 flex items-center gap-0.5">
+              음원 폴더 전체열기 <i data-lucide="external-link" class="w-3 h-3"></i>
+            </button>
+          </div>
+
+          <!-- 6개 음원 카테고리 카드 목록 -->
+          <div class="space-y-2.5">
+            <!-- A. 제품 -->
+            <div class="glass-card rounded-2xl p-3.5 border border-white/5 hover:border-emerald-500/40 transition">
+              <div class="flex items-center justify-between">
+                <div class="flex items-center gap-3">
+                  <div class="w-10 h-10 rounded-xl bg-emerald-500/10 text-emerald-400 flex items-center justify-center shrink-0">
+                    <i data-lucide="package" class="w-5 h-5"></i>
+                  </div>
+                  <div>
+                    <h4 class="text-xs font-bold text-white">A. 제품</h4>
+                    <p class="text-[10px] text-slate-400 mt-0.5">뉴트리라이트, 아티스트리, 홈케어 오디오 강의</p>
+                  </div>
                 </div>
-                <h4 class="text-xs font-bold text-slate-200 group-hover:text-white transition duration-300">10분 Show AW</h4>
+                <button onclick="openGdriveFolder('1ssHY6FZXg4iaaxUvcO0oqNkO_5Ina2e9')" class="px-2.5 py-1.5 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-200 text-[10px] font-bold transition flex items-center gap-1">
+                  <i data-lucide="folder-open" class="w-3.5 h-3.5 text-emerald-400"></i> 열기
+                </button>
               </div>
-              <i data-lucide="chevron-right" class="w-4 h-4 text-slate-500 group-hover:text-emerald-400 transform group-hover:translate-x-0.5 transition-all"></i>
             </div>
 
-            <!-- 02. 사업설명 -->
-            <div onclick="selectAudioFolder('business', '사업설명')" class="glass-card rounded-2xl py-3 px-4 flex items-center justify-between hover:border-emerald-500/50 hover:bg-slate-800/80 transition duration-300 cursor-pointer group relative overflow-hidden">
-              <div class="flex items-center gap-3">
-                <span class="text-xs font-bold text-emerald-400 font-outfit min-w-[18px]">02</span>
-                <div class="w-10 h-10 rounded-full bg-emerald-500/10 text-emerald-400 flex items-center justify-center shrink-0">
-                  <i data-lucide="presentation" class="w-5 h-5"></i>
+            <!-- B. 사업설명, 수익구조 -->
+            <div class="glass-card rounded-2xl p-3.5 border border-white/5 hover:border-emerald-500/40 transition">
+              <div class="flex items-center justify-between">
+                <div class="flex items-center gap-3">
+                  <div class="w-10 h-10 rounded-xl bg-blue-500/10 text-blue-400 flex items-center justify-center shrink-0">
+                    <i data-lucide="presentation" class="w-5 h-5"></i>
+                  </div>
+                  <div>
+                    <h4 class="text-xs font-bold text-white">B. 사업설명, 수익구조</h4>
+                    <p class="text-[10px] text-slate-400 mt-0.5">STP, 보상 플랜, 자산 소득의 본질 강의 음원</p>
+                  </div>
                 </div>
-                <h4 class="text-xs font-bold text-slate-200 group-hover:text-white transition duration-300">사업설명</h4>
+                <button onclick="openGdriveFolder('16PrYKopNs9BbHduf2ZyLedKHrYMG969J')" class="px-2.5 py-1.5 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-200 text-[10px] font-bold transition flex items-center gap-1">
+                  <i data-lucide="folder-open" class="w-3.5 h-3.5 text-blue-400"></i> 열기
+                </button>
               </div>
-              <i data-lucide="chevron-right" class="w-4 h-4 text-slate-500 group-hover:text-emerald-400 transform group-hover:translate-x-0.5 transition-all"></i>
             </div>
 
-            <!-- 03. 제품 & 제품 이야기 -->
-            <div onclick="selectAudioFolder('product', '제품 & 제품 이야기')" class="glass-card rounded-2xl py-3 px-4 flex items-center justify-between hover:border-emerald-500/50 hover:bg-slate-800/80 transition duration-300 cursor-pointer group relative overflow-hidden">
-              <div class="flex items-center gap-3">
-                <span class="text-xs font-bold text-emerald-400 font-outfit min-w-[18px]">03</span>
-                <div class="w-10 h-10 rounded-full bg-emerald-500/10 text-emerald-400 flex items-center justify-center shrink-0">
-                  <i data-lucide="package" class="w-5 h-5"></i>
+            <!-- C. 시스템 -->
+            <div class="glass-card rounded-2xl p-3.5 border border-white/5 hover:border-emerald-500/40 transition">
+              <div class="flex items-center justify-between">
+                <div class="flex items-center gap-3">
+                  <div class="w-10 h-10 rounded-xl bg-purple-500/10 text-purple-400 flex items-center justify-center shrink-0">
+                    <i data-lucide="settings" class="w-5 h-5"></i>
+                  </div>
+                  <div>
+                    <h4 class="text-xs font-bold text-white">C. 시스템</h4>
+                    <p class="text-[10px] text-slate-400 mt-0.5">비즈니스 기본 원칙, 텐코어 및 복제 원리 강의</p>
+                  </div>
                 </div>
-                <h4 class="text-xs font-bold text-slate-200 group-hover:text-white transition duration-300">제품 & 제품 이야기</h4>
+                <button onclick="openGdriveFolder('1WReuPsdFl1GXWZ_Im0PFbvXobFUeeT6_')" class="px-2.5 py-1.5 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-200 text-[10px] font-bold transition flex items-center gap-1">
+                  <i data-lucide="folder-open" class="w-3.5 h-3.5 text-purple-400"></i> 열기
+                </button>
               </div>
-              <i data-lucide="chevron-right" class="w-4 h-4 text-slate-500 group-hover:text-emerald-400 transform group-hover:translate-x-0.5 transition-all"></i>
             </div>
 
-            <!-- 04. Amway 비전 & 트렌드 -->
-            <div onclick="selectAudioFolder('vision', 'Amway 비전 & 트렌드')" class="glass-card rounded-2xl py-3 px-4 flex items-center justify-between hover:border-emerald-500/50 hover:bg-slate-800/80 transition duration-300 cursor-pointer group relative overflow-hidden">
-              <div class="flex items-center gap-3">
-                <span class="text-xs font-bold text-emerald-400 font-outfit min-w-[18px]">04</span>
-                <div class="w-10 h-10 rounded-full bg-emerald-500/10 text-emerald-400 flex items-center justify-center shrink-0">
-                  <i data-lucide="trending-up" class="w-5 h-5"></i>
+            <!-- D. 중급자용 시스템 -->
+            <div class="glass-card rounded-2xl p-3.5 border border-white/5 hover:border-emerald-500/40 transition">
+              <div class="flex items-center justify-between">
+                <div class="flex items-center gap-3">
+                  <div class="w-10 h-10 rounded-xl bg-amber-500/10 text-amber-400 flex items-center justify-center shrink-0">
+                    <i data-lucide="shield-alert" class="w-5 h-5"></i>
+                  </div>
+                  <div>
+                    <h4 class="text-xs font-bold text-white">D. 중급자용 시스템</h4>
+                    <p class="text-[10px] text-slate-400 mt-0.5">리더십 개발, 그룹 확장 및 스폰서십 상담 기법</p>
+                  </div>
                 </div>
-                <h4 class="text-xs font-bold text-slate-200 group-hover:text-white transition duration-300">Amway 비전 & 트렌드</h4>
+                <button onclick="openGdriveFolder('1KiXp3uqXZUszStxOJq9zJuxZisTpz-FN')" class="px-2.5 py-1.5 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-200 text-[10px] font-bold transition flex items-center gap-1">
+                  <i data-lucide="folder-open" class="w-3.5 h-3.5 text-amber-400"></i> 열기
+                </button>
               </div>
-              <i data-lucide="chevron-right" class="w-4 h-4 text-slate-500 group-hover:text-emerald-400 transform group-hover:translate-x-0.5 transition-all"></i>
             </div>
 
-            <!-- 05. S.L.M & 국내외 초청특강 -->
-            <div onclick="selectAudioFolder('speeches', 'S.L.M & 국내외 초청특강')" class="glass-card rounded-2xl py-3 px-4 flex items-center justify-between hover:border-emerald-500/50 hover:bg-slate-800/80 transition duration-300 cursor-pointer group relative overflow-hidden">
-              <div class="flex items-center gap-3">
-                <span class="text-xs font-bold text-emerald-400 font-outfit min-w-[18px]">05</span>
-                <div class="w-10 h-10 rounded-full bg-emerald-500/10 text-emerald-400 flex items-center justify-center shrink-0">
-                  <i data-lucide="mic" class="w-5 h-5"></i>
+            <!-- E. 성공스토리 -->
+            <div class="glass-card rounded-2xl p-3.5 border border-emerald-500/30 bg-emerald-950/20 transition">
+              <div class="flex items-center justify-between">
+                <div class="flex items-center gap-3">
+                  <div class="w-10 h-10 rounded-xl bg-emerald-500/20 text-emerald-300 flex items-center justify-center shrink-0">
+                    <i data-lucide="trophy" class="w-5 h-5"></i>
+                  </div>
+                  <div>
+                    <div class="flex items-center gap-1.5">
+                      <h4 class="text-xs font-bold text-white">E. 성공스토리</h4>
+                      <span class="text-[8px] px-1.5 py-0.5 rounded bg-emerald-500/20 text-emerald-300 font-bold">인기 음원</span>
+                    </div>
+                    <p class="text-[10px] text-slate-400 mt-0.5">다이아몬드 및 탑 리더 성공스토리 오디오</p>
+                  </div>
                 </div>
-                <h4 class="text-xs font-bold text-slate-200 group-hover:text-white transition duration-300">S.L.M & 국내외 초청특강</h4>
+                <button onclick="openGdriveFolder('1KTfofpGASMiJ1uiLLeGdf2tSujHe1EBO')" class="px-2.5 py-1.5 rounded-xl bg-emerald-500 hover:bg-emerald-600 text-white text-[10px] font-bold transition flex items-center gap-1">
+                  <i data-lucide="folder-open" class="w-3.5 h-3.5"></i> 열기
+                </button>
               </div>
-              <i data-lucide="chevron-right" class="w-4 h-4 text-slate-500 group-hover:text-emerald-400 transform group-hover:translate-x-0.5 transition-all"></i>
+
+              <!-- 대표 음원 바로듣기 카드 -->
+              <div class="mt-3 pt-3 border-t border-white/5 space-y-2">
+                <div class="bg-slate-900/80 p-3 rounded-xl border border-white/5 flex items-center justify-between">
+                  <div class="flex items-center gap-2.5 min-w-0">
+                    <button onclick="openGdriveFolder('1KTfofpGASMiJ1uiLLeGdf2tSujHe1EBO')" class="w-7 h-7 rounded-lg bg-emerald-500/20 text-emerald-400 flex items-center justify-center shrink-0 hover:scale-105 transition">
+                      <i data-lucide="play" class="w-3.5 h-3.5 fill-current"></i>
+                    </button>
+                    <div class="min-w-0">
+                      <h5 class="text-[11px] font-bold text-slate-200 truncate">5_2_6. 다이아몬드 스토리 이영희</h5>
+                      <p class="text-[9px] text-slate-500">강사: 이영희 리더님 | 구글 드라이브 스트리밍</p>
+                    </div>
+                  </div>
+                  <button onclick="openGdriveFolder('1KTfofpGASMiJ1uiLLeGdf2tSujHe1EBO')" class="px-2 py-1 rounded bg-white/5 hover:bg-emerald-500/20 text-emerald-400 text-[9px] font-bold transition flex items-center gap-1 shrink-0">
+                    <i data-lucide="external-link" class="w-2.5 h-2.5"></i> 재생
+                  </button>
+                </div>
+              </div>
             </div>
 
-            <!-- 06. 세미나 하이라이트 -->
-            <div onclick="selectAudioFolder('highlights', '세미나 하이라이트')" class="glass-card rounded-2xl py-3 px-4 flex items-center justify-between hover:border-emerald-500/50 hover:bg-slate-800/80 transition duration-300 cursor-pointer group relative overflow-hidden">
-              <div class="flex items-center gap-3">
-                <span class="text-xs font-bold text-emerald-400 font-outfit min-w-[18px]">06</span>
-                <div class="w-10 h-10 rounded-full bg-emerald-500/10 text-emerald-400 flex items-center justify-center shrink-0">
-                  <i data-lucide="star" class="w-5 h-5"></i>
+            <!-- F. 건강 특강 -->
+            <div class="glass-card rounded-2xl p-3.5 border border-white/5 hover:border-emerald-500/40 transition">
+              <div class="flex items-center justify-between">
+                <div class="flex items-center gap-3">
+                  <div class="w-10 h-10 rounded-xl bg-teal-500/10 text-teal-400 flex items-center justify-center shrink-0">
+                    <i data-lucide="activity" class="w-5 h-5"></i>
+                  </div>
+                  <div>
+                    <h4 class="text-xs font-bold text-white">F. 건강 특강</h4>
+                    <p class="text-[10px] text-slate-400 mt-0.5">질환별 식이요법, 면역 및 뉴트리 영양 특강</p>
+                  </div>
                 </div>
-                <h4 class="text-xs font-bold text-slate-200 group-hover:text-white transition duration-300">세미나 하이라이트</h4>
+                <button onclick="openGdriveFolder('11rQeBfeIHIRPetxzOXqZByyN87JNij6r')" class="px-2.5 py-1.5 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-200 text-[10px] font-bold transition flex items-center gap-1">
+                  <i data-lucide="folder-open" class="w-3.5 h-3.5 text-teal-400"></i> 열기
+                </button>
               </div>
-              <i data-lucide="chevron-right" class="w-4 h-4 text-slate-500 group-hover:text-emerald-400 transform group-hover:translate-x-0.5 transition-all"></i>
-            </div>
-
-            <!-- 07. 시스템 -->
-            <div onclick="selectAudioFolder('system', '시스템')" class="glass-card rounded-2xl py-3 px-4 flex items-center justify-between hover:border-emerald-500/50 hover:bg-slate-800/80 transition duration-300 cursor-pointer group relative overflow-hidden">
-              <div class="flex items-center gap-3">
-                <span class="text-xs font-bold text-emerald-400 font-outfit min-w-[18px]">07</span>
-                <div class="w-10 h-10 rounded-full bg-emerald-500/10 text-emerald-400 flex items-center justify-center shrink-0">
-                  <i data-lucide="settings" class="w-5 h-5"></i>
-                </div>
-                <h4 class="text-xs font-bold text-slate-200 group-hover:text-white transition duration-300">시스템</h4>
-              </div>
-              <i data-lucide="chevron-right" class="w-4 h-4 text-slate-500 group-hover:text-emerald-400 transform group-hover:translate-x-0.5 transition-all"></i>
-            </div>
-
-            <!-- 08. 리더미팅 & 특별미팅 -->
-            <div onclick="selectAudioFolder('leader_meeting', '리더미팅 & 특별미팅')" class="glass-card rounded-2xl py-3 px-4 flex items-center justify-between hover:border-emerald-500/50 hover:bg-slate-800/80 transition duration-300 cursor-pointer group relative overflow-hidden">
-              <div class="flex items-center gap-3">
-                <span class="text-xs font-bold text-emerald-400 font-outfit min-w-[18px]">08</span>
-                <div class="w-10 h-10 rounded-full bg-emerald-500/10 text-emerald-400 flex items-center justify-center shrink-0">
-                  <i data-lucide="users" class="w-5 h-5"></i>
-                </div>
-                <h4 class="text-xs font-bold text-slate-200 group-hover:text-white transition duration-300">리더미팅 & 특별미팅</h4>
-              </div>
-              <i data-lucide="chevron-right" class="w-4 h-4 text-slate-500 group-hover:text-emerald-400 transform group-hover:translate-x-0.5 transition-all"></i>
-            </div>
-
-            <!-- 09. DAG Millennials Program -->
-            <div onclick="selectAudioFolder('millennials', 'DAG Millennials Program')" class="glass-card rounded-2xl py-3 px-4 flex items-center justify-between hover:border-emerald-500/50 hover:bg-slate-800/80 transition duration-300 cursor-pointer group relative overflow-hidden">
-              <div class="flex items-center gap-3">
-                <span class="text-xs font-bold text-emerald-400 font-outfit min-w-[18px]">09</span>
-                <div class="w-10 h-10 rounded-full bg-emerald-500/10 text-emerald-400 flex items-center justify-center shrink-0">
-                  <i data-lucide="zap" class="w-5 h-5"></i>
-                </div>
-                <h4 class="text-xs font-bold text-slate-200 group-hover:text-white transition duration-300">DAG Millennials Program</h4>
-              </div>
-              <i data-lucide="chevron-right" class="w-4 h-4 text-slate-500 group-hover:text-emerald-400 transform group-hover:translate-x-0.5 transition-all"></i>
             </div>
           </div>
         </div>
 
-        <!-- 2단계: 카테고리별 상세 음원 리스트 화면 (Detail View) -->
-        <div id="audio-category-detail-view" class="hidden space-y-4">
-          <!-- Detail Header: Back button & Title -->
-          <div class="flex items-center justify-between pb-2 border-b border-white/5">
-            <button onclick="goBackToAudioCategories()" class="flex items-center gap-1 text-xs text-slate-400 hover:text-white transition font-medium">
-              <i data-lucide="arrow-left" class="w-4 h-4"></i> 뒤로가기
-            </button>
-            <h3 id="selected-category-title" class="text-xs font-bold text-emerald-400 font-outfit truncate max-w-[200px]">S.L.M & 국내외 초청특강</h3>
-            <div class="w-12"></div> <!-- Spacer for balance -->
+        <!-- VIEW B: sFuNe 전체 13개 폴더 그리드 -->
+        <div id="sfune-all-folders-view" class="space-y-3 hidden animate-fade-in">
+          <div class="flex items-center justify-between px-1">
+            <p class="text-[11px] text-slate-400">구글 드라이브 `1. sFuNe` 전체 13대 자료실입니다.</p>
+            <span class="text-[10px] text-emerald-400 font-bold">총 13개 폴더</span>
           </div>
 
-          <!-- Search Bar inside detail view -->
-          <div class="relative">
-            <span class="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none text-slate-400">
-              <i data-lucide="search" class="w-4 h-4"></i>
-            </span>
-            <input type="text" id="audio-search" oninput="filterAudioList()" placeholder="제목 또는 강사명 검색..." class="w-full pl-10 pr-4 py-2.5 bg-slate-900/80 border border-white/10 rounded-2xl text-xs text-white focus:outline-none focus:border-emerald-500 placeholder-slate-500">
-          </div>
+          <div class="grid grid-cols-2 gap-2.5">
+            <!-- 01 제품 -->
+            <div onclick="openGdriveFolder('1ea5Sx_mLDXFELWt0g2uZKdaw3bnRg4hz')" class="glass-card rounded-2xl p-3.5 border border-white/5 hover:border-emerald-500/40 transition cursor-pointer group flex flex-col justify-between">
+              <div>
+                <div class="w-8 h-8 rounded-xl bg-emerald-500/10 text-emerald-400 flex items-center justify-center group-hover:scale-105 transition mb-2">
+                  <i data-lucide="package" class="w-4 h-4"></i>
+                </div>
+                <h4 class="text-xs font-bold text-white group-hover:text-emerald-400 transition">01 제품</h4>
+                <p class="text-[9px] text-slate-400 mt-1 line-clamp-2">뉴트리라이트, 아티스트리 상세 카탈로그</p>
+              </div>
+              <div class="mt-3 pt-2 border-t border-white/5 flex items-center justify-between text-[9px] text-slate-500">
+                <span>폴더 열기</span>
+                <i data-lucide="arrow-up-right" class="w-3 h-3 text-slate-400 group-hover:text-emerald-400"></i>
+              </div>
+            </div>
 
-          <!-- Audio List Container -->
-          <div id="audio-list-container" class="space-y-4">
-          <!-- Audio Item: 내 삶의 주도권은 나에게 있다 -->
-          <div class="glass-card rounded-2xl p-4 audio-item" data-category="speeches" data-title="내 삶의 주도권은 나에게 있다" data-speaker="강설화">
-            <div class="flex gap-3">
-              <!-- Thumbnail -->
-              <div class="w-20 h-20 rounded-xl overflow-hidden relative shrink-0">
-                <img src="https://images.unsplash.com/photo-1507525428034-b723cf961d3e?q=80&w=150" class="w-full h-full object-cover">
-                <div class="absolute inset-0 bg-black/40 flex items-center justify-center">
-                  <i data-lucide="play" class="w-6 h-6 text-white opacity-85"></i>
+            <!-- 02 사업설명, 수익구조 & 회사 -->
+            <div onclick="openGdriveFolder('1pGxUZ2mfDLgS1YSlQ8_noRXRRug841Jw')" class="glass-card rounded-2xl p-3.5 border border-white/5 hover:border-emerald-500/40 transition cursor-pointer group flex flex-col justify-between">
+              <div>
+                <div class="w-8 h-8 rounded-xl bg-blue-500/10 text-blue-400 flex items-center justify-center group-hover:scale-105 transition mb-2">
+                  <i data-lucide="presentation" class="w-4 h-4"></i>
                 </div>
+                <h4 class="text-xs font-bold text-white group-hover:text-blue-400 transition">02 사업설명</h4>
+                <p class="text-[9px] text-slate-400 mt-1 line-clamp-2">사업설명 PPT, 수익구조, 회사소개 자료</p>
               </div>
-              <!-- Content & Action Buttons -->
-              <div class="flex-1 min-w-0">
-                <div class="flex justify-between items-start">
-                  <span class="text-[9px] font-bold text-emerald-400 uppercase font-outfit">S.L.M & 국내외 초청특강</span>
-                  <span class="text-[9px] text-slate-400 font-outfit">32:40</span>
-                </div>
-                <h4 class="text-xs font-bold text-slate-200 mt-1 line-clamp-1">내 삶의 주도권은 나에게 있다</h4>
-                <p class="text-[10px] text-slate-400 mt-0.5">강사: 강설화 DIA</p>
-                
-                <!-- Interactive Buttons -->
-                <div class="flex gap-1.5 mt-2 flex-wrap">
-                  <button onclick="openYoutubeMock('https://youtu.be/pOHJTLdNwuA')" class="px-2.5 py-1 bg-red-500/10 text-red-400 hover:bg-red-500/20 rounded-lg text-[10px] font-bold transition flex items-center gap-1">
-                    <i data-lucide="youtube" class="w-3.5 h-3.5"></i> 유튜브 재생
-                  </button>
-                  <button onclick="toggleSummaryCard('summary-audio-new')" class="px-2.5 py-1 bg-slate-800 text-slate-300 hover:bg-slate-700 rounded-lg text-[10px] font-bold transition flex items-center gap-0.5">
-                    <i data-lucide="file-text" class="w-3.5 h-3.5"></i> 5줄 요약
-                  </button>
-                  <button onclick="shareKakao('내 삶의 주도권은 나에게 있다', '강설화 DIA', 'https://youtu.be/pOHJTLdNwuA')" class="px-2.5 py-1 bg-amber-400/10 text-amber-300 hover:bg-amber-400/20 rounded-lg text-[10px] font-bold transition flex items-center gap-1" title="카카오톡 공유">
-                    <i data-lucide="message-circle" class="w-3.5 h-3.5 text-amber-400"></i> 카톡 공유
-                  </button>
-                </div>
+              <div class="mt-3 pt-2 border-t border-white/5 flex items-center justify-between text-[9px] text-slate-500">
+                <span>폴더 열기</span>
+                <i data-lucide="arrow-up-right" class="w-3 h-3 text-slate-400 group-hover:text-blue-400"></i>
               </div>
-              <!-- Standard Share/Copy Button -->
-              <button onclick="copyToClipboard('https://youtu.be/pOHJTLdNwuA')" class="p-2 text-slate-400 hover:text-emerald-400 shrink-0 self-start" title="링크 복사">
-                <i data-lucide="share-2" class="w-4 h-4"></i>
-              </button>
             </div>
-            
-            <!-- 5 Line Summary Box -->
-            <div id="summary-audio-new" class="hidden mt-3 p-3 bg-slate-950/80 border border-emerald-500/20 rounded-xl text-[11px] text-slate-300 space-y-1.5 animate-fade-in">
-              <div class="flex flex-col gap-1 pb-1.5 border-b border-white/5 mb-1.5">
-                <span class="text-[10px] text-emerald-400 font-bold flex items-center gap-1">
-                  <i data-lucide="check-square" class="w-3.5 h-3.5"></i> 핵심 5줄 요약 카드
-                </span>
-                <span class="text-[9px] text-slate-400 bg-slate-900/60 py-0.5 px-1.5 rounded-md border border-white/5">
-                  🎯 추천 대상: 동기부여가 필요한 신규 파트너 및 비즈니스 검토자
-                </span>
-              </div>
-              <p>1. 삶의 변화는 내가 삶의 주도권을 갖기로 결단하는 순간 시작된다.</p>
-              <p>2. 암웨이 비즈니스를 통한 시간적·경제적 자유와 선택의 기회.</p>
-              <p>3. 환경과 핑계를 넘어서 목표를 향해 나아가는 마인드셋.</p>
-              <p>4. 팀과 시스템 안에서 함께 성장하는 네트워크의 힘.</p>
-              <p>5. 포기하지 않고 꾸준히 실행할 때 완성되는 성공 스토리.</p>
-            </div>
-          </div>
-          <!-- Audio Item 1 -->
-          <div class="glass-card rounded-2xl p-4 audio-item" data-category="business" data-title="네트워크 마케팅 자산 소득의 본질" data-speaker="최선우">
-            <div class="flex gap-3">
-              <div class="w-20 h-20 rounded-xl overflow-hidden relative shrink-0">
-                <img src="https://images.unsplash.com/photo-1516280440614-37939bbacd6a?q=80&w=150" class="w-full h-full object-cover">
-                <div class="absolute inset-0 bg-black/40 flex items-center justify-center">
-                  <i data-lucide="play" class="w-6 h-6 text-white opacity-85"></i>
-                </div>
-              </div>
-              <div class="flex-1 min-w-0">
-                <div class="flex justify-between items-start">
-                  <span class="text-[9px] font-bold text-emerald-400 uppercase font-outfit">사업설명</span>
-                  <span class="text-[9px] text-slate-400 font-outfit">28:15</span>
-                </div>
-                <h4 class="text-xs font-bold text-slate-200 mt-1 line-clamp-1">네트워크 마케팅 자산 소득의 본질</h4>
-                <p class="text-[10px] text-slate-400 mt-0.5">강사: 최선우 Double Diamond</p>
-                <div class="flex gap-2 mt-2">
-                  <button onclick="openYoutubeMock('https://youtu.be/dummy1')" class="px-2.5 py-1 bg-emerald-500/20 text-emerald-400 hover:bg-emerald-500/30 rounded-lg text-[10px] font-bold transition">유튜브 연결</button>
-                  <button onclick="toggleSummaryCard('summary-audio-1')" class="px-2.5 py-1 bg-slate-800 text-slate-300 hover:bg-slate-700 rounded-lg text-[10px] font-bold transition flex items-center gap-0.5"><i data-lucide="file-text" class="w-3 h-3"></i> 5줄 요약</button>
-                </div>
-              </div>
-              <button onclick="copyToClipboard('https://youtu.be/dummy1')" class="p-2 text-slate-400 hover:text-emerald-400 shrink-0 self-start">
-                <i data-lucide="share-2" class="w-4 h-4"></i>
-              </button>
-            </div>
-            <!-- 5 Line Summary Box -->
-            <div id="summary-audio-1" class="hidden mt-3 p-3 bg-slate-950/80 border border-emerald-500/20 rounded-xl text-[11px] text-slate-300 space-y-1.5">
-              <p>1. 직장인은 수입을 만들지만, ABO는 평생 연금성 자산을 구축합니다.</p>
-              <p>2. 고품질 암웨이 제품 소비가 수입이 되는 독특한 무자본 비즈니스 모델.</p>
-              <p>3. 지속성 있는 네트워킹은 정직과 복제 시스템 구축에서 출발합니다.</p>
-              <p>4. 스폰서와의 정기적 맵 상담을 바탕으로 주간 미팅 루틴을 준수해야 합니다.</p>
-              <p>5. 매월 랠리 세미나 참석은 전체 팀의 성장 동력을 하나로 묶는 핵심 수단입니다.</p>
-            </div>
-          </div>
 
-          <!-- Audio Item 2 -->
-          <div class="glass-card rounded-2xl p-4 audio-item" data-category="product" data-title="유기농 뉴트리라이트 농장의 비밀과 비타민 C" data-speaker="이은주">
-            <div class="flex gap-3">
-              <div class="w-20 h-20 rounded-xl overflow-hidden relative shrink-0">
-                <img src="https://images.unsplash.com/photo-1574316071802-0d684efa7bf5?q=80&w=150" class="w-full h-full object-cover">
-                <div class="absolute inset-0 bg-black/40 flex items-center justify-center">
-                  <i data-lucide="play" class="w-6 h-6 text-white opacity-85"></i>
+            <!-- 03 시스템 -->
+            <div onclick="openGdriveFolder('11YKvu5pvDZ0Rm9FWSAUpVaFOyjCHDeab')" class="glass-card rounded-2xl p-3.5 border border-white/5 hover:border-emerald-500/40 transition cursor-pointer group flex flex-col justify-between">
+              <div>
+                <div class="w-8 h-8 rounded-xl bg-purple-500/10 text-purple-400 flex items-center justify-center group-hover:scale-105 transition mb-2">
+                  <i data-lucide="settings" class="w-4 h-4"></i>
                 </div>
+                <h4 class="text-xs font-bold text-white group-hover:text-purple-400 transition">03 시스템</h4>
+                <p class="text-[9px] text-slate-400 mt-1 line-clamp-2">비즈니스 성공 수칙, 텐코어 가이드</p>
               </div>
-              <div class="flex-1 min-w-0">
-                <div class="flex justify-between items-start">
-                  <span class="text-[9px] font-bold text-emerald-400 uppercase font-outfit">제품 & 제품 이야기</span>
-                  <span class="text-[9px] text-slate-400 font-outfit">18:40</span>
-                </div>
-                <h4 class="text-xs font-bold text-slate-200 mt-1 line-clamp-1">유기농 뉴트리라이트 농장의 비밀과 비타민 C</h4>
-                <p class="text-[10px] text-slate-400 mt-0.5">강사: 이은주 영양학 박사</p>
-                <div class="flex gap-2 mt-2">
-                  <button onclick="openYoutubeMock('https://youtu.be/dummy2')" class="px-2.5 py-1 bg-emerald-500/20 text-emerald-400 hover:bg-emerald-500/30 rounded-lg text-[10px] font-bold transition">유튜브 연결</button>
-                  <button onclick="toggleSummaryCard('summary-audio-2')" class="px-2.5 py-1 bg-slate-800 text-slate-300 hover:bg-slate-700 rounded-lg text-[10px] font-bold transition flex items-center gap-0.5"><i data-lucide="file-text" class="w-3 h-3"></i> 5줄 요약</button>
-                </div>
+              <div class="mt-3 pt-2 border-t border-white/5 flex items-center justify-between text-[9px] text-slate-500">
+                <span>폴더 열기</span>
+                <i data-lucide="arrow-up-right" class="w-3 h-3 text-slate-400 group-hover:text-purple-400"></i>
               </div>
-              <button onclick="copyToClipboard('https://youtu.be/dummy2')" class="p-2 text-slate-400 hover:text-emerald-400 shrink-0 self-start">
-                <i data-lucide="share-2" class="w-4 h-4"></i>
-              </button>
             </div>
-            <!-- 5 Line Summary Box -->
-            <div id="summary-audio-2" class="hidden mt-3 p-3 bg-slate-950/80 border border-emerald-500/20 rounded-xl text-[11px] text-slate-300 space-y-1.5">
-              <p>1. 암웨이 뉴트리라이트는 씨앗부터 완제품까지 친환경 유기농법을 고집합니다.</p>
-              <p>2. 레이크뷰, 엘 페탈 등 직영 농장에서 무당벌레와 지렁이로 토양을 살립니다.</p>
-              <p>3. 아세로라 체리는 비타민 C 함량이 가장 우수한 시점에 당일 수확·가공됩니다.</p>
-              <p>4. 합성 비타민과 차원이 다른 천연 식물영양소(파이토케미컬)가 듬뿍 포함됩니다.</p>
-              <p>5. 하루 단 한 알로 몸을 보호하고 활성산소를 억제하는 항산화 자산을 키우세요.</p>
-            </div>
-          </div>
 
-          <!-- Audio Item 3 -->
-          <div class="glass-card rounded-2xl p-4 audio-item" data-category="system" data-title="포기하지 않는 열정, 성공으로 가는 10가지 태도" data-speaker="성호준">
-            <div class="flex gap-3">
-              <div class="w-20 h-20 rounded-xl overflow-hidden relative shrink-0">
-                <img src="https://images.unsplash.com/photo-1522071820081-009f0129c71c?q=80&w=150" class="w-full h-full object-cover">
-                <div class="absolute inset-0 bg-black/40 flex items-center justify-center">
-                  <i data-lucide="play" class="w-6 h-6 text-white opacity-85"></i>
+            <!-- 04 건강 자료실 -->
+            <div onclick="openGdriveFolder('1zrzvlyfFvpxxIzPkE15XT5997sqDhmEL')" class="glass-card rounded-2xl p-3.5 border border-white/5 hover:border-emerald-500/40 transition cursor-pointer group flex flex-col justify-between">
+              <div>
+                <div class="w-8 h-8 rounded-xl bg-teal-500/10 text-teal-400 flex items-center justify-center group-hover:scale-105 transition mb-2">
+                  <i data-lucide="activity" class="w-4 h-4"></i>
                 </div>
+                <h4 class="text-xs font-bold text-white group-hover:text-teal-400 transition">04 건강 자료실</h4>
+                <p class="text-[9px] text-slate-400 mt-1 line-clamp-2">면역, 대사질환 영양요법 전문 세미나</p>
               </div>
-              <div class="flex-1 min-w-0">
-                <div class="flex justify-between items-start">
-                  <span class="text-[9px] font-bold text-emerald-400 uppercase font-outfit">시스템</span>
-                  <span class="text-[9px] text-slate-400 font-outfit">35:10</span>
-                </div>
-                <h4 class="text-xs font-bold text-slate-200 mt-1 line-clamp-1">포기하지 않는 열정, 성공으로 가는 10가지 태도</h4>
-                <p class="text-[10px] text-slate-400 mt-0.5">강사: 성호준 Crown Ambassador</p>
-                <div class="flex gap-2 mt-2">
-                  <button onclick="openYoutubeMock('https://youtu.be/dummy3')" class="px-2.5 py-1 bg-emerald-500/20 text-emerald-400 hover:bg-emerald-500/30 rounded-lg text-[10px] font-bold transition">유튜브 연결</button>
-                  <button onclick="toggleSummaryCard('summary-audio-3')" class="px-2.5 py-1 bg-slate-800 text-slate-300 hover:bg-slate-700 rounded-lg text-[10px] font-bold transition flex items-center gap-0.5"><i data-lucide="file-text" class="w-3 h-3"></i> 5줄 요약</button>
-                </div>
+              <div class="mt-3 pt-2 border-t border-white/5 flex items-center justify-between text-[9px] text-slate-500">
+                <span>폴더 열기</span>
+                <i data-lucide="arrow-up-right" class="w-3 h-3 text-slate-400 group-hover:text-teal-400"></i>
               </div>
-              <button onclick="copyToClipboard('https://youtu.be/dummy3')" class="p-2 text-slate-400 hover:text-emerald-400 shrink-0 self-start">
-                <i data-lucide="share-2" class="w-4 h-4"></i>
-              </button>
             </div>
-            <!-- 5 Line Summary Box -->
-            <div id="summary-audio-3" class="hidden mt-3 p-3 bg-slate-950/80 border border-emerald-500/20 rounded-xl text-[11px] text-slate-300 space-y-1.5">
-              <p>1. 재능이 아닌 올바른 '태도(Attitude)'가 사업 성패의 90%를 좌우합니다.</p>
-              <p>2. 비난과 거절은 내 발전을 돕는 영양소이자 보석을 다듬는 망치입니다.</p>
-              <p>3. 텐코어(10 Core) 루틴을 매일 체크하며 스스로 동기를 매일 활성화하십시오.</p>
-              <p>4. 스몰 리딩 그룹을 스스로 운영하며 스폰서의 그늘에서 자립을 꾀하세요.</p>
-            </div>
-          </div>
 
-          <!-- Audio Item 4 (Local) -->
-          <div class="glass-card rounded-2xl p-4 audio-item" data-category="system" data-title="네트워크 마케팅 시스템의 이해와 복제 원리" data-speaker="김복제">
-            <div class="flex gap-3">
-              <div onclick="playLocalAudio('audio/system_audio_01.mp3', '네트워크 마케팅 시스템의 이해와 복제 원리', '김복제 리더님')" class="w-20 h-20 rounded-xl overflow-hidden relative shrink-0 cursor-pointer group">
-                <img src="https://images.unsplash.com/photo-1478737270239-2f02b77fc618?q=80&w=150" class="w-full h-full object-cover group-hover:scale-105 transition duration-300">
-                <div class="absolute inset-0 bg-black/40 flex items-center justify-center">
-                  <i data-lucide="play" class="w-6 h-6 text-white opacity-85 group-hover:scale-110 transition duration-300"></i>
+            <!-- 05 추천 동영상 -->
+            <div onclick="openGdriveFolder('1Dr7m5ItL9uySzVrJ9V7K3lgt1m1uHCbq')" class="glass-card rounded-2xl p-3.5 border border-white/5 hover:border-emerald-500/40 transition cursor-pointer group flex flex-col justify-between">
+              <div>
+                <div class="w-8 h-8 rounded-xl bg-red-500/10 text-red-400 flex items-center justify-center group-hover:scale-105 transition mb-2">
+                  <i data-lucide="play-circle" class="w-4 h-4"></i>
                 </div>
+                <h4 class="text-xs font-bold text-white group-hover:text-red-400 transition">05 추천 동영상</h4>
+                <p class="text-[9px] text-slate-400 mt-1 line-clamp-2">신규 및 파트너 추천 필수 시청 영상</p>
               </div>
-              <div class="flex-1 min-w-0">
-                <div class="flex justify-between items-start">
-                  <span class="text-[9px] font-bold text-emerald-400 uppercase font-outfit">시스템</span>
-                  <span class="text-[9px] text-slate-400 font-outfit">45:20</span>
-                </div>
-                <h4 class="text-xs font-bold text-slate-200 mt-1 line-clamp-1">네트워크 마케팅 시스템의 이해와 복제 원리</h4>
-                <p class="text-[10px] text-slate-400 mt-0.5">강사: 김복제 리더님</p>
-                
-                <div class="flex gap-1.5 mt-2 flex-wrap">
-                  <button onclick="playLocalAudio('audio/system_audio_01.mp3', '네트워크 마케팅 시스템의 이해와 복제 원리', '김복제 리더님')" class="px-2.5 py-1 bg-emerald-500/10 text-emerald-400 hover:bg-emerald-500/20 rounded-lg text-[10px] font-bold transition flex items-center gap-1">
-                    <i data-lucide="play" class="w-3.5 h-3.5 fill-current"></i> 바로 듣기
-                  </button>
-                  <button onclick="toggleSummaryCard('summary-audio-system-local')" class="px-2.5 py-1 bg-slate-800 text-slate-300 hover:bg-slate-700 rounded-lg text-[10px] font-bold transition flex items-center gap-0.5">
-                    <i data-lucide="file-text" class="w-3.5 h-3.5"></i> 5줄 요약
-                  </button>
-                  <button onclick="shareKakao('네트워크 마케팅 시스템의 이해와 복제 원리', '김복제 리더님', window.location.href)" class="px-2.5 py-1 bg-amber-400/10 text-amber-300 hover:bg-amber-400/20 rounded-lg text-[10px] font-bold transition flex items-center gap-1" title="카카오톡 공유">
-                    <i data-lucide="message-circle" class="w-3.5 h-3.5 text-amber-400"></i> 카톡 공유
-                  </button>
-                </div>
+              <div class="mt-3 pt-2 border-t border-white/5 flex items-center justify-between text-[9px] text-slate-500">
+                <span>폴더 열기</span>
+                <i data-lucide="arrow-up-right" class="w-3 h-3 text-slate-400 group-hover:text-red-400"></i>
               </div>
-              <button onclick="copyToClipboard('[ABO Partner] 네트워크 마케팅 시스템의 이해와 복제 원리 (강사: 김복제 리더님)')" class="p-2 text-slate-400 hover:text-emerald-400 shrink-0 self-start" title="정보 복사">
-                <i data-lucide="share-2" class="w-4 h-4"></i>
-              </button>
             </div>
-            
-            <div id="summary-audio-system-local" class="hidden mt-3 p-3 bg-slate-950/80 border border-emerald-500/20 rounded-xl text-[11px] text-slate-300 space-y-1.5 animate-fade-in">
-              <div class="flex flex-col gap-1 pb-1.5 border-b border-white/5 mb-1.5">
-                <span class="text-[10px] text-emerald-400 font-bold flex items-center gap-1">
-                  <i data-lucide="check-square" class="w-3.5 h-3.5"></i> 핵심 5줄 요약 카드
-                </span>
-                <span class="text-[9px] text-slate-400 bg-slate-900/60 py-0.5 px-1.5 rounded-md border border-white/5">
-                  🎯 추천 대상: 기본 시스템을 체계적으로 복제하고 싶은 신규 및 기존 사업자
-                </span>
+
+            <!-- 06 퀸 레시피 -->
+            <div onclick="openGdriveFolder('1QHSgzA6Ls3OWt3S8R6loWx3ftpNI0tVn')" class="glass-card rounded-2xl p-3.5 border border-white/5 hover:border-emerald-500/40 transition cursor-pointer group flex flex-col justify-between">
+              <div>
+                <div class="w-8 h-8 rounded-xl bg-amber-500/10 text-amber-400 flex items-center justify-center group-hover:scale-105 transition mb-2">
+                  <i data-lucide="utensils" class="w-4 h-4"></i>
+                </div>
+                <h4 class="text-xs font-bold text-white group-hover:text-amber-400 transition">06 퀸 레시피</h4>
+                <p class="text-[9px] text-slate-400 mt-1 line-clamp-2">인덕션 냄비 요리 레시피북 & 사진</p>
               </div>
-              <p>1. 시스템은 성공의 지름길이자 지속 가능한 비즈니스의 핵심이다.</p>
-              <p>2. 단순하고 명확한 행동 수칙을 통해 누구나 쉽게 복제할 수 있는 구조를 만든다.</p>
-              <p>3. 미팅 참석과 음원 듣기를 통한 일관된 마인드셋 유지.</p>
-              <p>4. 스폰서와의 지속적인 상담 및 피드백 루프의 중요성.</p>
-              <p>5. 배운 것을 파트너에게 그대로 전달하고 가르치는 리더십의 완성.</p>
+              <div class="mt-3 pt-2 border-t border-white/5 flex items-center justify-between text-[9px] text-slate-500">
+                <span>폴더 열기</span>
+                <i data-lucide="arrow-up-right" class="w-3 h-3 text-slate-400 group-hover:text-amber-400"></i>
+              </div>
+            </div>
+
+            <!-- 07 퓨네 온라인 강좌 -->
+            <div onclick="openGdriveFolder('1mZyzknAXHpnuW0YUL3wfIQVTXVQAEjV2')" class="glass-card rounded-2xl p-3.5 border border-white/5 hover:border-emerald-500/40 transition cursor-pointer group flex flex-col justify-between">
+              <div>
+                <div class="w-8 h-8 rounded-xl bg-indigo-500/10 text-indigo-400 flex items-center justify-center group-hover:scale-105 transition mb-2">
+                  <i data-lucide="monitor-play" class="w-4 h-4"></i>
+                </div>
+                <h4 class="text-xs font-bold text-white group-hover:text-indigo-400 transition">07 퓨네 강좌</h4>
+                <p class="text-[9px] text-slate-400 mt-1 line-clamp-2">sFuNe 정기 온라인 세미나 녹화본</p>
+              </div>
+              <div class="mt-3 pt-2 border-t border-white/5 flex items-center justify-between text-[9px] text-slate-500">
+                <span>폴더 열기</span>
+                <i data-lucide="arrow-up-right" class="w-3 h-3 text-slate-400 group-hover:text-indigo-400"></i>
+              </div>
+            </div>
+
+            <!-- 08 AI 자료실 -->
+            <div onclick="openGdriveFolder('1XRUW-TRFomKYaqFx-IgyM5yc_yxQQedi')" class="glass-card rounded-2xl p-3.5 border border-white/5 hover:border-emerald-500/40 transition cursor-pointer group flex flex-col justify-between">
+              <div>
+                <div class="w-8 h-8 rounded-xl bg-cyan-500/10 text-cyan-400 flex items-center justify-center group-hover:scale-105 transition mb-2">
+                  <i data-lucide="bot" class="w-4 h-4"></i>
+                </div>
+                <h4 class="text-xs font-bold text-white group-hover:text-cyan-400 transition">08 AI 자료실</h4>
+                <p class="text-[9px] text-slate-400 mt-1 line-clamp-2">비즈니스 AI 툴 가이드 & 프롬프트</p>
+              </div>
+              <div class="mt-3 pt-2 border-t border-white/5 flex items-center justify-between text-[9px] text-slate-500">
+                <span>폴더 열기</span>
+                <i data-lucide="arrow-up-right" class="w-3 h-3 text-slate-400 group-hover:text-cyan-400"></i>
+              </div>
+            </div>
+
+            <!-- 09 사진 자료실 -->
+            <div onclick="openGdriveFolder('1NuFw75_vHoZs86NPQCPybhNLaD-rLggW')" class="glass-card rounded-2xl p-3.5 border border-white/5 hover:border-emerald-500/40 transition cursor-pointer group flex flex-col justify-between">
+              <div>
+                <div class="w-8 h-8 rounded-xl bg-pink-500/10 text-pink-400 flex items-center justify-center group-hover:scale-105 transition mb-2">
+                  <i data-lucide="image" class="w-4 h-4"></i>
+                </div>
+                <h4 class="text-xs font-bold text-white group-hover:text-pink-400 transition">09 사진 자료실</h4>
+                <p class="text-[9px] text-slate-400 mt-1 line-clamp-2">랠리, 세미나, 파트너십 행사 사진</p>
+              </div>
+              <div class="mt-3 pt-2 border-t border-white/5 flex items-center justify-between text-[9px] text-slate-500">
+                <span>폴더 열기</span>
+                <i data-lucide="arrow-up-right" class="w-3 h-3 text-slate-400 group-hover:text-pink-400"></i>
+              </div>
+            </div>
+
+            <!-- 10 동영상 자료실 -->
+            <div onclick="openGdriveFolder('1DMfxgT6HlFI4n5uQJjokOHBrkGtgg5ud')" class="glass-card rounded-2xl p-3.5 border border-white/5 hover:border-emerald-500/40 transition cursor-pointer group flex flex-col justify-between">
+              <div>
+                <div class="w-8 h-8 rounded-xl bg-rose-500/10 text-rose-400 flex items-center justify-center group-hover:scale-105 transition mb-2">
+                  <i data-lucide="film" class="w-4 h-4"></i>
+                </div>
+                <h4 class="text-xs font-bold text-white group-hover:text-rose-400 transition">10 동영상</h4>
+                <p class="text-[9px] text-slate-400 mt-1 line-clamp-2">팀 홍보 및 세미나 풀영상 아카이브</p>
+              </div>
+              <div class="mt-3 pt-2 border-t border-white/5 flex items-center justify-between text-[9px] text-slate-500">
+                <span>폴더 열기</span>
+                <i data-lucide="arrow-up-right" class="w-3 h-3 text-slate-400 group-hover:text-rose-400"></i>
+              </div>
+            </div>
+
+            <!-- 12 음원 자료실 -->
+            <div onclick="openGdriveFolder('1fSL-UoXLpnFwCFZqOXSISg81ulbpSfGi')" class="glass-card rounded-2xl p-3.5 border border-emerald-500/40 bg-emerald-950/20 transition cursor-pointer group flex flex-col justify-between">
+              <div>
+                <div class="w-8 h-8 rounded-xl bg-emerald-500/20 text-emerald-400 flex items-center justify-center group-hover:scale-105 transition mb-2">
+                  <i data-lucide="headphones" class="w-4 h-4"></i>
+                </div>
+                <h4 class="text-xs font-bold text-white group-hover:text-emerald-400 transition">12 음원 자료실</h4>
+                <p class="text-[9px] text-slate-400 mt-1 line-clamp-2">A~F 6개 분야별 핵심 음원 허브</p>
+              </div>
+              <div class="mt-3 pt-2 border-t border-white/5 flex items-center justify-between text-[9px] text-slate-500">
+                <span>폴더 열기</span>
+                <i data-lucide="arrow-up-right" class="w-3 h-3 text-slate-400 group-hover:text-emerald-400"></i>
+              </div>
+            </div>
+
+            <!-- 13 일반 자료실 -->
+            <div onclick="openGdriveFolder('10BM-59vUgB_5CA8uCQfQ6ProuJjuY-9Z')" class="glass-card rounded-2xl p-3.5 border border-white/5 hover:border-emerald-500/40 transition cursor-pointer group flex flex-col justify-between">
+              <div>
+                <div class="w-8 h-8 rounded-xl bg-slate-500/10 text-slate-400 flex items-center justify-center group-hover:scale-105 transition mb-2">
+                  <i data-lucide="folder-archive" class="w-4 h-4"></i>
+                </div>
+                <h4 class="text-xs font-bold text-white group-hover:text-slate-300 transition">13 일반 자료실</h4>
+                <p class="text-[9px] text-slate-400 mt-1 line-clamp-2">신청서, 서식, 비즈니스 매뉴얼</p>
+              </div>
+              <div class="mt-3 pt-2 border-t border-white/5 flex items-center justify-between text-[9px] text-slate-500">
+                <span>폴더 열기</span>
+                <i data-lucide="arrow-up-right" class="w-3 h-3 text-slate-400 group-hover:text-slate-300"></i>
+              </div>
+            </div>
+
+            <!-- 14 공지사항 (전체 폭) -->
+            <div onclick="openGdriveFolder('1yCPh6x_qEtPThedGFmPdE6VNxxX6kgyh')" class="col-span-2 glass-card rounded-2xl p-3.5 border border-amber-500/30 bg-amber-950/10 transition cursor-pointer group flex items-center justify-between">
+              <div class="flex items-center gap-3">
+                <div class="w-9 h-9 rounded-xl bg-amber-500/20 text-amber-400 flex items-center justify-center group-hover:scale-105 transition shrink-0">
+                  <i data-lucide="megaphone" class="w-4.5 h-4.5"></i>
+                </div>
+                <div>
+                  <h4 class="text-xs font-bold text-white group-hover:text-amber-400 transition">14 공지사항</h4>
+                  <p class="text-[9px] text-slate-400 mt-0.5">팀 공식 공지, 세미나 안내문 및 프로모션</p>
+                </div>
+              </div>
+              <div class="flex items-center gap-1 text-[10px] text-amber-400 font-bold">
+                <span>열기</span>
+                <i data-lucide="arrow-up-right" class="w-3.5 h-3.5"></i>
+              </div>
             </div>
           </div>
         </div>
@@ -2178,13 +2205,39 @@
       document.getElementById('admin-panel').classList.remove('flex');
     }
 
-    // 구글 드라이브 5TB 자료실 열기
-    let googleDriveFolderUrl = "https://drive.google.com/drive/folders/1"; // 기본 드라이브 폴더 링크
+    // 구글 드라이브 5TB 자료실 (1. sFuNe 연동)
+    let googleDriveFolderUrl = "https://drive.google.com/drive/folders/1gl-bye7jUjFT7fCWiTH7uI7NyVNggPxD?hl=ko"; // sFuNe 공식 공유 링크
 
     function openGoogleDriveHub() {
-      // 구글 드라이브 공유 폴더 새 창 열기 (앱 내 웹뷰 혹은 브라우저)
       window.open(googleDriveFolderUrl, '_blank');
-      showToast("팀 5TB 구글 드라이브 자료실로 연결되었습니다.");
+      showToast("sFuNe 구글 드라이브 자료실로 연결되었습니다.");
+    }
+
+    function openGdriveFolder(folderId) {
+      window.open(`https://drive.google.com/drive/folders/${folderId}?hl=ko`, '_blank');
+      showToast("구글 드라이브 폴더로 연결되었습니다.");
+    }
+
+    function switchSfuneView(mode) {
+      const btnAudio = document.getElementById('sfune-tab-audio-btn');
+      const btnAll = document.getElementById('sfune-tab-all-btn');
+      const viewAudio = document.getElementById('sfune-audio-subfolders-view');
+      const viewAll = document.getElementById('sfune-all-folders-view');
+
+      if (!btnAudio || !btnAll) return;
+
+      if (mode === 'audio') {
+        btnAudio.className = 'flex-1 py-2 text-xs font-bold rounded-xl bg-emerald-500 text-white transition flex items-center justify-center gap-1.5 shadow';
+        btnAll.className = 'flex-1 py-2 text-xs font-bold rounded-xl text-slate-400 hover:text-white transition flex items-center justify-center gap-1.5';
+        viewAudio.classList.remove('hidden');
+        viewAll.classList.add('hidden');
+      } else {
+        btnAudio.className = 'flex-1 py-2 text-xs font-bold rounded-xl text-slate-400 hover:text-white transition flex items-center justify-center gap-1.5';
+        btnAll.className = 'flex-1 py-2 text-xs font-bold rounded-xl bg-emerald-500 text-white transition flex items-center justify-center gap-1.5 shadow';
+        viewAudio.classList.add('hidden');
+        viewAll.classList.remove('hidden');
+      }
+      lucide.createIcons();
     }
 
     function setGoogleDriveLink() {
