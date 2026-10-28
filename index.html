@@ -1150,7 +1150,7 @@
         <span class="text-[9px] font-bold">스케줄</span>
       </button>
       <button onclick="switchTab('cooking')" id="nav-cooking" class="nav-item flex flex-col items-center gap-1 text-slate-400 hover:text-slate-200 transition-colors">
-        <i data-lucide="utensils-crosskey" class="w-5 h-5"></i>
+        <i data-lucide="utensils-crossed" class="w-5 h-5"></i>
         <span class="text-[9px] font-bold">레시피</span>
       </button>
     </nav>
@@ -1220,7 +1220,7 @@
           </div>
 
           <!-- Login Submit Button -->
-          <button onclick="handleAuthAction()" id="btn-auth-submit" class="w-full py-3 bg-emerald-500 hover:bg-emerald-600 text-white font-bold text-xs rounded-xl shadow-lg transition">로그인하기</button>
+          <button onclick="handleAuthAction()" id="btn-auth-submit" type="button" class="w-full py-3 bg-emerald-500 hover:bg-emerald-600 active:scale-98 text-white font-bold text-xs rounded-xl shadow-lg transition cursor-pointer">로그인하기</button>
         </div>
 
         <!-- Social Mocks -->
@@ -1235,7 +1235,7 @@
               <i data-lucide="message-circle" class="w-3.5 h-3.5 fill-current"></i> 카카오 로그인
             </button>
             <button onclick="handleSocialMock('구글')" class="py-2.5 bg-white hover:bg-slate-100 text-slate-800 border border-slate-200 font-bold text-[10px] rounded-xl flex items-center justify-center gap-1.5 transition">
-              <i data-lucide="chrome" class="w-3.5 h-3.5 text-red-500"></i> 구글 로그인
+              <i data-lucide="globe" class="w-3.5 h-3.5 text-blue-400"></i> 구글 로그인
             </button>
           </div>
         </div>
@@ -1512,7 +1512,7 @@
   <div id="youtube-modal" class="fixed inset-0 bg-black/80 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4">
     <div class="bg-slate-900 border border-white/10 rounded-3xl max-w-sm w-full p-5 text-center shadow-xl space-y-4">
       <div class="w-12 h-12 rounded-full bg-red-500/10 text-red-500 flex items-center justify-center mx-auto">
-        <i data-lucide="youtube" class="w-6 h-6"></i>
+        <i data-lucide="video" class="w-6 h-6"></i>
       </div>
       <div>
         <h3 class="text-sm font-bold text-white">유튜브 앱/브라우저로 이동</h3>
@@ -2126,8 +2126,10 @@
     }
 
     function handleAuthAction() {
-      const emailInput = document.getElementById('auth-email').value.trim();
-      const passwordInput = document.getElementById('auth-password').value.trim();
+      const emailEl = document.getElementById('auth-email');
+      const passwordEl = document.getElementById('auth-password');
+      const emailInput = (emailEl ? emailEl.value : '').trim();
+      const passwordInput = (passwordEl ? passwordEl.value : '').trim();
       
       if (!emailInput || !passwordInput) {
         showToast("이메일과 비밀번호를 입력해주세요.");
@@ -2135,8 +2137,13 @@
       }
 
       if (authMode === 'login') {
-        // 로그인 처리
-        const user = partnersData.find(u => u.email === emailInput && u.password === passwordInput);
+        // 데이터가 아직 안 읽혔을 경우 즉시 로드
+        if (!partnersData || partnersData.length === 0) {
+          loadStoredData();
+        }
+
+        // 로그인 처리 (이메일 대소문자 무시 비교)
+        const user = partnersData.find(u => u.email.toLowerCase() === emailInput.toLowerCase() && u.password === passwordInput);
         if (user) {
           // 승인 대기 계정 체크
           if (user.status === 'pending') {
@@ -2152,7 +2159,7 @@
         }
       } else {
         // 회원가입 처리
-        const nameInput = document.getElementById('auth-name').value.trim();
+        const nameInput = (document.getElementById('auth-name')?.value || '').trim();
         const inviteInput = (document.getElementById('auth-invite-code')?.value || '').trim().toUpperCase();
 
         if (!nameInput) {
@@ -2161,7 +2168,7 @@
         }
 
         // 중복 가입 체크
-        if (partnersData.some(u => u.email === emailInput)) {
+        if (partnersData.some(u => u.email.toLowerCase() === emailInput.toLowerCase())) {
           showToast("이미 가입된 이메일 주소입니다.");
           return;
         }
@@ -2203,27 +2210,42 @@
     }
 
     function updateUIAfterLogin() {
-      // 1. 로그인 창 숨김
-      document.getElementById('login-screen').classList.add('hidden');
+      // 1. 로그인 창 확실하게 숨김 (style.display none !important 및 class 조작 동시 적용)
+      const loginScreen = document.getElementById('login-screen');
+      if (loginScreen) {
+        loginScreen.style.setProperty('display', 'none', 'important');
+        loginScreen.classList.add('hidden');
+        loginScreen.classList.remove('flex');
+      }
 
       // 2. 홈 화면 웰컴 메시지 김리더 이름 커스터마이징
       const greetingHeading = document.querySelector('#tab-home h2');
-      if (greetingHeading) {
+      if (greetingHeading && currentUser) {
         greetingHeading.innerText = `안녕하세요, ${currentUser.name} 님!`;
       }
 
       // 3. 역할 기반 어드민 메뉴 제어
       const adminBtn = document.getElementById('admin-menu-btn');
-      if (currentUser.role === 'admin' || currentUser.role === 'super_admin') {
-        adminBtn.classList.remove('hidden');
-        adminBtn.classList.add('flex');
-      } else {
-        adminBtn.classList.add('hidden');
-        adminBtn.classList.remove('flex');
+      if (adminBtn && currentUser) {
+        if (currentUser.role === 'admin' || currentUser.role === 'super_admin') {
+          adminBtn.classList.remove('hidden');
+          adminBtn.classList.add('flex');
+          adminBtn.style.setProperty('display', 'flex', 'important');
+        } else {
+          adminBtn.classList.add('hidden');
+          adminBtn.classList.remove('flex');
+          adminBtn.style.setProperty('display', 'none', 'important');
+        }
       }
       
       // 4. Lucide 아이콘 리프레시
-      lucide.createIcons();
+      if (window.lucide && typeof window.lucide.createIcons === 'function') {
+        try {
+          lucide.createIcons();
+        } catch (e) {
+          console.warn('Lucide icon refresh error', e);
+        }
+      }
     }
 
     function handleLogout(showToastAlert = true) {
@@ -2231,16 +2253,29 @@
       localStorage.removeItem('abo_current_user');
       
       // 1. 입력 폼 초기화 (총괄 관리자 계정 기본 세팅)
-      document.getElementById('auth-email').value = 'geun0123@naver.com';
-      document.getElementById('auth-password').value = '1234';
-      document.getElementById('auth-name').value = '';
+      const emailEl = document.getElementById('auth-email');
+      const passEl = document.getElementById('auth-password');
+      const nameEl = document.getElementById('auth-name');
+      if (emailEl) emailEl.value = 'geun0123@naver.com';
+      if (passEl) passEl.value = '1234';
+      if (nameEl) nameEl.value = '';
       
-      // 2. 로그인 스크린 띄우기
-      document.getElementById('login-screen').classList.remove('hidden');
+      // 2. 로그인 스크린 복원 (style.display flex !important 및 class 동시 복원)
+      const loginScreen = document.getElementById('login-screen');
+      if (loginScreen) {
+        loginScreen.style.setProperty('display', 'flex', 'important');
+        loginScreen.classList.remove('hidden');
+        loginScreen.classList.add('flex');
+      }
       toggleLoginMode('login');
 
       // 3. 어드민 버튼 숨김
-      document.getElementById('admin-menu-btn').classList.add('hidden');
+      const adminBtn = document.getElementById('admin-menu-btn');
+      if (adminBtn) {
+        adminBtn.classList.add('hidden');
+        adminBtn.classList.remove('flex');
+        adminBtn.style.setProperty('display', 'none', 'important');
+      }
       
       // 4. 어드민 패널 닫기
       closeAdminPanel();
@@ -2249,6 +2284,24 @@
         showToast("로그아웃되었습니다.");
       }
     }
+
+    // 전역 Window 객체에 명시적 등록 (인라인 onclick 및 브라우저 호환 보장)
+    window.handleAuthAction = handleAuthAction;
+    window.quickFillLogin = quickFillLogin;
+    window.toggleLoginMode = toggleLoginMode;
+    window.updateUIAfterLogin = updateUIAfterLogin;
+    window.handleLogout = handleLogout;
+    window.openAdminPanel = openAdminPanel;
+    window.closeAdminPanel = closeAdminPanel;
+    window.partnersData = partnersData;
+
+    // DOMContentLoaded 시 버튼 이벤트 리스너도 직접 바인딩
+    window.addEventListener('DOMContentLoaded', () => {
+      const submitBtn = document.getElementById('btn-auth-submit');
+      if (submitBtn) {
+        submitBtn.onclick = handleAuthAction;
+      }
+    });
 
     // 어드민 패널 토글
     function openAdminPanel() {
@@ -2358,22 +2411,6 @@
       }
     }
 
-    // 구글 드라이브 5TB 자료실 열기
-    let googleDriveFolderUrl = "https://drive.google.com/drive/folders/1"; // 기본 드라이브 폴더 링크
-
-    function openGoogleDriveHub() {
-      // 구글 드라이브 공유 폴더 새 창 열기 (앱 내 웹뷰 혹은 브라우저)
-      window.open(googleDriveFolderUrl, '_blank');
-      showToast("팀 5TB 구글 드라이브 자료실로 연결되었습니다.");
-    }
-
-    function setGoogleDriveLink() {
-      const newUrl = prompt("연결할 5TB 구글 드라이브 공유 폴더의 링크(URL)를 입력하세요:", googleDriveFolderUrl);
-      if (newUrl && newUrl.trim()) {
-        googleDriveFolderUrl = newUrl.trim();
-        showToast("구글 드라이브 공유 링크가 성공적으로 갱신되었습니다!");
-      }
-    }
 
     // 팀 초대 코드 복사 및 변경
     function copyInviteCode() {
