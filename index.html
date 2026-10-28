@@ -222,88 +222,65 @@
           </button>
         </div>
 
-        <!-- Today's Schedule Card -->
-        <div class="glass-card rounded-3xl p-5">
-          <div class="flex justify-between items-center mb-4">
-            <h3 class="font-bold text-white flex items-center gap-2 text-sm">
-              <i data-lucide="calendar" class="w-4.5 h-4.5 text-emerald-400"></i>
-              오늘의 주요 일정
-            </h3>
-            <button onclick="switchTab('schedule')" class="text-xs text-amway-400 hover:text-amway-300 flex items-center gap-0.5">
-              전체보기 <i data-lucide="chevron-right" class="w-3 h-3"></i>
+        <!-- Today's Schedule (2026년 10월 실시간 교육일정) -->
+        <div class="glass-card rounded-3xl p-4 space-y-3">
+          <div class="flex justify-between items-center">
+            <div class="flex items-center gap-2">
+              <div class="w-7 h-7 rounded-lg bg-emerald-500/10 text-emerald-400 flex items-center justify-center">
+                <i data-lucide="calendar" class="w-4 h-4"></i>
+              </div>
+              <h3 class="font-bold text-white text-sm">오늘의 주요 일정</h3>
+            </div>
+            <button onclick="switchTab('schedule')" class="text-xs text-emerald-400 hover:text-emerald-300 font-bold flex items-center gap-0.5">
+              전체 일정표 <i data-lucide="chevron-right" class="w-3 h-3"></i>
             </button>
           </div>
-          <!-- Schedule Item -->
-          <div class="space-y-3">
-            <div class="bg-slate-900/60 p-3.5 rounded-2xl border border-white/5 flex justify-between items-center">
-              <div class="flex gap-3">
-                <div class="flex flex-col items-center justify-center w-10 h-10 rounded-xl bg-emerald-500/10 text-emerald-400 border border-emerald-500/20 shrink-0">
-                  <span class="text-[10px] uppercase font-bold font-outfit">Today</span>
-                  <span class="text-sm font-bold font-outfit">08</span>
-                </div>
-                <div>
-                  <h4 class="text-xs font-bold text-slate-200">화요 리더십 세미나 (Zoom)</h4>
-                  <p class="text-[10px] text-slate-400 mt-0.5">20:00 - 21:30 | 강사: 박미경 EDG</p>
-                </div>
-              </div>
-              <button onclick="triggerImmediatePush('화요 리더십 세미나', '오늘 20:00에 줌 세미나가 시작됩니다. 잊지 말고 참여하세요!')" class="p-2 rounded-xl bg-white/5 hover:bg-emerald-500/20 text-emerald-400 transition" title="알림 시뮬레이션">
-                <i data-lucide="bell" class="w-4 h-4"></i>
-              </button>
-            </div>
-            <div class="bg-slate-900/60 p-3.5 rounded-2xl border border-white/5 flex justify-between items-center">
-              <div class="flex gap-3">
-                <div class="flex flex-col items-center justify-center w-10 h-10 rounded-xl bg-amber-500/10 text-amber-400 border border-amber-500/20 shrink-0">
-                  <span class="text-[10px] font-bold font-outfit">D-2</span>
-                  <span class="text-sm font-bold font-outfit">10</span>
-                </div>
-                <div>
-                  <h4 class="text-xs font-bold text-slate-200">퀸 쿠킹 홈미팅</h4>
-                  <p class="text-[10px] text-slate-400 mt-0.5">11:00 - 13:00 | 강남 A P 및 줌라이브</p>
-                </div>
-              </div>
-              <button onclick="triggerImmediatePush('퀸 쿠킹 홈미팅', '내일 오전 11시에 쿠킹클래스가 진행됩니다. 재료 준비물 등을 확인하세요.')" class="p-2 rounded-xl bg-white/5 hover:bg-amber-500/20 text-amber-400 transition" title="알림 시뮬레이션">
-                <i data-lucide="bell" class="w-4 h-4"></i>
-              </button>
-            </div>
-          </div>
+          <!-- Dynamic Today's Real Schedule from 10월 교육일정표 -->
+          <div id="home-today-schedule-list" class="space-y-2.5"></div>
         </div>
 
-        <!-- Featured Media (Today's Recommend) -->
-        <div class="glass-card rounded-3xl p-5">
-          <div class="flex justify-between items-center mb-4">
-            <h3 class="font-bold text-white flex items-center gap-2 text-sm">
-              <i data-lucide="play-circle" class="w-4.5 h-4.5 text-emerald-400"></i>
-              오늘의 추천 음원/강의
-            </h3>
-            <button onclick="switchTab('audio')" class="text-xs text-amway-400 hover:text-amway-300 flex items-center gap-0.5">
-              전체보기 <i data-lucide="chevron-right" class="w-3 h-3"></i>
+        <!-- Featured Media (Today's Recommend - Non-broken Premium Card) -->
+        <div class="glass-card rounded-3xl p-4 space-y-3">
+          <div class="flex justify-between items-center">
+            <div class="flex items-center gap-2">
+              <div class="w-7 h-7 rounded-lg bg-emerald-500/10 text-emerald-400 flex items-center justify-center">
+                <i data-lucide="play-circle" class="w-4 h-4"></i>
+              </div>
+              <h3 class="font-bold text-white text-sm">오늘의 추천 음원/강의</h3>
+            </div>
+            <button onclick="switchTab('audio')" class="text-xs text-emerald-400 hover:text-emerald-300 font-bold flex items-center gap-0.5">
+              음원 전체보기 <i data-lucide="chevron-right" class="w-3 h-3"></i>
             </button>
           </div>
           <!-- Card Content -->
-          <div class="relative rounded-2xl overflow-hidden aspect-video group">
-            <img src="https://images.unsplash.com/photo-1516280440614-37939bbacd6a?q=80&w=600&auto=format&fit=crop" alt="Recommended Video" class="w-full h-full object-cover group-hover:scale-105 transition duration-500">
-            <div class="absolute inset-0 bg-gradient-to-t from-slate-950 via-slate-900/40 to-transparent flex flex-col justify-end p-4">
-              <span class="text-[10px] font-bold text-emerald-400 uppercase tracking-widest">Business Mastery</span>
-              <h4 class="text-sm font-bold text-white mt-1 line-clamp-1">네트워크 마케팅 자산 소득의 본질</h4>
-              <p class="text-[11px] text-slate-300 mt-0.5">강사: 최선우 Double Diamond (28분)</p>
-              
-              <div class="flex justify-between items-center mt-3 pt-3 border-t border-white/10">
-                <button onclick="openYoutubeMock('https://youtu.be/dummy-link')" class="flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-emerald-500 hover:bg-emerald-600 text-white text-xs font-bold transition">
-                  <i data-lucide="play" class="w-3 h-3 fill-current"></i> 유튜브 재생
+          <div class="relative rounded-2xl overflow-hidden aspect-[16/9] group bg-gradient-to-br from-[#121824] via-[#0f211d] to-[#121824] border border-white/8 shadow-md flex flex-col justify-between p-4">
+            <div class="absolute -right-6 -bottom-6 w-32 h-32 rounded-full bg-emerald-500/10 blur-xl"></div>
+            <div class="flex justify-between items-start relative z-10">
+              <span class="text-[9px] px-2.5 py-1 rounded-full font-bold bg-emerald-500/20 text-emerald-300 border border-emerald-500/30 tracking-wider">BUSINESS MASTERY</span>
+              <div class="flex items-center gap-1 text-[9px] text-slate-400 bg-black/40 px-2.5 py-0.5 rounded-full font-outfit">
+                <i data-lucide="clock" class="w-3 h-3 text-emerald-400"></i> 28분
+              </div>
+            </div>
+            <div class="relative z-10 space-y-1">
+              <h4 class="text-sm font-bold text-white tracking-tight group-hover:text-emerald-300 transition">네트워크 마케팅 자산 소득의 본질</h4>
+              <p class="text-[10px] text-slate-300">최선우 Double Diamond 리더 세미나 풀버전</p>
+            </div>
+            <div class="flex justify-between items-center pt-2 border-t border-white/10 relative z-10">
+              <button onclick="openYoutubeMock('https://youtu.be/dummy-link')" class="flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-emerald-500 hover:bg-emerald-600 text-white text-xs font-bold transition shadow-sm">
+                <i data-lucide="play" class="w-3 h-3 fill-current"></i> 즉시 청취하기
+              </button>
+              <div class="flex gap-1.5">
+                <button onclick="toggleSummaryCard('summary-home-featured')" class="px-2.5 py-1.5 rounded-xl bg-white/5 hover:bg-white/10 text-slate-300 text-xs font-medium flex items-center gap-1 transition">
+                  <i data-lucide="file-text" class="w-3 h-3"></i> 요약
                 </button>
-                <div class="flex gap-2">
-                  <button onclick="toggleSummaryCard('summary-home-featured')" class="p-2 rounded-full bg-slate-800/80 hover:bg-slate-700 text-slate-300 transition text-xs flex items-center gap-1">
-                    <i data-lucide="file-text" class="w-3.5 h-3.5"></i> 요약
-                  </button>
-                  <button onclick="copyToClipboard('https://youtu.be/dummy-link')" class="p-2 rounded-full bg-slate-800/80 hover:bg-slate-700 text-slate-300 transition">
-                    <i data-lucide="share-2" class="w-3.5 h-3.5"></i>
-                  </button>
-                </div>
+                <button onclick="copyToClipboard('https://youtu.be/dummy-link')" class="p-2 rounded-xl bg-white/5 hover:bg-white/10 text-slate-400 hover:text-white transition">
+                  <i data-lucide="share-2" class="w-3.5 h-3.5"></i>
+                </button>
               </div>
             </div>
           </div>
           <!-- 5 Line Summary Accordion -->
-          <div id="summary-home-featured" class="hidden mt-3 p-4 bg-slate-900/80 border border-emerald-500/20 rounded-2xl text-xs text-slate-300 space-y-2 animate-fade-in">
+          <div id="summary-home-featured" class="hidden mt-2 p-3.5 bg-slate-900/90 border border-emerald-500/20 rounded-2xl text-xs text-slate-300 space-y-1.5 animate-fade-in">
             <p class="font-bold text-emerald-400 mb-1 flex items-center gap-1"><i data-lucide="check-square" class="w-3.5 h-3.5"></i> 핵심 5줄 요약 카드</p>
             <p>1. 직장인은 수입을 만들지만, ABO는 매월 불어나는 평생 자산을 구축합니다.</p>
             <p>2. 암웨이 제품은 단순 소비가 아닌 사업의 밑거름이자 자본이 됩니다.</p>
@@ -343,7 +320,6 @@
             </div>
           </div>
         </div>
-      </div>
     </section>
 
       <!-- 2. AUDIO LIBRARY TAB -->
@@ -838,171 +814,66 @@
 
       <!-- 4. SCHEDULE TAB -->
       <section id="tab-schedule" class="tab-content space-y-4">
-        <!-- Monthly Calendar UI Mock -->
-        <div class="glass-card rounded-3xl p-4">
-          <div class="flex justify-between items-center mb-3">
-            <h4 class="text-sm font-bold text-white flex items-center gap-1.5">
-              <i data-lucide="calendar" class="w-4 h-4 text-emerald-400"></i>
-              2026년 8월
+        <!-- Header & Image View Button -->
+        <div class="p-4 rounded-3xl bg-[#141b26] border border-white/8 shadow-lg flex justify-between items-center">
+          <div>
+            <div class="flex items-center gap-1.5">
+              <span class="text-[9px] px-2 py-0.5 rounded font-bold bg-emerald-500/15 text-emerald-300 border border-emerald-500/30 font-outfit">OCTOBER 2026</span>
+              <span class="text-[9px] text-slate-400">퓨네 & DA</span>
+            </div>
+            <h3 class="text-sm font-bold text-white mt-1">2026년 10월 교육일정표</h3>
+          </div>
+          <button onclick="openScheduleImageModal()" class="px-3 py-2 rounded-xl bg-emerald-500/15 hover:bg-emerald-500/25 border border-emerald-500/30 text-emerald-300 text-xs font-bold transition flex items-center gap-1.5 shadow-sm active:scale-95">
+            <i data-lucide="image" class="w-3.5 h-3.5"></i> 원본 표 보기
+          </button>
+        </div>
+
+        <!-- Meeting Type Filter Chips -->
+        <div class="flex gap-1.5 overflow-x-auto no-scrollbar pb-1 text-[10px]">
+          <button onclick="filterScheduleType('all')" data-type="all" class="sched-filter-btn shrink-0 px-3 py-1.5 rounded-xl bg-emerald-500 text-white font-bold shadow transition">전체 (37)</button>
+          <button onclick="filterScheduleType('fune_offline')" data-type="fune_offline" class="sched-filter-btn shrink-0 px-3 py-1.5 rounded-xl bg-slate-900 border border-white/5 text-amber-300 hover:text-white font-medium transition flex items-center gap-1">
+            <span class="w-2 h-2 rounded-full bg-amber-400"></span> 퓨네 오프라인
+          </button>
+          <button onclick="filterScheduleType('fune_online')" data-type="fune_online" class="sched-filter-btn shrink-0 px-3 py-1.5 rounded-xl bg-slate-900 border border-white/5 text-sky-300 hover:text-white font-medium transition flex items-center gap-1">
+            <span class="w-2 h-2 rounded-full bg-sky-400"></span> 퓨네 온라인
+          </button>
+          <button onclick="filterScheduleType('da_offline')" data-type="da_offline" class="sched-filter-btn shrink-0 px-3 py-1.5 rounded-xl bg-slate-900 border border-white/5 text-rose-300 hover:text-white font-medium transition flex items-center gap-1">
+            <span class="w-2 h-2 rounded-full bg-rose-400"></span> DA 오프라인
+          </button>
+          <button onclick="filterScheduleType('da_online')" data-type="da_online" class="sched-filter-btn shrink-0 px-3 py-1.5 rounded-xl bg-slate-900 border border-white/5 text-emerald-300 hover:text-white font-medium transition flex items-center gap-1">
+            <span class="w-2 h-2 rounded-full bg-emerald-400"></span> DA 온라인
+          </button>
+          <button onclick="filterScheduleType('abc_meeting')" data-type="abc_meeting" class="sched-filter-btn shrink-0 px-3 py-1.5 rounded-xl bg-slate-900 border border-white/5 text-purple-300 hover:text-white font-medium transition flex items-center gap-1">
+            <span class="w-2 h-2 rounded-full bg-purple-400"></span> ABC / 본사
+          </button>
+        </div>
+
+        <!-- Monthly Calendar Grid -->
+        <div class="glass-card rounded-3xl p-4 space-y-2">
+          <div class="flex justify-between items-center mb-1">
+            <h4 class="text-xs font-bold text-slate-200 flex items-center gap-1.5 font-outfit">
+              <i data-lucide="calendar" class="w-3.5 h-3.5 text-emerald-400"></i>
+              2026. 10
             </h4>
-            <div class="flex gap-2">
-              <button class="p-1 rounded-lg hover:bg-white/5 text-slate-400"><i data-lucide="chevron-left" class="w-4 h-4"></i></button>
-              <button class="p-1 rounded-lg hover:bg-white/5 text-slate-400"><i data-lucide="chevron-right" class="w-4 h-4"></i></button>
-            </div>
+            <span class="text-[9px] text-slate-400">날짜를 터치하면 해당 일정이 표시됩니다</span>
           </div>
-          <!-- Days of Week -->
-          <div class="grid grid-cols-7 gap-1 text-center text-[10px] text-slate-500 font-bold mb-1">
-            <span>일</span><span>월</span><span>화</span><span>수</span><span>목</span><span>금</span><span>토</span>
+          <!-- Days of Week Header -->
+          <div class="grid grid-cols-7 gap-1 text-center text-[10px] text-slate-500 font-bold">
+            <span class="text-rose-400">일</span><span>월</span><span>화</span><span>수</span><span>목</span><span>금</span><span class="text-sky-400">토</span>
           </div>
-          <!-- Calendar Days -->
-          <div class="grid grid-cols-7 gap-1 text-center text-xs font-semibold">
-            <!-- Blank days or previous month -->
-            <span class="text-slate-700 py-1.5">27</span>
-            <span class="text-slate-700 py-1.5">28</span>
-            <span class="text-slate-700 py-1.5">29</span>
-            <span class="text-slate-700 py-1.5">30</span>
-            <span class="text-slate-700 py-1.5">31</span>
-            <span class="text-slate-400 py-1.5">1</span>
-            <span class="text-slate-400 py-1.5">2</span>
-            
-            <span class="text-slate-400 py-1.5">3</span>
-            <span class="text-slate-400 py-1.5">4</span>
-            <span class="text-slate-400 py-1.5">5</span>
-            <span class="text-slate-400 py-1.5">6</span>
-            <span class="text-slate-400 py-1.5">7</span>
-            <!-- 8th (Today) -->
-            <span class="relative py-1.5 text-white flex justify-center">
-              <span class="absolute inset-1.5 rounded-lg bg-emerald-500/20 ring-1 ring-emerald-500/50 flex items-center justify-center w-6 h-6">8</span>
-              <span class="absolute bottom-1 w-1 h-1 rounded-full bg-emerald-400"></span>
-            </span>
-            <span class="text-slate-400 py-1.5">9</span>
-            
-            <span class="relative py-1.5 text-slate-400 flex justify-center">
-              <span class="w-6 h-6 flex items-center justify-center">10</span>
-              <span class="absolute bottom-1 w-1 h-1 rounded-full bg-amber-400"></span>
-            </span>
-            <span class="text-slate-400 py-1.5">11</span>
-            <span class="text-slate-400 py-1.5">12</span>
-            <span class="text-slate-400 py-1.5">13</span>
-            <span class="text-slate-400 py-1.5">14</span>
-            <span class="text-slate-400 py-1.5">15</span>
-            <span class="text-slate-400 py-1.5">16</span>
-
-            <span class="text-slate-400 py-1.5">17</span>
-            <span class="text-slate-400 py-1.5">18</span>
-            <span class="relative py-1.5 text-slate-400 flex justify-center">
-              <span class="w-6 h-6 flex items-center justify-center">19</span>
-              <span class="absolute bottom-1 w-1 h-1 rounded-full bg-emerald-400"></span>
-            </span>
-            <span class="text-slate-400 py-1.5">20</span>
-            <span class="text-slate-400 py-1.5">21</span>
-            <span class="text-slate-400 py-1.5">22</span>
-            <span class="text-slate-400 py-1.5">23</span>
-
-            <span class="text-slate-400 py-1.5">24</span>
-            <span class="relative py-1.5 text-slate-400 flex justify-center">
-              <span class="w-6 h-6 flex items-center justify-center">25</span>
-              <span class="absolute bottom-1 w-1 h-1 rounded-full bg-purple-400"></span>
-            </span>
-            <span class="text-slate-400 py-1.5">26</span>
-            <span class="text-slate-400 py-1.5">27</span>
-            <span class="text-slate-400 py-1.5">28</span>
-            <span class="text-slate-400 py-1.5">29</span>
-            <span class="text-slate-400 py-1.5">30</span>
-          </div>
+          <!-- Calendar Days Grid (Dynamic Injection) -->
+          <div id="calendar-days-grid" class="grid grid-cols-7 gap-1 text-center font-outfit"></div>
         </div>
 
-        <!-- Notification Config / Push Simulator Info -->
-        <div class="p-4 rounded-2xl bg-emerald-950/20 border border-emerald-500/20 flex items-center justify-between">
-          <div class="flex items-center gap-3">
-            <div class="p-2.5 rounded-xl bg-emerald-500/10 text-emerald-400">
-              <i data-lucide="bell-ring" class="w-5 h-5"></i>
-            </div>
-            <div>
-              <h5 class="text-xs font-bold text-slate-200">일정 전날 자동 알림 설정</h5>
-              <p class="text-[10px] text-slate-400 mt-0.5">매일 저녁 20:00에 다음 날 일정을 미리 알려줍니다.</p>
-            </div>
+        <!-- Selected Day's Schedule List -->
+        <div class="space-y-2.5">
+          <div class="flex justify-between items-center px-1">
+            <h4 id="selected-date-display" class="text-xs font-bold text-slate-200">10월 28일 (수) 일정 목록</h4>
+            <span class="text-[9px] text-emerald-400 font-medium">실시간 동기화</span>
           </div>
-          <!-- Toggle Switch -->
-          <label class="relative inline-flex items-center cursor-pointer select-none">
-            <input type="checkbox" id="push-toggle" onchange="togglePushPermission()" class="sr-only peer">
-            <div class="w-9 h-5 bg-slate-700 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-slate-300 after:border after:rounded-full after:h-4 after:w-4 after:transition-all peer-checked:bg-emerald-500"></div>
-          </label>
+          <div id="selected-day-events-list" class="space-y-2.5"></div>
         </div>
 
-        <!-- Schedule Cards List -->
-        <div class="space-y-3">
-          <h4 class="text-xs font-bold text-slate-300 uppercase tracking-widest pl-1">이달의 일정 리스트</h4>
-
-          <!-- Schedule 1 -->
-          <div class="glass-card rounded-2xl p-4 flex gap-4 items-start">
-            <div class="flex flex-col items-center justify-center w-12 h-12 rounded-xl bg-emerald-500/10 border border-emerald-500/20 text-emerald-400 shrink-0 font-outfit">
-              <span class="text-[9px] uppercase font-bold">Aug</span>
-              <span class="text-base font-extrabold leading-none mt-0.5">08</span>
-            </div>
-            <div class="flex-1 min-w-0">
-              <span class="text-[8px] font-bold text-emerald-400 uppercase tracking-wider">세미나</span>
-              <h4 class="text-xs font-bold text-slate-200 mt-0.5">화요 리더십 세미나</h4>
-              <p class="text-[10px] text-slate-400 mt-1 flex items-center gap-1"><i data-lucide="clock" class="w-3.5 h-3.5"></i> 20:00 - 21:30</p>
-              <p class="text-[10px] text-slate-400 mt-0.5 flex items-center gap-1"><i data-lucide="map-pin" class="w-3.5 h-3.5"></i> 온라인 Zoom (ID: 885-321-432)</p>
-              
-              <div class="flex gap-2 mt-3 pt-3 border-t border-white/5">
-                <button onclick="triggerImmediatePush('화요 리더십 세미나', '오늘 20:00에 시작하는 화요 리더십 줌 세미나 링크가 활성화되었습니다. 참석하십시오!')" class="px-2.5 py-1 bg-emerald-500 text-white rounded-lg text-[10px] font-bold flex items-center gap-1 transition">
-                  <i data-lucide="bell" class="w-3 h-3"></i> 알림즉시테스트
-                </button>
-                <button onclick="copyToClipboard('Zoom Link: https://zoom.us/j/885321432')" class="px-2.5 py-1 bg-slate-800 text-slate-300 hover:bg-slate-700 rounded-lg text-[10px] font-bold transition flex items-center gap-1">
-                  <i data-lucide="link" class="w-3 h-3"></i> 링크복사
-                </button>
-              </div>
-            </div>
-          </div>
-
-          <!-- Schedule 2 -->
-          <div class="glass-card rounded-2xl p-4 flex gap-4 items-start">
-            <div class="flex flex-col items-center justify-center w-12 h-12 rounded-xl bg-amber-500/10 border border-amber-500/20 text-amber-400 shrink-0 font-outfit">
-              <span class="text-[9px] uppercase font-bold">Aug</span>
-              <span class="text-base font-extrabold leading-none mt-0.5">10</span>
-            </div>
-            <div class="flex-1 min-w-0">
-              <span class="text-[8px] font-bold text-amber-400 uppercase tracking-wider">쿠킹 미팅</span>
-              <h4 class="text-xs font-bold text-slate-200 mt-0.5">퀸 쿠킹 홈미팅</h4>
-              <p class="text-[10px] text-slate-400 mt-1 flex items-center gap-1"><i data-lucide="clock" class="w-3.5 h-3.5"></i> 11:00 - 13:00</p>
-              <p class="text-[10px] text-slate-400 mt-0.5 flex items-center gap-1"><i data-lucide="map-pin" class="w-3.5 h-3.5"></i> 강남 암웨이 브랜드 센터(ABC)</p>
-              
-              <div class="flex gap-2 mt-3 pt-3 border-t border-white/5">
-                <button onclick="triggerImmediatePush('퀸 쿠킹 홈미팅 알림', '내일 11시 강남 ABC에서 열리는 쿠킹미팅 준비물은 개인 앞치마입니다.')" class="px-2.5 py-1 bg-emerald-500 text-white rounded-lg text-[10px] font-bold flex items-center gap-1 transition">
-                  <i data-lucide="bell" class="w-3 h-3"></i> 알림즉시테스트
-                </button>
-                <button onclick="copyToClipboard('강남 ABC 찾아오시는길: 서울 강남구 테헤란로 123')" class="px-2.5 py-1 bg-slate-800 text-slate-300 hover:bg-slate-700 rounded-lg text-[10px] font-bold transition flex items-center gap-1">
-                  <i data-lucide="map" class="w-3 h-3"></i> 주소복사
-                </button>
-              </div>
-            </div>
-          </div>
-
-          <!-- Schedule 3 -->
-          <div class="glass-card rounded-2xl p-4 flex gap-4 items-start">
-            <div class="flex flex-col items-center justify-center w-12 h-12 rounded-xl bg-emerald-500/10 border border-emerald-500/20 text-emerald-400 shrink-0 font-outfit">
-              <span class="text-[9px] uppercase font-bold">Aug</span>
-              <span class="text-base font-extrabold leading-none mt-0.5">19</span>
-            </div>
-            <div class="flex-1 min-w-0">
-              <span class="text-[8px] font-bold text-emerald-400 uppercase tracking-wider">세미나</span>
-              <h4 class="text-xs font-bold text-slate-200 mt-0.5">이달의 랠리(Rally) 페스티벌</h4>
-              <p class="text-[10px] text-slate-400 mt-1 flex items-center gap-1"><i data-lucide="clock" class="w-3.5 h-3.5"></i> 14:00 - 18:00</p>
-              <p class="text-[10px] text-slate-400 mt-0.5 flex items-center gap-1"><i data-lucide="map-pin" class="w-3.5 h-3.5"></i> 그랜드 인터컨티넨탈 호텔 서울</p>
-              
-              <div class="flex gap-2 mt-3 pt-3 border-t border-white/5">
-                <button onclick="triggerImmediatePush('이달의 랠리 페스티벌', '다음 주 수요일 이달의 랠리 축제가 성대하게 개최됩니다! 티켓 발권을 미리 확인하세요.')" class="px-2.5 py-1 bg-emerald-500 text-white rounded-lg text-[10px] font-bold flex items-center gap-1 transition">
-                  <i data-lucide="bell" class="w-3 h-3"></i> 알림즉시테스트
-                </button>
-                <button onclick="copyToClipboard('그랜드 인터컨티넨탈 호텔 그랜드볼룸')" class="px-2.5 py-1 bg-slate-800 text-slate-300 hover:bg-slate-700 rounded-lg text-[10px] font-bold transition flex items-center gap-1">
-                  <i data-lucide="link" class="w-3 h-3"></i> 주소복사
-                </button>
-              </div>
-            </div>
-          </div>
-        </div>
       </section>
 
       <!-- 5. COOKING & RECIPE TAB -->
@@ -1385,8 +1256,9 @@
         </div>
       </div>
     </div>
+  </div> <!-- End Mobile Device Container -->
 
-    <!-- ADMIN CONFIRM KICK OUT DIALOG (Custom Modal) -->
+  <!-- ADMIN CONFIRM KICK OUT DIALOG (Custom Modal) -->
     <div id="admin-confirm-modal" class="fixed inset-0 bg-black/80 backdrop-blur-sm z-[60] flex items-center justify-center p-4 hidden">
       <div class="bg-slate-900 border border-white/10 rounded-3xl max-w-xs w-full p-5 text-center shadow-2xl space-y-4 animate-fade-in">
         <div class="w-12 h-12 rounded-full bg-red-500/10 text-red-500 flex items-center justify-center mx-auto">
@@ -1525,6 +1397,29 @@
         <button onclick="closeYoutubeModal()" class="flex-1 py-2 bg-slate-800 hover:bg-slate-700 text-slate-300 text-xs font-bold rounded-xl transition">취소</button>
         <a id="youtube-direct-link" href="#" target="_blank" onclick="closeYoutubeModal()" class="flex-1 py-2 bg-red-600 hover:bg-red-500 text-white text-xs font-bold rounded-xl transition inline-block">이동하기</a>
       </div>
+    </div>
+  </div>
+
+  
+  <!-- 📅 SCHEDULE IMAGE VIEWER MODAL -->
+  <div id="schedule-image-modal" class="fixed inset-0 bg-black/90 backdrop-blur-md z-50 hidden flex-col justify-between p-4">
+    <div class="flex justify-between items-center pb-3 border-b border-white/10 shrink-0">
+      <div class="flex items-center gap-2">
+        <div class="w-7 h-7 rounded-lg bg-emerald-500/20 text-emerald-400 flex items-center justify-center">
+          <i data-lucide="calendar" class="w-4 h-4"></i>
+        </div>
+        <h3 class="text-xs font-bold text-white">2026년 10월 교육일정표 (퓨처네트워크 / 드림아카데미)</h3>
+      </div>
+      <button onclick="closeScheduleImageModal()" class="p-2 rounded-full hover:bg-white/10 text-slate-400 hover:text-white transition">
+        <i data-lucide="x" class="w-5 h-5"></i>
+      </button>
+    </div>
+    <div class="flex-1 overflow-auto flex items-center justify-center my-2 p-1">
+      <img src="865+2026년10월+교육일정표.png" alt="2026년 10월 교육일정표 원본" class="max-w-full max-h-full object-contain rounded-xl shadow-2xl border border-white/10">
+    </div>
+    <div class="flex justify-between items-center pt-2 text-[10px] text-slate-400 shrink-0">
+      <span>손가락으로 확대/축소하여 확인 가능합니다.</span>
+      <button onclick="closeScheduleImageModal()" class="px-4 py-2 rounded-xl bg-slate-800 hover:bg-slate-700 text-white font-bold transition">닫기</button>
     </div>
   </div>
 
@@ -2058,6 +1953,7 @@
     window.addEventListener('DOMContentLoaded', () => {
       loadStoredData();
       initRealClock();
+      initScheduleModule();
 
       const savedUser = localStorage.getItem('abo_current_user');
       if (savedUser) {
@@ -2294,6 +2190,769 @@
     window.openAdminPanel = openAdminPanel;
     window.closeAdminPanel = closeAdminPanel;
     window.partnersData = partnersData;
+
+    // ==========================================
+    // 2026년 10월 교육일정표 데이터 (퓨처네트워크 / 드림아카데미)
+    // ==========================================
+    const monthlyScheduleData = [
+    {
+        "day": 1,
+        "dow": "목",
+        "events": [
+            {
+                "time": "저녁 08:00",
+                "location": "DA ZOOM",
+                "type": "da_online",
+                "typeName": "DA 온라인",
+                "title": "WHY AW (10) / 사업설명 (60)",
+                "speaker": "오세훈 DIA",
+                "desc": "DA 정기 저녁 온라인 줌 미팅"
+            }
+        ]
+    },
+    {
+        "day": 2,
+        "dow": "금",
+        "events": [
+            {
+                "time": "오전 11:00",
+                "location": "리더스클럽 & 온라인",
+                "type": "da_offline",
+                "typeName": "DA 오프라인/온라인",
+                "title": "사업설명 (50) / WHY AW (10) / 환절기 필수템 (30)",
+                "speaker": "박춘호 DIA, 강효순 FPT, 박해성 FPT",
+                "desc": "오전 리더스클럽 정기 교육"
+            },
+            {
+                "time": "오후 02:00",
+                "location": "리더스클럽",
+                "type": "da_offline",
+                "typeName": "DA 오프라인",
+                "title": "리더미팅 (90)",
+                "speaker": "SP 이상 리더",
+                "desc": "SP 이상 오프라인 리더 전략 미팅"
+            }
+        ]
+    },
+    {
+        "day": 3,
+        "dow": "토",
+        "holiday": "개천절",
+        "events": []
+    },
+    {
+        "day": 4,
+        "dow": "일",
+        "events": []
+    },
+    {
+        "day": 5,
+        "dow": "월",
+        "holiday": "대체공휴일",
+        "events": []
+    },
+    {
+        "day": 6,
+        "dow": "화",
+        "events": [
+            {
+                "time": "오전 11:00",
+                "location": "다온카페 & 퓨네줌",
+                "type": "fune_offline",
+                "typeName": "퓨네 오프라인/온라인",
+                "title": "여성그룹미팅 (90)",
+                "speaker": "진행: 엄지혜 FEDC",
+                "desc": "다온카페 오프라인 및 퓨네줌 동시 진행"
+            }
+        ]
+    },
+    {
+        "day": 7,
+        "dow": "수",
+        "events": [
+            {
+                "time": "오전 11:00",
+                "location": "각 DF 홈",
+                "type": "fune_offline",
+                "typeName": "퓨네 오프라인",
+                "title": "여성 DF 홈미팅",
+                "speaker": "각 DF 리더",
+                "desc": "각 다이아몬드 패밀리별 홈미팅"
+            },
+            {
+                "time": "저녁 08:00",
+                "location": "퓨네줌",
+                "type": "fune_online",
+                "typeName": "퓨네 온라인",
+                "title": "퓨네패밀리세미나 (90)",
+                "speaker": "사회: 심은정 FPT",
+                "desc": "퓨처네트워크 전체 패밀리 온라인 세미나"
+            }
+        ]
+    },
+    {
+        "day": 8,
+        "dow": "목",
+        "events": [
+            {
+                "time": "저녁 08:00",
+                "location": "다온카페",
+                "type": "da_offline",
+                "typeName": "DA 오프라인",
+                "title": "사업설명 (90)",
+                "speaker": "김철 FEDC",
+                "desc": "다온카페 오프라인 사업설명회"
+            }
+        ]
+    },
+    {
+        "day": 9,
+        "dow": "금",
+        "holiday": "한글날",
+        "events": [
+            {
+                "time": "오전 11:00",
+                "location": "리더스클럽 & 온라인",
+                "type": "da_offline",
+                "typeName": "DA 오프라인/온라인",
+                "title": "사업설명 (50) / WHY AW (10) / 관계의 기술 & 1대1 미팅 (40)",
+                "speaker": "문연희 FDIA, 한아리 FPT, 육소연 FPT",
+                "desc": "한글날 특별 교육 세션"
+            }
+        ]
+    },
+    {
+        "day": 10,
+        "dow": "토",
+        "events": [
+            {
+                "time": "오후 04:00",
+                "location": "김&엄 홈",
+                "type": "fune_offline",
+                "typeName": "퓨네 오프라인",
+                "title": "김철 홈사업설명 (90)",
+                "speaker": "김철 FEDC",
+                "desc": "홈미팅 중심 사업설명회"
+            }
+        ]
+    },
+    {
+        "day": 11,
+        "dow": "일",
+        "events": [
+            {
+                "time": "오후 02:30",
+                "location": "강서ABC",
+                "type": "da_offline",
+                "typeName": "DA 오프라인",
+                "title": "일일세미나 초청",
+                "speaker": "초청: 임은영 DIA",
+                "desc": "강서 암웨이 비즈니스 센터 일일세미나"
+            }
+        ]
+    },
+    {
+        "day": 12,
+        "dow": "월",
+        "events": [
+            {
+                "time": "오전 10:00",
+                "location": "퓨네줌",
+                "type": "fune_online",
+                "typeName": "퓨네 온라인",
+                "title": "행복한 홈미팅 하기 (45) / 혈압 건강 (40)",
+                "speaker": "사회: 김영희 GP | 강사: 이혜민 SA, 김옥주 FPT",
+                "desc": "홈미팅 스킬 및 혈압 건강 솔루션"
+            },
+            {
+                "time": "저녁 08:00",
+                "location": "각 DF",
+                "type": "fune_offline",
+                "typeName": "퓨네 오프라인",
+                "title": "DF 홈미팅 (90)",
+                "speaker": "각 DF 주관",
+                "desc": "다이아몬드 패밀리 홈미팅"
+            }
+        ]
+    },
+    {
+        "day": 13,
+        "dow": "화",
+        "events": []
+    },
+    {
+        "day": 14,
+        "dow": "수",
+        "events": [
+            {
+                "time": "저녁 08:00",
+                "location": "퓨네줌",
+                "type": "fune_online",
+                "typeName": "퓨네 온라인",
+                "title": "꿈과 목표설정 (40) / 혈당 관리 (30) / 마이 AW 스토리 (15)",
+                "speaker": "사회: 이승엽 | 최병근 EM, 박찬희 GP, 김연임 SP",
+                "desc": "최병근 리더 주관 꿈과 목표설정 & 혈당 솔루션 특강"
+            }
+        ]
+    },
+    {
+        "day": 15,
+        "dow": "목",
+        "events": [
+            {
+                "time": "오전 11:00",
+                "location": "김&엄 홈",
+                "type": "fune_offline",
+                "typeName": "퓨네 오프라인",
+                "title": "서초퀸 요리 / STP / 가치비전",
+                "speaker": "이현영 DIA, 강수영 GP, 이지현 EM, 엄지혜 FEDC",
+                "desc": "서초 퀸 쿠킹클래스 및 비전 공유"
+            },
+            {
+                "time": "저녁 08:00",
+                "location": "다온카페",
+                "type": "da_offline",
+                "typeName": "DA 오프라인",
+                "title": "사업설명 (90)",
+                "speaker": "김희정 EDC",
+                "desc": "다온카페 저녁 정기 사업설명"
+            }
+        ]
+    },
+    {
+        "day": 16,
+        "dow": "금",
+        "events": [
+            {
+                "time": "오전 11:00",
+                "location": "리더스클럽 & 온라인",
+                "type": "da_offline",
+                "typeName": "DA 오프라인/온라인",
+                "title": "사업설명 (50) / 뉴트리라이트 (50)",
+                "speaker": "이혜민 SA, 본사 강사",
+                "desc": "리더스클럽 비즈니스 및 뉴트리라이트 본사 세션"
+            }
+        ]
+    },
+    {
+        "day": 17,
+        "dow": "토",
+        "events": []
+    },
+    {
+        "day": 18,
+        "dow": "일",
+        "events": [
+            {
+                "time": "오후 03:00",
+                "location": "리더스클럽",
+                "type": "da_offline",
+                "typeName": "DA 오프라인",
+                "title": "DA 사관학교 1주 (180)",
+                "speaker": "DA 리더 그룹",
+                "desc": "성공적인 사업 확장을 위한 1주차 사관학교 집중 과정"
+            }
+        ]
+    },
+    {
+        "day": 19,
+        "dow": "월",
+        "events": [
+            {
+                "time": "오전 11:00",
+                "location": "다온카페 & 퓨네줌",
+                "type": "fune_offline",
+                "typeName": "퓨네 오프라인/온라인",
+                "title": "30, 40, 50, 60대의 AW 사업 (90)",
+                "speaker": "진행: 형지희 GP",
+                "desc": "세대별 맞춤형 암웨이 비즈니스 전략"
+            },
+            {
+                "time": "저녁 08:00",
+                "location": "각 FPT 줌",
+                "type": "fune_online",
+                "typeName": "퓨네 온라인",
+                "title": "FPT별 줌미팅 (90)",
+                "speaker": "각 FPT 리더",
+                "desc": "파운더스 플래티늄 그룹별 집중 미팅"
+            }
+        ]
+    },
+    {
+        "day": 20,
+        "dow": "화",
+        "events": [
+            {
+                "time": "오전 11:00",
+                "location": "다온카페",
+                "type": "da_offline",
+                "typeName": "DA 오프라인",
+                "title": "그로잉맘 미팅 (90)",
+                "speaker": "DA 패밀리 리더",
+                "desc": "육아와 비즈니스를 병행하는 그로잉맘 모임"
+            }
+        ]
+    },
+    {
+        "day": 21,
+        "dow": "수",
+        "events": [
+            {
+                "time": "오전 11:00",
+                "location": "각 DF 홈",
+                "type": "fune_offline",
+                "typeName": "퓨네 오프라인",
+                "title": "여성 DF 홈미팅",
+                "speaker": "각 DF 리더",
+                "desc": "여성 리더를 위한 홈미팅"
+            },
+            {
+                "time": "저녁 08:00",
+                "location": "퓨네줌",
+                "type": "fune_online",
+                "typeName": "퓨네 온라인",
+                "title": "명단 작성 & 만남 초대 (40) / 뉴트리라이트 이야기 (25) / 옵티미스트 (20)",
+                "speaker": "사회: 김선두 | 고창민 SA, 박해성 FPT, 박수인 SP",
+                "desc": "초대 스킬 및 제품 스토리텔링"
+            }
+        ]
+    },
+    {
+        "day": 22,
+        "dow": "목",
+        "events": [
+            {
+                "time": "오후 04:30",
+                "location": "분당ABC",
+                "type": "abc_meeting",
+                "typeName": "ABC 체험/본사",
+                "title": "퀸체험 - 채소로 채운 든든한 한 끼 (90)",
+                "speaker": "분당 ABC 센터",
+                "desc": "암웨이 브랜드센터 분당 퀸 웰빙 쿠킹 체험"
+            },
+            {
+                "time": "저녁 08:00",
+                "location": "리더스 & 온라인",
+                "type": "da_online",
+                "typeName": "DA 온라인",
+                "title": "WHY AW (10) / 트렌드와 AW (25) / 영파워특강 (55)",
+                "speaker": "고창민 SA, 이상훈 WDIA",
+                "desc": "트렌드 비즈니스 및 이상훈 WDIA 영파워 특강"
+            }
+        ]
+    },
+    {
+        "day": 23,
+        "dow": "금",
+        "events": [
+            {
+                "time": "오전 11:00",
+                "location": "리더스클럽 & 온라인",
+                "type": "da_offline",
+                "typeName": "DA 오프라인/온라인",
+                "title": "시스템 1 (40) / 시스템 2 (40) / 아티스트리 (40)",
+                "speaker": "안혜령 EM, 이현영 DIA, 본사 강사",
+                "desc": "비즈니스 시스템 구축 및 아티스트리 스킨케어 교육"
+            }
+        ]
+    },
+    {
+        "day": 24,
+        "dow": "토",
+        "events": [
+            {
+                "time": "오후 03:00",
+                "location": "분당ABC",
+                "type": "fune_offline",
+                "typeName": "퓨네 오프라인",
+                "title": "퀸 STP & 아이들 건강교육 (90)",
+                "speaker": "분당 ABC 센터",
+                "desc": "성장기 자녀 건강 및 퀸 요리 시연"
+            },
+            {
+                "time": "오후 04:00",
+                "location": "김&엄 홈",
+                "type": "fune_offline",
+                "typeName": "퓨네 오프라인",
+                "title": "김철 홈사업설명 (90)",
+                "speaker": "김철 FEDC",
+                "desc": "토요 홈미팅 사업설명회"
+            }
+        ]
+    },
+    {
+        "day": 25,
+        "dow": "일",
+        "events": [
+            {
+                "time": "오후 03:00",
+                "location": "리더스클럽",
+                "type": "da_offline",
+                "typeName": "DA 오프라인",
+                "title": "DA 사관학교 2주 (180)",
+                "speaker": "DA 리더 그룹",
+                "desc": "리더십 배가 및 실전 비즈니스 2주차 과정"
+            }
+        ]
+    },
+    {
+        "day": 26,
+        "dow": "월",
+        "events": [
+            {
+                "time": "오전 10:00",
+                "location": "퓨네줌",
+                "type": "fune_online",
+                "typeName": "퓨네 온라인",
+                "title": "AW 의사소통 방법 (40) / 랩스 프로레티놀 (20) / 아티스트리 이야기 (25)",
+                "speaker": "사회: 조효순 | 엄지혜 FEDC, 고수인 EM, 최유리 GP",
+                "desc": "효과적인 파트너 소통법 및 신제품 집중 탐구"
+            },
+            {
+                "time": "저녁 08:00",
+                "location": "다온카페 & 퓨네줌",
+                "type": "fune_offline",
+                "typeName": "퓨네 오프라인/온라인",
+                "title": "저녁그룹미팅 (90)",
+                "speaker": "진행: 김철 FEDC",
+                "desc": "다온카페 및 퓨네줌 온·오프라인 그룹 미팅"
+            }
+        ]
+    },
+    {
+        "day": 27,
+        "dow": "화",
+        "events": [
+            {
+                "time": "오전 11:00",
+                "location": "강서ABC",
+                "type": "da_offline",
+                "typeName": "DA 오프라인",
+                "title": "퀸 STP (90)",
+                "speaker": "박은경 WDIA",
+                "desc": "강서 암웨이 비즈니스 센터 퀸 사업설명회"
+            }
+        ]
+    },
+    {
+        "day": 28,
+        "dow": "수",
+        "events": [
+            {
+                "time": "오전 11:00",
+                "location": "다온카페",
+                "type": "da_offline",
+                "typeName": "DA 오프라인",
+                "title": "DA 비긴 어게인 미팅 (90)",
+                "speaker": "DA 리더 그룹",
+                "desc": "다온카페 신규 및 재도약 파트너 미팅"
+            },
+            {
+                "time": "저녁 08:00",
+                "location": "퓨네줌",
+                "type": "fune_online",
+                "typeName": "퓨네 온라인",
+                "title": "STP, FU, FT (40) / 엣모스피어 (30) / 마이 AW 스토리 (15)",
+                "speaker": "사회: 고현정 | 김은주 FPT, 김승환 EDC, 김민지 SA",
+                "desc": "오늘 저녁 핵심 줌미팅 - 공기청정기 솔루션 & 후속관리"
+            }
+        ]
+    },
+    {
+        "day": 29,
+        "dow": "목",
+        "events": [
+            {
+                "time": "오전 11:00",
+                "location": "김&엄 홈",
+                "type": "fune_offline",
+                "typeName": "퓨네 오프라인",
+                "title": "엄지혜 홈사업설명 (90)",
+                "speaker": "엄지혜 FEDC",
+                "desc": "엄지혜 리더 주관 홈미팅 사업설명"
+            },
+            {
+                "time": "저녁 08:00",
+                "location": "다온카페",
+                "type": "da_offline",
+                "typeName": "DA 오프라인",
+                "title": "앰비전 비즈니스 데이 (90)",
+                "speaker": "다온카페 리더 그룹",
+                "desc": "비전과 동기부여의 밤"
+            }
+        ]
+    },
+    {
+        "day": 30,
+        "dow": "금",
+        "events": [
+            {
+                "time": "오전 11:00",
+                "location": "리더스클럽 & 온라인",
+                "type": "da_offline",
+                "typeName": "DA 오프라인/온라인",
+                "title": "건강 특강 (60) / 좋은 원료 & 명가의 솜씨 (40)",
+                "speaker": "서혜경 DIA, 김혜선 FDIA",
+                "desc": "최고 리더의 웰빙 건강 특강 및 명가 제품 분석"
+            },
+            {
+                "time": "오후 02:00",
+                "location": "리더스클럽",
+                "type": "da_offline",
+                "typeName": "DA 오프라인",
+                "title": "아티스트리 아카데미 1주 (90)",
+                "speaker": "본사 전문 강사",
+                "desc": "스킨케어 전문가 양성 과정 1주차"
+            }
+        ]
+    },
+    {
+        "day": 31,
+        "dow": "토",
+        "events": []
+    }
+];
+    let selectedScheduleDay = 28; // 오늘 디폴트 (2026-10-28)
+    let selectedScheduleTypeFilter = 'all';
+
+    function initScheduleModule() {
+      renderHomeTodaySchedule();
+      renderScheduleCalendar();
+      renderScheduleDayEvents(selectedScheduleDay);
+    }
+
+    function renderHomeTodaySchedule() {
+      const container = document.getElementById('home-today-schedule-list');
+      if (!container) return;
+
+      const todayData = monthlyScheduleData.find(d => d.day === 28);
+      const tomorrowData = monthlyScheduleData.find(d => d.day === 29);
+
+      let html = '';
+
+      if (todayData && todayData.events && todayData.events.length > 0) {
+        todayData.events.forEach(ev => {
+          const typeBadgeClass = getScheduleTypeBadge(ev.type);
+          html += `
+            <div class="bg-[#131923] p-3.5 rounded-2xl border border-white/8 flex justify-between items-center hover:border-emerald-500/30 transition shadow-sm">
+              <div class="flex gap-3 min-w-0">
+                <div class="flex flex-col items-center justify-center w-11 h-11 rounded-xl bg-emerald-500/10 text-emerald-400 border border-emerald-500/20 shrink-0 font-outfit">
+                  <span class="text-[9px] font-bold uppercase">TODAY</span>
+                  <span class="text-sm font-extrabold leading-none mt-0.5">28</span>
+                </div>
+                <div class="min-w-0">
+                  <div class="flex items-center gap-1.5 flex-wrap">
+                    <span class="text-[8px] px-1.5 py-0.5 rounded font-bold border ${typeBadgeClass}">${ev.typeName}</span>
+                    <span class="text-[10px] text-emerald-400 font-bold">${ev.time} (${ev.location})</span>
+                  </div>
+                  <h4 class="text-xs font-bold text-slate-100 truncate mt-1">${ev.title}</h4>
+                  <p class="text-[10px] text-slate-400 mt-0.5 truncate">${ev.speaker}</p>
+                </div>
+              </div>
+              <button onclick="triggerImmediatePush('${ev.title}', '오늘 ${ev.time}에 시작되는 [${ev.title}] 일정 알림입니다.')" class="p-2 rounded-xl bg-white/5 hover:bg-emerald-500/20 text-emerald-400 transition shrink-0 ml-2" title="일정 알림 받기">
+                <i data-lucide="bell" class="w-4 h-4"></i>
+              </button>
+            </div>
+          `;
+        });
+      }
+
+      // 내일 일정 미리보기
+      if (tomorrowData && tomorrowData.events && tomorrowData.events.length > 0) {
+        const ev = tomorrowData.events[0];
+        const typeBadgeClass = getScheduleTypeBadge(ev.type);
+        html += `
+          <div class="bg-[#131923]/60 p-3.5 rounded-2xl border border-white/5 flex justify-between items-center">
+            <div class="flex gap-3 min-w-0">
+              <div class="flex flex-col items-center justify-center w-11 h-11 rounded-xl bg-amber-500/10 text-amber-400 border border-amber-500/20 shrink-0 font-outfit">
+                <span class="text-[9px] font-bold uppercase">내일</span>
+                <span class="text-sm font-extrabold leading-none mt-0.5">29</span>
+              </div>
+              <div class="min-w-0">
+                <div class="flex items-center gap-1.5 flex-wrap">
+                  <span class="text-[8px] px-1.5 py-0.5 rounded font-bold border ${typeBadgeClass}">${ev.typeName}</span>
+                  <span class="text-[10px] text-amber-400 font-bold">${ev.time} (${ev.location})</span>
+                </div>
+                <h4 class="text-xs font-bold text-slate-200 truncate mt-1">${ev.title}</h4>
+                <p class="text-[10px] text-slate-400 mt-0.5 truncate">${ev.speaker}</p>
+              </div>
+            </div>
+            <button onclick="triggerImmediatePush('${ev.title}', '내일 ${ev.time}에 [${ev.title}] 일정이 예정되어 있습니다.')" class="p-2 rounded-xl bg-white/5 hover:bg-amber-500/20 text-amber-400 transition shrink-0 ml-2" title="일정 알림 받기">
+              <i data-lucide="bell" class="w-4 h-4"></i>
+            </button>
+          </div>
+        `;
+      }
+
+      container.innerHTML = html;
+      if (window.lucide) lucide.createIcons();
+    }
+
+    function getScheduleTypeBadge(type) {
+      switch(type) {
+        case 'fune_offline': return 'bg-amber-400/15 text-amber-300 border-amber-400/30';
+        case 'fune_online': return 'bg-sky-400/15 text-sky-300 border-sky-400/30';
+        case 'da_offline': return 'bg-rose-400/15 text-rose-300 border-rose-400/30';
+        case 'da_online': return 'bg-emerald-400/15 text-emerald-300 border-emerald-400/30';
+        case 'abc_meeting': return 'bg-purple-400/15 text-purple-300 border-purple-400/30';
+        default: return 'bg-slate-700/30 text-slate-300 border-slate-600/30';
+      }
+    }
+
+    function renderScheduleCalendar() {
+      const grid = document.getElementById('calendar-days-grid');
+      if (!grid) return;
+
+      // 2026년 10월 1일은 목요일 (Day of week: 일=0, 월=1, 화=2, 수=3, 목=4, 금=5, 토=6)
+      // 앞선 빈칸 4칸 (일, 월, 화, 수)
+      let html = '';
+      for (let i = 0; i < 4; i++) {
+        html += `<span class="py-2 text-slate-700 select-none text-[11px]">-</span>`;
+      }
+
+      for (let d = 1; d <= 31; d++) {
+        const item = monthlyScheduleData.find(x => x.day === d);
+        const hasEvents = item && item.events && item.events.length > 0;
+        const isSelected = (d === selectedScheduleDay);
+        const isToday = (d === 28);
+        const isHoliday = item && item.holiday;
+
+        let dotColor = '';
+        if (hasEvents) {
+          const firstEv = item.events[0];
+          if (firstEv.type.includes('fune_offline')) dotColor = 'bg-amber-400';
+          else if (firstEv.type.includes('fune_online')) dotColor = 'bg-sky-400';
+          else if (firstEv.type.includes('da_offline')) dotColor = 'bg-rose-400';
+          else if (firstEv.type.includes('da_online')) dotColor = 'bg-emerald-400';
+          else dotColor = 'bg-purple-400';
+        }
+
+        let bgClass = 'text-slate-300 hover:bg-white/5';
+        if (isSelected) {
+          bgClass = 'bg-emerald-500 text-white font-extrabold shadow-md shadow-emerald-500/30 ring-2 ring-emerald-400';
+        } else if (isToday) {
+          bgClass = 'bg-emerald-500/20 text-emerald-300 font-bold border border-emerald-500/40';
+        } else if (isHoliday) {
+          bgClass = 'text-rose-400 bg-rose-500/10';
+        }
+
+        html += `
+          <button onclick="selectScheduleDate(${d})" class="relative py-2 rounded-xl flex flex-col items-center justify-center transition-all cursor-pointer ${bgClass}">
+            <span class="text-xs leading-none">${d}</span>
+            ${hasEvents ? `<span class="w-1.5 h-1.5 rounded-full ${isSelected ? 'bg-white' : dotColor} mt-1"></span>` : '<span class="w-1.5 h-1.5 mt-1 opacity-0">.</span>'}
+            ${isHoliday ? `<span class="text-[7px] text-rose-300 leading-none scale-75 truncate max-w-full -mt-0.5">${item.holiday.slice(0, 3)}</span>` : ''}
+          </button>
+        `;
+      }
+
+      grid.innerHTML = html;
+    }
+
+    function selectScheduleDate(day) {
+      selectedScheduleDay = day;
+      renderScheduleCalendar();
+      renderScheduleDayEvents(day);
+    }
+
+    function filterScheduleType(type) {
+      selectedScheduleTypeFilter = type;
+      document.querySelectorAll('.sched-filter-btn').forEach(btn => {
+        if (btn.getAttribute('data-type') === type) {
+          btn.className = 'sched-filter-btn shrink-0 px-3 py-1.5 rounded-xl bg-emerald-500 text-white text-[10px] font-bold shadow transition';
+        } else {
+          btn.className = 'sched-filter-btn shrink-0 px-3 py-1.5 rounded-xl bg-slate-900 border border-white/5 text-slate-400 hover:text-slate-200 text-[10px] font-medium transition';
+        }
+      });
+      renderScheduleDayEvents(selectedScheduleDay);
+    }
+
+    function renderScheduleDayEvents(day) {
+      const container = document.getElementById('selected-day-events-list');
+      const headerDateEl = document.getElementById('selected-date-display');
+      if (!container) return;
+
+      const item = monthlyScheduleData.find(x => x.day === day);
+      if (headerDateEl && item) {
+        headerDateEl.innerText = `10월 ${day}일 (${item.dow}) 일정 목록`;
+      }
+
+      if (!item || !item.events || item.events.length === 0) {
+        let emptyMsg = "등록된 일정이 없습니다.";
+        if (item && item.holiday) {
+          emptyMsg = `🎉 ${item.holiday} (공휴일) - 등록된 교육 일정이 없습니다.`;
+        }
+        container.innerHTML = `
+          <div class="py-8 text-center text-slate-500 bg-slate-900/30 rounded-2xl border border-white/5">
+            <i data-lucide="calendar-x" class="w-7 h-7 mx-auto mb-2 text-slate-600"></i>
+            <p class="text-xs font-medium text-slate-400">${emptyMsg}</p>
+          </div>
+        `;
+        if (window.lucide) lucide.createIcons();
+        return;
+      }
+
+      let events = item.events;
+      if (selectedScheduleTypeFilter !== 'all') {
+        events = events.filter(e => e.type.includes(selectedScheduleTypeFilter));
+      }
+
+      if (events.length === 0) {
+        container.innerHTML = `
+          <div class="py-6 text-center text-slate-500 bg-slate-900/30 rounded-2xl border border-white/5">
+            <p class="text-xs font-medium text-slate-400">선택한 분류에 해당하는 일정이 없습니다.</p>
+          </div>
+        `;
+        return;
+      }
+
+      let html = '';
+      events.forEach(ev => {
+        const typeBadge = getScheduleTypeBadge(ev.type);
+        html += `
+          <div class="p-4 rounded-2xl bg-[#141b26] border border-white/8 hover:border-emerald-500/30 transition space-y-2 shadow-sm">
+            <div class="flex justify-between items-start gap-2">
+              <div class="flex items-center gap-1.5 flex-wrap">
+                <span class="text-[8px] font-bold px-2 py-0.5 rounded border ${typeBadge}">${ev.typeName}</span>
+                <span class="text-xs font-bold text-emerald-400 font-outfit">${ev.time}</span>
+                <span class="text-[10px] text-slate-400 bg-white/5 px-2 py-0.5 rounded">📍 ${ev.location}</span>
+              </div>
+              <button onclick="triggerImmediatePush('${ev.title}', '${ev.time} 시작: [${ev.title}]')" class="p-1.5 rounded-lg bg-white/5 hover:bg-emerald-500/20 text-emerald-400 transition" title="알림 시뮬레이션">
+                <i data-lucide="bell" class="w-3.5 h-3.5"></i>
+              </button>
+            </div>
+            <div>
+              <h4 class="text-sm font-bold text-slate-100">${ev.title}</h4>
+              <p class="text-xs text-slate-300 mt-1 font-medium">강사/진행: <span class="text-emerald-300 font-bold">${ev.speaker}</span></p>
+              ${ev.desc ? `<p class="text-[10px] text-slate-400 mt-1 leading-relaxed">${ev.desc}</p>` : ''}
+            </div>
+          </div>
+        `;
+      });
+
+      container.innerHTML = html;
+      if (window.lucide) lucide.createIcons();
+    }
+
+    function openScheduleImageModal() {
+      const modal = document.getElementById('schedule-image-modal');
+      if (modal) {
+        modal.classList.remove('hidden');
+        modal.classList.add('flex');
+      }
+    }
+
+    function closeScheduleImageModal() {
+      const modal = document.getElementById('schedule-image-modal');
+      if (modal) {
+        modal.classList.add('hidden');
+        modal.classList.remove('flex');
+      }
+    }
+
+    window.openScheduleImageModal = openScheduleImageModal;
+    window.closeScheduleImageModal = closeScheduleImageModal;
+    window.filterScheduleType = filterScheduleType;
+    window.selectScheduleDate = selectScheduleDate;
 
     // DOMContentLoaded 시 버튼 이벤트 리스너도 직접 바인딩
     window.addEventListener('DOMContentLoaded', () => {
