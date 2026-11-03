@@ -222,7 +222,7 @@
           </button>
         </div>
 
-        <!-- Today's Schedule (2026년 10월 실시간 교육일정) -->
+        <!-- Today's Schedule (2026년 11월 실시간 교육일정) -->
         <div class="glass-card rounded-3xl p-4 space-y-3">
           <div class="flex justify-between items-center">
             <div class="flex items-center gap-2">
@@ -235,7 +235,7 @@
               전체 일정표 <i data-lucide="chevron-right" class="w-3 h-3"></i>
             </button>
           </div>
-          <!-- Dynamic Today's Real Schedule from 10월 교육일정표 -->
+          <!-- Dynamic Today's Real Schedule from 11월 교육일정표 -->
           <div id="home-today-schedule-list" class="space-y-2.5"></div>
         </div>
 
@@ -812,25 +812,43 @@
         </div>
       </section>
 
-      <!-- 4. SCHEDULE TAB -->
+            <!-- 4. SCHEDULE TAB -->
       <section id="tab-schedule" class="tab-content space-y-4">
-        <!-- Header & Image View Button -->
-        <div class="p-4 rounded-3xl bg-[#141b26] border border-white/8 shadow-lg flex justify-between items-center">
-          <div>
-            <div class="flex items-center gap-1.5">
-              <span class="text-[9px] px-2 py-0.5 rounded font-bold bg-emerald-500/15 text-emerald-300 border border-emerald-500/30 font-outfit">OCTOBER 2026</span>
-              <span class="text-[9px] text-slate-400">퓨네 & DA</span>
+        <!-- Schedule Month Selector & Admin Add Button Banner -->
+        <div class="p-4 rounded-3xl bg-[#141b26] border border-white/8 shadow-lg space-y-3">
+          <div class="flex justify-between items-start gap-2">
+            <div>
+              <div class="flex items-center gap-1.5 flex-wrap">
+                <span id="sched-banner-badge" class="text-[9px] px-2 py-0.5 rounded font-bold bg-emerald-500/15 text-emerald-300 border border-emerald-500/30 font-outfit uppercase">NOVEMBER 2026</span>
+                <span class="text-[9px] text-slate-400">퓨네 & DA</span>
+              </div>
+              <h3 id="sched-banner-title" class="text-sm font-bold text-white mt-1">2026년 11월 교육일정표</h3>
             </div>
-            <h3 class="text-sm font-bold text-white mt-1">2026년 10월 교육일정표</h3>
+            <div class="flex items-center gap-1.5 shrink-0">
+              <!-- Admin Only Schedule Upload Button -->
+              <button id="admin-add-schedule-btn" onclick="openScheduleUploadModal()" class="hidden px-2.5 py-1.5 rounded-xl bg-amber-500/15 hover:bg-amber-500/25 border border-amber-500/30 text-amber-300 text-[11px] font-bold transition items-center gap-1 shadow-sm active:scale-95">
+                <i data-lucide="plus-circle" class="w-3.5 h-3.5"></i> 일정표 추가
+              </button>
+              <!-- View Original Image Button -->
+              <button onclick="openScheduleImageModal()" class="px-2.5 py-1.5 rounded-xl bg-emerald-500/15 hover:bg-emerald-500/25 border border-emerald-500/30 text-emerald-300 text-[11px] font-bold transition flex items-center gap-1 shadow-sm active:scale-95">
+                <i data-lucide="image" class="w-3.5 h-3.5"></i> 원본 표 보기
+              </button>
+            </div>
           </div>
-          <button onclick="openScheduleImageModal()" class="px-3 py-2 rounded-xl bg-emerald-500/15 hover:bg-emerald-500/25 border border-emerald-500/30 text-emerald-300 text-xs font-bold transition flex items-center gap-1.5 shadow-sm active:scale-95">
-            <i data-lucide="image" class="w-3.5 h-3.5"></i> 원본 표 보기
-          </button>
+
+          <!-- Month Selector Pills -->
+          <div class="pt-2 border-t border-white/5 flex items-center justify-between">
+            <span class="text-[10px] text-slate-400 font-medium">월별 일정표 선택</span>
+            <div id="schedule-month-tabs" class="flex gap-1.5">
+              <button onclick="switchScheduleMonth('2026-10')" data-month="2026-10" class="month-tab-btn px-2.5 py-1 rounded-lg text-[10px] font-bold bg-slate-800 text-slate-400 hover:text-white transition">10월</button>
+              <button onclick="switchScheduleMonth('2026-11')" data-month="2026-11" class="month-tab-btn px-2.5 py-1 rounded-lg text-[10px] font-bold bg-emerald-500 text-white shadow transition">11월 (최신)</button>
+            </div>
+          </div>
         </div>
 
         <!-- Meeting Type Filter Chips -->
         <div class="flex gap-1.5 overflow-x-auto no-scrollbar pb-1 text-[10px]">
-          <button onclick="filterScheduleType('all')" data-type="all" class="sched-filter-btn shrink-0 px-3 py-1.5 rounded-xl bg-emerald-500 text-white font-bold shadow transition">전체 (37)</button>
+          <button onclick="filterScheduleType('all')" data-type="all" class="sched-filter-btn shrink-0 px-3 py-1.5 rounded-xl bg-emerald-500 text-white font-bold shadow transition">전체</button>
           <button onclick="filterScheduleType('fune_offline')" data-type="fune_offline" class="sched-filter-btn shrink-0 px-3 py-1.5 rounded-xl bg-slate-900 border border-white/5 text-amber-300 hover:text-white font-medium transition flex items-center gap-1">
             <span class="w-2 h-2 rounded-full bg-amber-400"></span> 퓨네 오프라인
           </button>
@@ -851,9 +869,9 @@
         <!-- Monthly Calendar Grid -->
         <div class="glass-card rounded-3xl p-4 space-y-2">
           <div class="flex justify-between items-center mb-1">
-            <h4 class="text-xs font-bold text-slate-200 flex items-center gap-1.5 font-outfit">
+            <h4 id="calendar-month-title" class="text-xs font-bold text-slate-200 flex items-center gap-1.5 font-outfit">
               <i data-lucide="calendar" class="w-3.5 h-3.5 text-emerald-400"></i>
-              2026. 10
+              2026. 11
             </h4>
             <span class="text-[9px] text-slate-400">날짜를 터치하면 해당 일정이 표시됩니다</span>
           </div>
@@ -868,7 +886,7 @@
         <!-- Selected Day's Schedule List -->
         <div class="space-y-2.5">
           <div class="flex justify-between items-center px-1">
-            <h4 id="selected-date-display" class="text-xs font-bold text-slate-200">10월 28일 (수) 일정 목록</h4>
+            <h4 id="selected-date-display" class="text-xs font-bold text-slate-200">11월 3일 (화) 일정 목록</h4>
             <span class="text-[9px] text-emerald-400 font-medium">실시간 동기화</span>
           </div>
           <div id="selected-day-events-list" class="space-y-2.5"></div>
@@ -1408,14 +1426,14 @@
         <div class="w-7 h-7 rounded-lg bg-emerald-500/20 text-emerald-400 flex items-center justify-center">
           <i data-lucide="calendar" class="w-4 h-4"></i>
         </div>
-        <h3 class="text-xs font-bold text-white">2026년 10월 교육일정표 (퓨처네트워크 / 드림아카데미)</h3>
+        <h3 id="schedule-modal-title" class="text-xs font-bold text-white">2026년 11월 교육일정표 (퓨처네트워크 / 드림아카데미)</h3>
       </div>
       <button onclick="closeScheduleImageModal()" class="p-2 rounded-full hover:bg-white/10 text-slate-400 hover:text-white transition">
         <i data-lucide="x" class="w-5 h-5"></i>
       </button>
     </div>
     <div class="flex-1 overflow-auto flex items-center justify-center my-2 p-1">
-      <img src="865+2026년10월+교육일정표.png" alt="2026년 10월 교육일정표 원본" class="max-w-full max-h-full object-contain rounded-xl shadow-2xl border border-white/10">
+      <img id="schedule-modal-img" src="864+2026년11월+교육일정표.png" alt="교육일정표 원본" class="max-w-full max-h-full object-contain rounded-xl shadow-2xl border border-white/10">
     </div>
     <div class="flex justify-between items-center pt-2 text-[10px] text-slate-400 shrink-0">
       <span>손가락으로 확대/축소하여 확인 가능합니다.</span>
@@ -1423,6 +1441,50 @@
     </div>
   </div>
 
+  <!-- 👑 ADMIN SCHEDULE UPLOAD MODAL -->
+  <div id="schedule-upload-modal" class="fixed inset-0 bg-black/80 backdrop-blur-sm z-50 hidden items-center justify-center p-4">
+    <div class="bg-slate-900 border border-white/10 rounded-3xl max-w-sm w-full p-5 shadow-2xl space-y-4">
+      <div class="flex justify-between items-center pb-2 border-b border-white/10">
+        <div class="flex items-center gap-2">
+          <div class="w-8 h-8 rounded-xl bg-amber-500/20 text-amber-400 flex items-center justify-center">
+            <i data-lucide="calendar-plus" class="w-4 h-4"></i>
+          </div>
+          <div>
+            <h3 class="text-sm font-bold text-white">월별 교육일정표 등록/업데이트</h3>
+            <p class="text-[9px] text-amber-400 font-medium">ADMIN ONLY</p>
+          </div>
+        </div>
+        <button onclick="closeScheduleUploadModal()" class="p-1.5 rounded-full hover:bg-white/10 text-slate-400 hover:text-white transition">
+          <i data-lucide="x" class="w-4 h-4"></i>
+        </button>
+      </div>
+
+      <div class="space-y-3 text-xs">
+        <div>
+          <label class="block text-[10px] font-bold text-slate-300 mb-1">대상 연월 선택</label>
+          <input type="month" id="upload-sched-yearmonth" value="2026-12" class="w-full px-3 py-2 bg-slate-800 border border-white/10 rounded-xl text-white text-xs focus:outline-none focus:border-amber-500">
+        </div>
+
+        <div>
+          <label class="block text-[10px] font-bold text-slate-300 mb-1">일정표 제목</label>
+          <input type="text" id="upload-sched-title" placeholder="예: 2026년 12월 교육일정표" class="w-full px-3 py-2 bg-slate-800 border border-white/10 rounded-xl text-white text-xs focus:outline-none focus:border-amber-500">
+        </div>
+
+        <div>
+          <label class="block text-[10px] font-bold text-slate-300 mb-1">새 교육일정표 이미지 파일 (PNG / JPG)</label>
+          <input type="file" id="upload-sched-file" accept="image/*" class="w-full text-[10px] text-slate-400 file:mr-2 file:py-1.5 file:px-3 file:rounded-xl file:border-0 file:text-[10px] file:font-bold file:bg-amber-500/20 file:text-amber-300 hover:file:bg-amber-500/30 cursor-pointer">
+          <p class="text-[9px] text-slate-500 mt-1">새 일정표 이미지를 등록하면 팀원들의 앱 화면에 원본 이미지와 캘린더가 즉시 연결됩니다.</p>
+        </div>
+      </div>
+
+      <div class="flex gap-2 pt-2">
+        <button onclick="closeScheduleUploadModal()" class="flex-1 py-2 bg-slate-800 hover:bg-slate-700 text-slate-300 text-xs font-bold rounded-xl transition">취소</button>
+        <button onclick="handleAdminUploadSchedule()" class="flex-1 py-2 bg-amber-500 hover:bg-amber-600 text-slate-950 text-xs font-bold rounded-xl transition flex items-center justify-center gap-1 shadow-lg shadow-amber-500/20">
+          <i data-lucide="check" class="w-3.5 h-3.5"></i> 일정표 등록
+        </button>
+      </div>
+    </div>
+  </div>
   <!-- Custom Scripts for Interactions -->
   <script>
     // Lucide Icons 초기화
@@ -2133,6 +2195,9 @@
           adminBtn.style.setProperty('display', 'none', 'important');
         }
       }
+      if (typeof updateAdminScheduleButtonVisibility === 'function') {
+        updateAdminScheduleButtonVisibility();
+      }
       
       // 4. Lucide 아이콘 리프레시
       if (window.lucide && typeof window.lucide.createIcons === 'function') {
@@ -2172,6 +2237,9 @@
         adminBtn.classList.remove('flex');
         adminBtn.style.setProperty('display', 'none', 'important');
       }
+      if (typeof updateAdminScheduleButtonVisibility === 'function') {
+        updateAdminScheduleButtonVisibility();
+      }
       
       // 4. 어드민 패널 닫기
       closeAdminPanel();
@@ -2192,541 +2260,1204 @@
     window.partnersData = partnersData;
 
     // ==========================================
-    // 2026년 10월 교육일정표 데이터 (퓨처네트워크 / 드림아카데미)
+    // 다중 월별 교육일정표 데이터베이스 (2026년 10월 & 11월)
     // ==========================================
-    const monthlyScheduleData = [
-    {
+    const defaultMonthlyScheduleDB = {
+  "2026-10": {
+    "year": 2026,
+    "month": 10,
+    "title": "2026년 10월 교육일정표",
+    "subTitle": "퓨네 & DA",
+    "image": "865+2026년10월+교육일정표.png",
+    "firstDayDow": 4,
+    "totalDays": 31,
+    "days": [
+      {
         "day": 1,
         "dow": "목",
         "events": [
-            {
-                "time": "저녁 08:00",
-                "location": "DA ZOOM",
-                "type": "da_online",
-                "typeName": "DA 온라인",
-                "title": "WHY AW (10) / 사업설명 (60)",
-                "speaker": "오세훈 DIA",
-                "desc": "DA 정기 저녁 온라인 줌 미팅"
-            }
+          {
+            "time": "저녁 08:00",
+            "location": "DA ZOOM",
+            "type": "da_online",
+            "typeName": "DA 온라인",
+            "title": "WHY AW (10) / 사업설명 (60)",
+            "speaker": "오세훈 DIA",
+            "desc": "DA 정기 저녁 온라인 줌 미팅"
+          }
         ]
-    },
-    {
+      },
+      {
         "day": 2,
         "dow": "금",
         "events": [
-            {
-                "time": "오전 11:00",
-                "location": "리더스클럽 & 온라인",
-                "type": "da_offline",
-                "typeName": "DA 오프라인/온라인",
-                "title": "사업설명 (50) / WHY AW (10) / 환절기 필수템 (30)",
-                "speaker": "박춘호 DIA, 강효순 FPT, 박해성 FPT",
-                "desc": "오전 리더스클럽 정기 교육"
-            },
-            {
-                "time": "오후 02:00",
-                "location": "리더스클럽",
-                "type": "da_offline",
-                "typeName": "DA 오프라인",
-                "title": "리더미팅 (90)",
-                "speaker": "SP 이상 리더",
-                "desc": "SP 이상 오프라인 리더 전략 미팅"
-            }
+          {
+            "time": "오전 11:00",
+            "location": "리더스클럽 & 온라인",
+            "type": "da_offline",
+            "typeName": "DA 오프라인/온라인",
+            "title": "사업설명 (50) / WHY AW (10) / 환절기 필수템 (30)",
+            "speaker": "박춘호 DIA, 강효순 FPT, 박해성 FPT",
+            "desc": "오전 리더스클럽 정기 교육"
+          },
+          {
+            "time": "오후 02:00",
+            "location": "리더스클럽",
+            "type": "da_offline",
+            "typeName": "DA 오프라인",
+            "title": "리더미팅 (90)",
+            "speaker": "SP 이상 리더",
+            "desc": "SP 이상 오프라인 리더 전략 미팅"
+          }
         ]
-    },
-    {
+      },
+      {
         "day": 3,
         "dow": "토",
         "holiday": "개천절",
         "events": []
-    },
-    {
+      },
+      {
         "day": 4,
         "dow": "일",
         "events": []
-    },
-    {
+      },
+      {
         "day": 5,
         "dow": "월",
         "holiday": "대체공휴일",
         "events": []
-    },
-    {
+      },
+      {
         "day": 6,
         "dow": "화",
         "events": [
-            {
-                "time": "오전 11:00",
-                "location": "다온카페 & 퓨네줌",
-                "type": "fune_offline",
-                "typeName": "퓨네 오프라인/온라인",
-                "title": "여성그룹미팅 (90)",
-                "speaker": "진행: 엄지혜 FEDC",
-                "desc": "다온카페 오프라인 및 퓨네줌 동시 진행"
-            }
+          {
+            "time": "오전 11:00",
+            "location": "다온카페 & 퓨네줌",
+            "type": "fune_offline",
+            "typeName": "퓨네 오프라인/온라인",
+            "title": "여성그룹미팅 (90)",
+            "speaker": "진행: 엄지혜 FEDC",
+            "desc": "다온카페 오프라인 및 퓨네줌 동시 진행"
+          }
         ]
-    },
-    {
+      },
+      {
         "day": 7,
         "dow": "수",
         "events": [
-            {
-                "time": "오전 11:00",
-                "location": "각 DF 홈",
-                "type": "fune_offline",
-                "typeName": "퓨네 오프라인",
-                "title": "여성 DF 홈미팅",
-                "speaker": "각 DF 리더",
-                "desc": "각 다이아몬드 패밀리별 홈미팅"
-            },
-            {
-                "time": "저녁 08:00",
-                "location": "퓨네줌",
-                "type": "fune_online",
-                "typeName": "퓨네 온라인",
-                "title": "퓨네패밀리세미나 (90)",
-                "speaker": "사회: 심은정 FPT",
-                "desc": "퓨처네트워크 전체 패밀리 온라인 세미나"
-            }
+          {
+            "time": "오전 11:00",
+            "location": "각 DF 홈",
+            "type": "fune_offline",
+            "typeName": "퓨네 오프라인",
+            "title": "여성 DF 홈미팅",
+            "speaker": "각 DF 리더",
+            "desc": "각 다이아몬드 패밀리별 홈미팅"
+          },
+          {
+            "time": "저녁 08:00",
+            "location": "퓨네줌",
+            "type": "fune_online",
+            "typeName": "퓨네 온라인",
+            "title": "퓨네패밀리세미나 (90)",
+            "speaker": "사회: 심은정 FPT",
+            "desc": "퓨처네트워크 전체 패밀리 온라인 세미나"
+          }
         ]
-    },
-    {
+      },
+      {
         "day": 8,
         "dow": "목",
         "events": [
-            {
-                "time": "저녁 08:00",
-                "location": "다온카페",
-                "type": "da_offline",
-                "typeName": "DA 오프라인",
-                "title": "사업설명 (90)",
-                "speaker": "김철 FEDC",
-                "desc": "다온카페 오프라인 사업설명회"
-            }
+          {
+            "time": "저녁 08:00",
+            "location": "다온카페",
+            "type": "da_offline",
+            "typeName": "DA 오프라인",
+            "title": "사업설명 (90)",
+            "speaker": "김철 FEDC",
+            "desc": "다온카페 오프라인 사업설명회"
+          }
         ]
-    },
-    {
+      },
+      {
         "day": 9,
         "dow": "금",
         "holiday": "한글날",
         "events": [
-            {
-                "time": "오전 11:00",
-                "location": "리더스클럽 & 온라인",
-                "type": "da_offline",
-                "typeName": "DA 오프라인/온라인",
-                "title": "사업설명 (50) / WHY AW (10) / 관계의 기술 & 1대1 미팅 (40)",
-                "speaker": "문연희 FDIA, 한아리 FPT, 육소연 FPT",
-                "desc": "한글날 특별 교육 세션"
-            }
+          {
+            "time": "오전 11:00",
+            "location": "리더스클럽 & 온라인",
+            "type": "da_offline",
+            "typeName": "DA 오프라인/온라인",
+            "title": "사업설명 (50) / WHY AW (10) / 관계의 기술 & 1대1 미팅 (40)",
+            "speaker": "문연희 FDIA, 한아리 FPT, 육소연 FPT",
+            "desc": "한글날 특별 교육 세션"
+          }
         ]
-    },
-    {
+      },
+      {
         "day": 10,
         "dow": "토",
         "events": [
-            {
-                "time": "오후 04:00",
-                "location": "김&엄 홈",
-                "type": "fune_offline",
-                "typeName": "퓨네 오프라인",
-                "title": "김철 홈사업설명 (90)",
-                "speaker": "김철 FEDC",
-                "desc": "홈미팅 중심 사업설명회"
-            }
+          {
+            "time": "오후 04:00",
+            "location": "김&엄 홈",
+            "type": "fune_offline",
+            "typeName": "퓨네 오프라인",
+            "title": "김철 홈사업설명 (90)",
+            "speaker": "김철 FEDC",
+            "desc": "홈미팅 중심 사업설명회"
+          }
         ]
-    },
-    {
+      },
+      {
         "day": 11,
         "dow": "일",
         "events": [
-            {
-                "time": "오후 02:30",
-                "location": "강서ABC",
-                "type": "da_offline",
-                "typeName": "DA 오프라인",
-                "title": "일일세미나 초청",
-                "speaker": "초청: 임은영 DIA",
-                "desc": "강서 암웨이 비즈니스 센터 일일세미나"
-            }
+          {
+            "time": "오후 02:30",
+            "location": "강서ABC",
+            "type": "da_offline",
+            "typeName": "DA 오프라인",
+            "title": "일일세미나 초청",
+            "speaker": "초청: 임은영 DIA",
+            "desc": "강서 암웨이 비즈니스 센터 일일세미나"
+          }
         ]
-    },
-    {
+      },
+      {
         "day": 12,
         "dow": "월",
         "events": [
-            {
-                "time": "오전 10:00",
-                "location": "퓨네줌",
-                "type": "fune_online",
-                "typeName": "퓨네 온라인",
-                "title": "행복한 홈미팅 하기 (45) / 혈압 건강 (40)",
-                "speaker": "사회: 김영희 GP | 강사: 이혜민 SA, 김옥주 FPT",
-                "desc": "홈미팅 스킬 및 혈압 건강 솔루션"
-            },
-            {
-                "time": "저녁 08:00",
-                "location": "각 DF",
-                "type": "fune_offline",
-                "typeName": "퓨네 오프라인",
-                "title": "DF 홈미팅 (90)",
-                "speaker": "각 DF 주관",
-                "desc": "다이아몬드 패밀리 홈미팅"
-            }
+          {
+            "time": "오전 10:00",
+            "location": "퓨네줌",
+            "type": "fune_online",
+            "typeName": "퓨네 온라인",
+            "title": "행복한 홈미팅 하기 (45) / 혈압 건강 (40)",
+            "speaker": "사회: 김영희 GP | 강사: 이혜민 SA, 김옥주 FPT",
+            "desc": "홈미팅 스킬 및 혈압 건강 솔루션"
+          },
+          {
+            "time": "저녁 08:00",
+            "location": "각 DF",
+            "type": "fune_offline",
+            "typeName": "퓨네 오프라인",
+            "title": "DF 홈미팅 (90)",
+            "speaker": "각 DF 주관",
+            "desc": "다이아몬드 패밀리 홈미팅"
+          }
         ]
-    },
-    {
+      },
+      {
         "day": 13,
         "dow": "화",
         "events": []
-    },
-    {
+      },
+      {
         "day": 14,
         "dow": "수",
         "events": [
-            {
-                "time": "저녁 08:00",
-                "location": "퓨네줌",
-                "type": "fune_online",
-                "typeName": "퓨네 온라인",
-                "title": "꿈과 목표설정 (40) / 혈당 관리 (30) / 마이 AW 스토리 (15)",
-                "speaker": "사회: 이승엽 | 최병근 EM, 박찬희 GP, 김연임 SP",
-                "desc": "최병근 리더 주관 꿈과 목표설정 & 혈당 솔루션 특강"
-            }
+          {
+            "time": "저녁 08:00",
+            "location": "퓨네줌",
+            "type": "fune_online",
+            "typeName": "퓨네 온라인",
+            "title": "꿈과 목표설정 (40) / 혈당 관리 (30) / 마이 AW 스토리 (15)",
+            "speaker": "사회: 이승엽 | 최병근 EM, 박찬희 GP, 김연임 SP",
+            "desc": "최병근 리더 주관 꿈과 목표설정 & 혈당 솔루션 특강"
+          }
         ]
-    },
-    {
+      },
+      {
         "day": 15,
         "dow": "목",
         "events": [
-            {
-                "time": "오전 11:00",
-                "location": "김&엄 홈",
-                "type": "fune_offline",
-                "typeName": "퓨네 오프라인",
-                "title": "서초퀸 요리 / STP / 가치비전",
-                "speaker": "이현영 DIA, 강수영 GP, 이지현 EM, 엄지혜 FEDC",
-                "desc": "서초 퀸 쿠킹클래스 및 비전 공유"
-            },
-            {
-                "time": "저녁 08:00",
-                "location": "다온카페",
-                "type": "da_offline",
-                "typeName": "DA 오프라인",
-                "title": "사업설명 (90)",
-                "speaker": "김희정 EDC",
-                "desc": "다온카페 저녁 정기 사업설명"
-            }
+          {
+            "time": "오전 11:00",
+            "location": "김&엄 홈",
+            "type": "fune_offline",
+            "typeName": "퓨네 오프라인",
+            "title": "서초퀸 요리 / STP / 가치비전",
+            "speaker": "이현영 DIA, 강수영 GP, 이지현 EM, 엄지혜 FEDC",
+            "desc": "서초 퀸 쿠킹클래스 및 비전 공유"
+          },
+          {
+            "time": "저녁 08:00",
+            "location": "다온카페",
+            "type": "da_offline",
+            "typeName": "DA 오프라인",
+            "title": "사업설명 (90)",
+            "speaker": "김희정 EDC",
+            "desc": "다온카페 저녁 정기 사업설명"
+          }
         ]
-    },
-    {
+      },
+      {
         "day": 16,
         "dow": "금",
         "events": [
-            {
-                "time": "오전 11:00",
-                "location": "리더스클럽 & 온라인",
-                "type": "da_offline",
-                "typeName": "DA 오프라인/온라인",
-                "title": "사업설명 (50) / 뉴트리라이트 (50)",
-                "speaker": "이혜민 SA, 본사 강사",
-                "desc": "리더스클럽 비즈니스 및 뉴트리라이트 본사 세션"
-            }
+          {
+            "time": "오전 11:00",
+            "location": "리더스클럽 & 온라인",
+            "type": "da_offline",
+            "typeName": "DA 오프라인/온라인",
+            "title": "사업설명 (50) / 뉴트리라이트 (50)",
+            "speaker": "이혜민 SA, 본사 강사",
+            "desc": "리더스클럽 비즈니스 및 뉴트리라이트 본사 세션"
+          }
         ]
-    },
-    {
+      },
+      {
         "day": 17,
         "dow": "토",
         "events": []
-    },
-    {
+      },
+      {
         "day": 18,
         "dow": "일",
         "events": [
-            {
-                "time": "오후 03:00",
-                "location": "리더스클럽",
-                "type": "da_offline",
-                "typeName": "DA 오프라인",
-                "title": "DA 사관학교 1주 (180)",
-                "speaker": "DA 리더 그룹",
-                "desc": "성공적인 사업 확장을 위한 1주차 사관학교 집중 과정"
-            }
+          {
+            "time": "오후 03:00",
+            "location": "리더스클럽",
+            "type": "da_offline",
+            "typeName": "DA 오프라인",
+            "title": "DA 사관학교 1주 (180)",
+            "speaker": "DA 리더 그룹",
+            "desc": "성공적인 사업 확장을 위한 1주차 사관학교 집중 과정"
+          }
         ]
-    },
-    {
+      },
+      {
         "day": 19,
         "dow": "월",
         "events": [
-            {
-                "time": "오전 11:00",
-                "location": "다온카페 & 퓨네줌",
-                "type": "fune_offline",
-                "typeName": "퓨네 오프라인/온라인",
-                "title": "30, 40, 50, 60대의 AW 사업 (90)",
-                "speaker": "진행: 형지희 GP",
-                "desc": "세대별 맞춤형 암웨이 비즈니스 전략"
-            },
-            {
-                "time": "저녁 08:00",
-                "location": "각 FPT 줌",
-                "type": "fune_online",
-                "typeName": "퓨네 온라인",
-                "title": "FPT별 줌미팅 (90)",
-                "speaker": "각 FPT 리더",
-                "desc": "파운더스 플래티늄 그룹별 집중 미팅"
-            }
+          {
+            "time": "오전 11:00",
+            "location": "다온카페 & 퓨네줌",
+            "type": "fune_offline",
+            "typeName": "퓨네 오프라인/온라인",
+            "title": "30, 40, 50, 60대의 AW 사업 (90)",
+            "speaker": "진행: 형지희 GP",
+            "desc": "세대별 맞춤형 암웨이 비즈니스 전략"
+          },
+          {
+            "time": "저녁 08:00",
+            "location": "각 FPT 줌",
+            "type": "fune_online",
+            "typeName": "퓨네 온라인",
+            "title": "FPT별 줌미팅 (90)",
+            "speaker": "각 FPT 리더",
+            "desc": "파운더스 플래티늄 그룹별 집중 미팅"
+          }
         ]
-    },
-    {
+      },
+      {
         "day": 20,
         "dow": "화",
         "events": [
-            {
-                "time": "오전 11:00",
-                "location": "다온카페",
-                "type": "da_offline",
-                "typeName": "DA 오프라인",
-                "title": "그로잉맘 미팅 (90)",
-                "speaker": "DA 패밀리 리더",
-                "desc": "육아와 비즈니스를 병행하는 그로잉맘 모임"
-            }
+          {
+            "time": "오전 11:00",
+            "location": "다온카페",
+            "type": "da_offline",
+            "typeName": "DA 오프라인",
+            "title": "그로잉맘 미팅 (90)",
+            "speaker": "DA 패밀리 리더",
+            "desc": "육아와 비즈니스를 병행하는 그로잉맘 모임"
+          }
         ]
-    },
-    {
+      },
+      {
         "day": 21,
         "dow": "수",
         "events": [
-            {
-                "time": "오전 11:00",
-                "location": "각 DF 홈",
-                "type": "fune_offline",
-                "typeName": "퓨네 오프라인",
-                "title": "여성 DF 홈미팅",
-                "speaker": "각 DF 리더",
-                "desc": "여성 리더를 위한 홈미팅"
-            },
-            {
-                "time": "저녁 08:00",
-                "location": "퓨네줌",
-                "type": "fune_online",
-                "typeName": "퓨네 온라인",
-                "title": "명단 작성 & 만남 초대 (40) / 뉴트리라이트 이야기 (25) / 옵티미스트 (20)",
-                "speaker": "사회: 김선두 | 고창민 SA, 박해성 FPT, 박수인 SP",
-                "desc": "초대 스킬 및 제품 스토리텔링"
-            }
+          {
+            "time": "오전 11:00",
+            "location": "각 DF 홈",
+            "type": "fune_offline",
+            "typeName": "퓨네 오프라인",
+            "title": "여성 DF 홈미팅",
+            "speaker": "각 DF 리더",
+            "desc": "여성 리더를 위한 홈미팅"
+          },
+          {
+            "time": "저녁 08:00",
+            "location": "퓨네줌",
+            "type": "fune_online",
+            "typeName": "퓨네 온라인",
+            "title": "명단 작성 & 만남 초대 (40) / 뉴트리라이트 이야기 (25) / 옵티미스트 (20)",
+            "speaker": "사회: 김선두 | 고창민 SA, 박해성 FPT, 박수인 SP",
+            "desc": "초대 스킬 및 제품 스토리텔링"
+          }
         ]
-    },
-    {
+      },
+      {
         "day": 22,
         "dow": "목",
         "events": [
-            {
-                "time": "오후 04:30",
-                "location": "분당ABC",
-                "type": "abc_meeting",
-                "typeName": "ABC 체험/본사",
-                "title": "퀸체험 - 채소로 채운 든든한 한 끼 (90)",
-                "speaker": "분당 ABC 센터",
-                "desc": "암웨이 브랜드센터 분당 퀸 웰빙 쿠킹 체험"
-            },
-            {
-                "time": "저녁 08:00",
-                "location": "리더스 & 온라인",
-                "type": "da_online",
-                "typeName": "DA 온라인",
-                "title": "WHY AW (10) / 트렌드와 AW (25) / 영파워특강 (55)",
-                "speaker": "고창민 SA, 이상훈 WDIA",
-                "desc": "트렌드 비즈니스 및 이상훈 WDIA 영파워 특강"
-            }
+          {
+            "time": "오후 04:30",
+            "location": "분당ABC",
+            "type": "abc_meeting",
+            "typeName": "ABC 체험/본사",
+            "title": "퀸체험 - 채소로 채운 든든한 한 끼 (90)",
+            "speaker": "분당 ABC 센터",
+            "desc": "암웨이 브랜드센터 분당 퀸 웰빙 쿠킹 체험"
+          },
+          {
+            "time": "저녁 08:00",
+            "location": "리더스 & 온라인",
+            "type": "da_online",
+            "typeName": "DA 온라인",
+            "title": "WHY AW (10) / 트렌드와 AW (25) / 영파워특강 (55)",
+            "speaker": "고창민 SA, 이상훈 WDIA",
+            "desc": "트렌드 비즈니스 및 이상훈 WDIA 영파워 특강"
+          }
         ]
-    },
-    {
+      },
+      {
         "day": 23,
         "dow": "금",
         "events": [
-            {
-                "time": "오전 11:00",
-                "location": "리더스클럽 & 온라인",
-                "type": "da_offline",
-                "typeName": "DA 오프라인/온라인",
-                "title": "시스템 1 (40) / 시스템 2 (40) / 아티스트리 (40)",
-                "speaker": "안혜령 EM, 이현영 DIA, 본사 강사",
-                "desc": "비즈니스 시스템 구축 및 아티스트리 스킨케어 교육"
-            }
+          {
+            "time": "오전 11:00",
+            "location": "리더스클럽 & 온라인",
+            "type": "da_offline",
+            "typeName": "DA 오프라인/온라인",
+            "title": "시스템 1 (40) / 시스템 2 (40) / 아티스트리 (40)",
+            "speaker": "안혜령 EM, 이현영 DIA, 본사 강사",
+            "desc": "비즈니스 시스템 구축 및 아티스트리 스킨케어 교육"
+          }
         ]
-    },
-    {
+      },
+      {
         "day": 24,
         "dow": "토",
         "events": [
-            {
-                "time": "오후 03:00",
-                "location": "분당ABC",
-                "type": "fune_offline",
-                "typeName": "퓨네 오프라인",
-                "title": "퀸 STP & 아이들 건강교육 (90)",
-                "speaker": "분당 ABC 센터",
-                "desc": "성장기 자녀 건강 및 퀸 요리 시연"
-            },
-            {
-                "time": "오후 04:00",
-                "location": "김&엄 홈",
-                "type": "fune_offline",
-                "typeName": "퓨네 오프라인",
-                "title": "김철 홈사업설명 (90)",
-                "speaker": "김철 FEDC",
-                "desc": "토요 홈미팅 사업설명회"
-            }
+          {
+            "time": "오후 03:00",
+            "location": "분당ABC",
+            "type": "fune_offline",
+            "typeName": "퓨네 오프라인",
+            "title": "퀸 STP & 아이들 건강교육 (90)",
+            "speaker": "분당 ABC 센터",
+            "desc": "성장기 자녀 건강 및 퀸 요리 시연"
+          },
+          {
+            "time": "오후 04:00",
+            "location": "김&엄 홈",
+            "type": "fune_offline",
+            "typeName": "퓨네 오프라인",
+            "title": "김철 홈사업설명 (90)",
+            "speaker": "김철 FEDC",
+            "desc": "토요 홈미팅 사업설명회"
+          }
         ]
-    },
-    {
+      },
+      {
         "day": 25,
         "dow": "일",
         "events": [
-            {
-                "time": "오후 03:00",
-                "location": "리더스클럽",
-                "type": "da_offline",
-                "typeName": "DA 오프라인",
-                "title": "DA 사관학교 2주 (180)",
-                "speaker": "DA 리더 그룹",
-                "desc": "리더십 배가 및 실전 비즈니스 2주차 과정"
-            }
+          {
+            "time": "오후 03:00",
+            "location": "리더스클럽",
+            "type": "da_offline",
+            "typeName": "DA 오프라인",
+            "title": "DA 사관학교 2주 (180)",
+            "speaker": "DA 리더 그룹",
+            "desc": "리더십 배가 및 실전 비즈니스 2주차 과정"
+          }
         ]
-    },
-    {
+      },
+      {
         "day": 26,
         "dow": "월",
         "events": [
-            {
-                "time": "오전 10:00",
-                "location": "퓨네줌",
-                "type": "fune_online",
-                "typeName": "퓨네 온라인",
-                "title": "AW 의사소통 방법 (40) / 랩스 프로레티놀 (20) / 아티스트리 이야기 (25)",
-                "speaker": "사회: 조효순 | 엄지혜 FEDC, 고수인 EM, 최유리 GP",
-                "desc": "효과적인 파트너 소통법 및 신제품 집중 탐구"
-            },
-            {
-                "time": "저녁 08:00",
-                "location": "다온카페 & 퓨네줌",
-                "type": "fune_offline",
-                "typeName": "퓨네 오프라인/온라인",
-                "title": "저녁그룹미팅 (90)",
-                "speaker": "진행: 김철 FEDC",
-                "desc": "다온카페 및 퓨네줌 온·오프라인 그룹 미팅"
-            }
+          {
+            "time": "오전 10:00",
+            "location": "퓨네줌",
+            "type": "fune_online",
+            "typeName": "퓨네 온라인",
+            "title": "AW 의사소통 방법 (40) / 랩스 프로레티놀 (20) / 아티스트리 이야기 (25)",
+            "speaker": "사회: 조효순 | 엄지혜 FEDC, 고수인 EM, 최유리 GP",
+            "desc": "효과적인 파트너 소통법 및 신제품 집중 탐구"
+          },
+          {
+            "time": "저녁 08:00",
+            "location": "다온카페 & 퓨네줌",
+            "type": "fune_offline",
+            "typeName": "퓨네 오프라인/온라인",
+            "title": "저녁그룹미팅 (90)",
+            "speaker": "진행: 김철 FEDC",
+            "desc": "다온카페 및 퓨네줌 온·오프라인 그룹 미팅"
+          }
         ]
-    },
-    {
+      },
+      {
         "day": 27,
         "dow": "화",
         "events": [
-            {
-                "time": "오전 11:00",
-                "location": "강서ABC",
-                "type": "da_offline",
-                "typeName": "DA 오프라인",
-                "title": "퀸 STP (90)",
-                "speaker": "박은경 WDIA",
-                "desc": "강서 암웨이 비즈니스 센터 퀸 사업설명회"
-            }
+          {
+            "time": "오전 11:00",
+            "location": "강서ABC",
+            "type": "da_offline",
+            "typeName": "DA 오프라인",
+            "title": "퀸 STP (90)",
+            "speaker": "박은경 WDIA",
+            "desc": "강서 암웨이 비즈니스 센터 퀸 사업설명회"
+          }
         ]
-    },
-    {
+      },
+      {
         "day": 28,
         "dow": "수",
         "events": [
-            {
-                "time": "오전 11:00",
-                "location": "다온카페",
-                "type": "da_offline",
-                "typeName": "DA 오프라인",
-                "title": "DA 비긴 어게인 미팅 (90)",
-                "speaker": "DA 리더 그룹",
-                "desc": "다온카페 신규 및 재도약 파트너 미팅"
-            },
-            {
-                "time": "저녁 08:00",
-                "location": "퓨네줌",
-                "type": "fune_online",
-                "typeName": "퓨네 온라인",
-                "title": "STP, FU, FT (40) / 엣모스피어 (30) / 마이 AW 스토리 (15)",
-                "speaker": "사회: 고현정 | 김은주 FPT, 김승환 EDC, 김민지 SA",
-                "desc": "오늘 저녁 핵심 줌미팅 - 공기청정기 솔루션 & 후속관리"
-            }
+          {
+            "time": "오전 11:00",
+            "location": "다온카페",
+            "type": "da_offline",
+            "typeName": "DA 오프라인",
+            "title": "DA 비긴 어게인 미팅 (90)",
+            "speaker": "DA 리더 그룹",
+            "desc": "다온카페 신규 및 재도약 파트너 미팅"
+          },
+          {
+            "time": "저녁 08:00",
+            "location": "퓨네줌",
+            "type": "fune_online",
+            "typeName": "퓨네 온라인",
+            "title": "STP, FU, FT (40) / 엣모스피어 (30) / 마이 AW 스토리 (15)",
+            "speaker": "사회: 고현정 | 김은주 FPT, 김승환 EDC, 김민지 SA",
+            "desc": "오늘 저녁 핵심 줌미팅 - 공기청정기 솔루션 & 후속관리"
+          }
         ]
-    },
-    {
+      },
+      {
         "day": 29,
         "dow": "목",
         "events": [
-            {
-                "time": "오전 11:00",
-                "location": "김&엄 홈",
-                "type": "fune_offline",
-                "typeName": "퓨네 오프라인",
-                "title": "엄지혜 홈사업설명 (90)",
-                "speaker": "엄지혜 FEDC",
-                "desc": "엄지혜 리더 주관 홈미팅 사업설명"
-            },
-            {
-                "time": "저녁 08:00",
-                "location": "다온카페",
-                "type": "da_offline",
-                "typeName": "DA 오프라인",
-                "title": "앰비전 비즈니스 데이 (90)",
-                "speaker": "다온카페 리더 그룹",
-                "desc": "비전과 동기부여의 밤"
-            }
+          {
+            "time": "오전 11:00",
+            "location": "김&엄 홈",
+            "type": "fune_offline",
+            "typeName": "퓨네 오프라인",
+            "title": "엄지혜 홈사업설명 (90)",
+            "speaker": "엄지혜 FEDC",
+            "desc": "엄지혜 리더 주관 홈미팅 사업설명"
+          },
+          {
+            "time": "저녁 08:00",
+            "location": "다온카페",
+            "type": "da_offline",
+            "typeName": "DA 오프라인",
+            "title": "앰비전 비즈니스 데이 (90)",
+            "speaker": "다온카페 리더 그룹",
+            "desc": "비전과 동기부여의 밤"
+          }
         ]
-    },
-    {
+      },
+      {
         "day": 30,
         "dow": "금",
         "events": [
-            {
-                "time": "오전 11:00",
-                "location": "리더스클럽 & 온라인",
-                "type": "da_offline",
-                "typeName": "DA 오프라인/온라인",
-                "title": "건강 특강 (60) / 좋은 원료 & 명가의 솜씨 (40)",
-                "speaker": "서혜경 DIA, 김혜선 FDIA",
-                "desc": "최고 리더의 웰빙 건강 특강 및 명가 제품 분석"
-            },
-            {
-                "time": "오후 02:00",
-                "location": "리더스클럽",
-                "type": "da_offline",
-                "typeName": "DA 오프라인",
-                "title": "아티스트리 아카데미 1주 (90)",
-                "speaker": "본사 전문 강사",
-                "desc": "스킨케어 전문가 양성 과정 1주차"
-            }
+          {
+            "time": "오전 11:00",
+            "location": "리더스클럽 & 온라인",
+            "type": "da_offline",
+            "typeName": "DA 오프라인/온라인",
+            "title": "건강 특강 (60) / 좋은 원료 & 명가의 솜씨 (40)",
+            "speaker": "서혜경 DIA, 김혜선 FDIA",
+            "desc": "최고 리더의 웰빙 건강 특강 및 명가 제품 분석"
+          },
+          {
+            "time": "오후 02:00",
+            "location": "리더스클럽",
+            "type": "da_offline",
+            "typeName": "DA 오프라인",
+            "title": "아티스트리 아카데미 1주 (90)",
+            "speaker": "본사 전문 강사",
+            "desc": "스킨케어 전문가 양성 과정 1주차"
+          }
         ]
-    },
-    {
+      },
+      {
         "day": 31,
         "dow": "토",
         "events": []
-    }
-];
-    let selectedScheduleDay = 28; // 오늘 디폴트 (2026-10-28)
+      }
+    ]
+  },
+  "2026-11": {
+    "year": 2026,
+    "month": 11,
+    "title": "2026년 11월 교육일정표",
+    "subTitle": "퓨네 & DA",
+    "image": "864+2026년11월+교육일정표.png",
+    "firstDayDow": 0,
+    "totalDays": 30,
+    "days": [
+      {
+        "day": 1,
+        "dow": "일",
+        "events": [
+          {
+            "time": "오후 03:00",
+            "location": "리더스클럽",
+            "type": "da_offline",
+            "typeName": "DA 오프라인",
+            "title": "DA사관학교 3주 (150)",
+            "speaker": "DA 리더 그룹",
+            "desc": "DA 사관학교 3주차 오프라인 집중 교육"
+          }
+        ]
+      },
+      {
+        "day": 2,
+        "dow": "월",
+        "events": [
+          {
+            "time": "오전 11:00",
+            "location": "다온카페 & 퓨네줌",
+            "type": "fune_offline_online",
+            "typeName": "퓨네 온/오프라인",
+            "title": "여성그룹미팅 (90)",
+            "speaker": "진행: 엄지혜 FEDC",
+            "desc": "다온카페 오프라인 및 퓨네줌 동시 진행"
+          },
+          {
+            "time": "저녁 08:00",
+            "location": "퓨네줌",
+            "type": "fune_online",
+            "typeName": "퓨네 온라인",
+            "title": "퓨네 패밀리세미나 (90)",
+            "speaker": "사회: 박해성 FPT",
+            "desc": "퓨네 정기 온라인 패밀리 세미나"
+          }
+        ]
+      },
+      {
+        "day": 3,
+        "dow": "화",
+        "events": [
+          {
+            "time": "오전 11:00",
+            "location": "각 DF 홈",
+            "type": "fune_offline",
+            "typeName": "퓨네 오프라인",
+            "title": "여성 DF 홈미팅",
+            "speaker": "각 DF 리더",
+            "desc": "각 다이아몬드 패밀리 홈미팅"
+          }
+        ]
+      },
+      {
+        "day": 4,
+        "dow": "수",
+        "events": [
+          {
+            "time": "오전 11:30",
+            "location": "분당 ABC 3층",
+            "type": "abc_meeting",
+            "typeName": "ABC / 본사",
+            "title": "점심식사 with FCA (90)",
+            "speaker": "프로모션 성취 리더",
+            "desc": "FCA와 함께하는 오찬 프로모션 성취 미팅"
+          },
+          {
+            "time": "오후 02:00",
+            "location": "분당 ABC",
+            "type": "abc_meeting",
+            "typeName": "ABC / 본사",
+            "title": "고삿뽀로 고런던 미팅 (150)",
+            "speaker": "초청: 신혜연 WDIA",
+            "desc": "분당 ABC 고삿뽀로 & 고런던 목표 달성 미팅"
+          }
+        ]
+      },
+      {
+        "day": 5,
+        "dow": "목",
+        "events": [
+          {
+            "time": "오후 01:30",
+            "location": "분당 ABC",
+            "type": "abc_meeting",
+            "typeName": "ABC / 본사",
+            "title": "퀸체험 - 브런치 테이블 (90)",
+            "speaker": "본사 전문 셰프/강사진",
+            "desc": "분당 ABC 퀸 쿠킹 체험 브런치 테이블 세션"
+          },
+          {
+            "time": "저녁 08:00",
+            "location": "DA ZOOM",
+            "type": "da_online",
+            "typeName": "DA 온라인",
+            "title": "WHY AW (10) / 사업설명 (60)",
+            "speaker": "문연희 FDIA",
+            "desc": "DA 정기 저녁 온라인 줌 미팅"
+          }
+        ]
+      },
+      {
+        "day": 6,
+        "dow": "금",
+        "events": [
+          {
+            "time": "오전 11:00",
+            "location": "리더스클럽 & 온라인",
+            "type": "da_offline_online",
+            "typeName": "DA 온/오프라인",
+            "title": "사업설명 (50) / WHY AW (10) / 뉴트리라이트 (40)",
+            "speaker": "노명화 EM, 박수인 SP, 본사",
+            "desc": "리더스클럽 오프라인 및 온라인 동시 교육"
+          },
+          {
+            "time": "오후 02:00",
+            "location": "리더스클럽",
+            "type": "da_offline",
+            "typeName": "DA 오프라인",
+            "title": "아티스트리 아카데미 2주 (90)",
+            "speaker": "본사 전문 강사",
+            "desc": "아티스트리 스킨케어 전문가 과정 2주차"
+          }
+        ]
+      },
+      {
+        "day": 7,
+        "dow": "토",
+        "events": []
+      },
+      {
+        "day": 8,
+        "dow": "일",
+        "events": [
+          {
+            "time": "오후 03:00",
+            "location": "강서 ABC",
+            "type": "abc_meeting",
+            "typeName": "ABC / 본사",
+            "title": "일일세미나 (180)",
+            "speaker": "초청: 이주연 DIA",
+            "desc": "강서 ABC 초청 일일 세미나"
+          }
+        ]
+      },
+      {
+        "day": 9,
+        "dow": "월",
+        "events": [
+          {
+            "time": "오전 10:00",
+            "location": "퓨네줌",
+            "type": "fune_online",
+            "typeName": "퓨네 온라인",
+            "title": "소비자 만들기 & 관리법 (45) / 새티니크 제품군 (40)",
+            "speaker": "사회: 소문선 SP | 강사: 김은주 FPT, 최유리 SP",
+            "desc": "실전 소비자 구축 및 새티니크 헤어케어 집중 세션"
+          },
+          {
+            "time": "저녁 08:00",
+            "location": "다온카페 & 퓨네줌",
+            "type": "fune_offline_online",
+            "typeName": "퓨네 온/오프라인",
+            "title": "저녁그룹미팅 (90)",
+            "speaker": "진행: 김철 FEDC",
+            "desc": "다온카페 오프라인 및 퓨네줌 저녁 그룹 미팅"
+          }
+        ]
+      },
+      {
+        "day": 10,
+        "dow": "화",
+        "events": []
+      },
+      {
+        "day": 11,
+        "dow": "수",
+        "events": [
+          {
+            "time": "저녁 08:00",
+            "location": "퓨네줌",
+            "type": "fune_online",
+            "typeName": "퓨네 온라인",
+            "title": "사업계획 세우기 - 목표에서 실행까지 (45) / 간 건강과 뉴트리 (40)",
+            "speaker": "사회: 김연임 SP | 강사: 이혜민 SA, 김옥주 FPT",
+            "desc": "목표 실행 전략 및 간 건강 영양요법 세미나"
+          }
+        ]
+      },
+      {
+        "day": 12,
+        "dow": "목",
+        "events": [
+          {
+            "time": "오전 11:00",
+            "location": "김&엄 홈",
+            "type": "fune_offline",
+            "typeName": "퓨네 오프라인",
+            "title": "서초퀸 요리 / STP / 가치비전",
+            "speaker": "요리: 임정원 FRU & 윤미희 | STP: 고수인 EM | 가치비전: 엄지혜 FEDC",
+            "desc": "서초 퀸 쿠킹 시연 및 비전 제시 홈미팅"
+          },
+          {
+            "time": "저녁 08:00",
+            "location": "리더스 & 온라인",
+            "type": "da_offline_online",
+            "typeName": "DA 온/오프라인",
+            "title": "WHY AMWAY (10) / 트렌드와 AW (25) / 영파워 특강 (55)",
+            "speaker": "권강미 FPT, 이상훈 WDIA",
+            "desc": "트렌드 분석 및 영파워 비즈니스 성공 특강"
+          }
+        ]
+      },
+      {
+        "day": 13,
+        "dow": "금",
+        "events": [
+          {
+            "time": "오전 11:00",
+            "location": "리더스클럽 & 온라인",
+            "type": "da_offline_online",
+            "typeName": "DA 온/오프라인",
+            "title": "사업설명 (50) / 즐거운 데몬 (15) / 홈퍼스널 (35)",
+            "speaker": "김정임 FEDC, 안건희 EM",
+            "desc": "사업설명 및 실전 제품 데몬스트레이션"
+          },
+          {
+            "time": "오후 02:00",
+            "location": "리더스클럽",
+            "type": "da_offline",
+            "typeName": "DA 오프라인",
+            "title": "아티스트리 아카데미 3주 (90)",
+            "speaker": "본사 전문 강사",
+            "desc": "아티스트리 전문가 3주차 실습 및 교육"
+          }
+        ]
+      },
+      {
+        "day": 14,
+        "dow": "토",
+        "events": [
+          {
+            "time": "오후 01:00",
+            "location": "분당 ABC",
+            "type": "abc_meeting",
+            "typeName": "ABC / 본사",
+            "title": "ABC 코어 데이 (120) - 퀸 + 오프라인 만남",
+            "speaker": "팀 리더 그룹",
+            "desc": "분당 ABC 오프라인 퀸 요리 및 패밀리 모임"
+          },
+          {
+            "time": "오후 04:00",
+            "location": "김&엄 홈",
+            "type": "fune_offline",
+            "typeName": "퓨네 오프라인",
+            "title": "김철 홈사업설명 (90)",
+            "speaker": "진행: 김철 FEDC",
+            "desc": "홈미팅 집중 사업설명 세션"
+          }
+        ]
+      },
+      {
+        "day": 15,
+        "dow": "일",
+        "events": [
+          {
+            "time": "오후 03:00",
+            "location": "리더스클럽",
+            "type": "da_offline",
+            "typeName": "DA 오프라인",
+            "title": "DA사관학교 4주 (150)",
+            "speaker": "DA 리더 그룹",
+            "desc": "DA 사관학교 4주차 오프라인 리더십 과정"
+          }
+        ]
+      },
+      {
+        "day": 16,
+        "dow": "월",
+        "events": [
+          {
+            "time": "오전 11:00",
+            "location": "다온카페 & 퓨네줌",
+            "type": "fune_offline_online",
+            "typeName": "퓨네 온/오프라인",
+            "title": "퀸 Ti와 인덕션 스마트 사용법 (90)",
+            "speaker": "진행: 임정원 FRU",
+            "desc": "티타늄 퀸 쿡웨어 및 인덕션 활용 노하우 클래스"
+          },
+          {
+            "time": "저녁 08:00",
+            "location": "각 DF",
+            "type": "fune_offline",
+            "typeName": "퓨네 오프라인",
+            "title": "DF 미팅 (90)",
+            "speaker": "각 다이아몬드 패밀리 리더",
+            "desc": "각 다이아몬드 패밀리 전략 미팅"
+          }
+        ]
+      },
+      {
+        "day": 17,
+        "dow": "화",
+        "events": [
+          {
+            "time": "오전 11:00",
+            "location": "다온카페",
+            "type": "da_offline",
+            "typeName": "DA 오프라인",
+            "title": "그로잉맘 미팅 (120)",
+            "speaker": "DA 리더 그룹",
+            "desc": "엄마들의 성장과 라이프스타일 비즈니스 미팅"
+          }
+        ]
+      },
+      {
+        "day": 18,
+        "dow": "수",
+        "events": [
+          {
+            "time": "오전 11:00",
+            "location": "각 DF 홈",
+            "type": "fune_offline",
+            "typeName": "퓨네 오프라인",
+            "title": "여성 DF 홈미팅",
+            "speaker": "각 DF 리더",
+            "desc": "각 패밀리 여성 홈미팅"
+          },
+          {
+            "time": "저녁 08:00",
+            "location": "퓨네줌",
+            "type": "fune_online",
+            "typeName": "퓨네 온라인",
+            "title": "사업 특강 (45) / 겨울철 건강관리 & 뉴트리 (40)",
+            "speaker": "사회: 김선두 BB | 특강: 김철 FEDC | 뉴트리: 이현영 DIA",
+            "desc": "비즈니스 성공 특강 및 면역/겨울철 건강 세미나"
+          }
+        ]
+      },
+      {
+        "day": 19,
+        "dow": "목",
+        "events": [
+          {
+            "time": "저녁 08:00",
+            "location": "다온카페",
+            "type": "da_offline",
+            "typeName": "DA 오프라인",
+            "title": "사업설명 (90)",
+            "speaker": "류지민 EDC",
+            "desc": "다온카페 저녁 오프라인 사업설명회"
+          }
+        ]
+      },
+      {
+        "day": 20,
+        "dow": "금",
+        "events": [
+          {
+            "time": "오전 11:00",
+            "location": "리더스클럽 & 온라인",
+            "type": "da_offline_online",
+            "typeName": "DA 온/오프라인",
+            "title": "사업설명 (50) / WHY AW (10) / 스카이 & 옵티미스트 (40)",
+            "speaker": "엄지혜 FEDC, 박미숙 SP, 본사",
+            "desc": "엣모스피어 스카이 및 옵티미스트 청정 시스템 강의"
+          },
+          {
+            "time": "오후 02:00",
+            "location": "리더스클럽",
+            "type": "da_offline",
+            "typeName": "DA 오프라인",
+            "title": "리더미팅 (90)",
+            "speaker": "SP 이상 리더",
+            "desc": "SP 이상 오프라인 핵심 전략 리더미팅"
+          }
+        ]
+      },
+      {
+        "day": 21,
+        "dow": "토",
+        "events": [
+          {
+            "time": "오후 03:00",
+            "location": "분당 ABC",
+            "type": "abc_meeting",
+            "typeName": "ABC / 본사",
+            "title": "DA 토요 인사이트 - 퀸 + 오프라인 만남 (90)",
+            "speaker": "DA 리더 그룹",
+            "desc": "주말 분당 ABC 오프라인 인사이트 미팅"
+          }
+        ]
+      },
+      {
+        "day": 22,
+        "dow": "일",
+        "events": [
+          {
+            "time": "오후 03:00",
+            "location": "리더스클럽",
+            "type": "da_offline",
+            "typeName": "DA 오프라인",
+            "title": "DA사관학교 5주 (150)",
+            "speaker": "DA 리더 그룹",
+            "desc": "DA 사관학교 5주차 리더십 코스"
+          }
+        ]
+      },
+      {
+        "day": 23,
+        "dow": "월",
+        "events": [
+          {
+            "time": "오전 10:00",
+            "location": "퓨네줌",
+            "type": "fune_online",
+            "typeName": "퓨네 온라인",
+            "title": "일대일 STP, 홈STP, OM 초대 (45) / 겨울철 피부관리와 아티스트리 (40)",
+            "speaker": "사회: 김영희 GP | 강사: 김희정 EDC, 김순덕 FPT",
+            "desc": "실전 초대 스킬 및 겨울철 안티에이징 뷰티 세미나"
+          },
+          {
+            "time": "저녁 08:00",
+            "location": "다온카페 & 퓨네줌",
+            "type": "fune_offline_online",
+            "typeName": "퓨네 온/오프라인",
+            "title": "저녁그룹미팅 (90)",
+            "speaker": "진행: 김철 FEDC",
+            "desc": "다온카페 & 퓨네줌 통합 저녁 그룹미팅"
+          }
+        ]
+      },
+      {
+        "day": 24,
+        "dow": "화",
+        "events": [
+          {
+            "time": "오전 11:00",
+            "location": "다온카페",
+            "type": "da_offline",
+            "typeName": "DA 오프라인",
+            "title": "비긴어게인 미팅 (120)",
+            "speaker": "DA 리더 그룹",
+            "desc": "비즈니스 재도약 비긴어게인 파트너 미팅"
+          }
+        ]
+      },
+      {
+        "day": 25,
+        "dow": "수",
+        "events": [
+          {
+            "time": "오전 11:00",
+            "location": "A스테이션",
+            "type": "abc_meeting",
+            "typeName": "ABC / 본사",
+            "title": "퀸 + 데몬 + 사업설명 (90)",
+            "speaker": "신명화 FDIA",
+            "desc": "A스테이션 퀸 요리 시연 및 명품 사업설명"
+          },
+          {
+            "time": "저녁 08:00",
+            "location": "FPT 줌",
+            "type": "fune_online",
+            "typeName": "퓨네 온라인",
+            "title": "FPT별 줌미팅 (90)",
+            "speaker": "각 FPT 리더",
+            "desc": "FPT 그룹별 실시간 온라인 코칭 미팅"
+          }
+        ]
+      },
+      {
+        "day": 26,
+        "dow": "목",
+        "events": [
+          {
+            "time": "오전 11:00",
+            "location": "김&엄 홈",
+            "type": "fune_offline",
+            "typeName": "퓨네 오프라인",
+            "title": "엄지혜 홈사업설명 (90)",
+            "speaker": "진행: 엄지혜 FEDC",
+            "desc": "홈미팅 심층 비즈니스 설명회"
+          },
+          {
+            "time": "저녁 08:00",
+            "location": "다온카페",
+            "type": "da_offline",
+            "typeName": "DA 오프라인",
+            "title": "앰비전 비즈니스 데이 (90)",
+            "speaker": "DA 리더 그룹",
+            "desc": "다온카페 앰비전 비즈니스 데이 오프라인 미팅"
+          }
+        ]
+      },
+      {
+        "day": 27,
+        "dow": "금",
+        "events": [
+          {
+            "time": "오전 11:00",
+            "location": "리더스클럽 & 온라인",
+            "type": "da_offline_online",
+            "typeName": "DA 온/오프라인",
+            "title": "시스템 1 (40) / 시스템 2 (40) / 아티스트리 오일 Queen Yourself (40)",
+            "speaker": "이지현 EM, 김혜선 FDIA, 원다미 FPT",
+            "desc": "성공 시스템 강의 및 아티스트리 신제품 페이셜 오일 특강"
+          }
+        ]
+      },
+      {
+        "day": 28,
+        "dow": "토",
+        "events": [
+          {
+            "time": "오후 04:00",
+            "location": "김&엄 홈",
+            "type": "fune_offline",
+            "typeName": "퓨네 오프라인",
+            "title": "김철 홈사업설명 (90)",
+            "speaker": "진행: 김철 FEDC",
+            "desc": "주말 홈미팅 비즈니스 설명회"
+          }
+        ]
+      },
+      {
+        "day": 29,
+        "dow": "일",
+        "events": [
+          {
+            "time": "오후 03:00",
+            "location": "리더스클럽",
+            "type": "da_offline",
+            "typeName": "DA 오프라인",
+            "title": "DA사관학교 졸업식",
+            "speaker": "DA 총괄 리더 그룹",
+            "desc": "DA 사관학교 정규 과정 수료 및 졸업식"
+          }
+        ]
+      },
+      {
+        "day": 30,
+        "dow": "월",
+        "holiday": "휴강",
+        "events": []
+      }
+    ]
+  }
+};
+
+    let monthlyScheduleDB = { ...defaultMonthlyScheduleDB };
+    let currentScheduleMonthKey = '2026-11'; // 최신 11월 기본
+    let selectedScheduleDay = 3; // 오늘 11월 3일 기본
     let selectedScheduleTypeFilter = 'all';
 
     function initScheduleModule() {
+      // localStorage에서 커스텀 등록된 일정표가 있다면 병합
+      try {
+        const storedCustomDB = localStorage.getItem('abo_monthly_schedules');
+        if (storedCustomDB) {
+          const parsed = JSON.parse(storedCustomDB);
+          monthlyScheduleDB = { ...defaultMonthlyScheduleDB, ...parsed };
+        }
+      } catch(e) {
+        console.warn('Failed to load custom schedules from localStorage', e);
+      }
+
+      renderScheduleMonthTabs();
+      updateScheduleBanner();
       renderHomeTodaySchedule();
       renderScheduleCalendar();
       renderScheduleDayEvents(selectedScheduleDay);
+      updateAdminScheduleButtonVisibility();
+    }
+
+    function updateAdminScheduleButtonVisibility() {
+      const btn = document.getElementById('admin-add-schedule-btn');
+      if (btn && currentUser) {
+        if (currentUser.role === 'admin' || currentUser.role === 'super_admin') {
+          btn.classList.remove('hidden');
+          btn.classList.add('flex');
+        } else {
+          btn.classList.add('hidden');
+          btn.classList.remove('flex');
+        }
+      }
+    }
+
+    function switchScheduleMonth(monthKey) {
+      if (!monthlyScheduleDB[monthKey]) return;
+      currentScheduleMonthKey = monthKey;
+      
+      // 월 변경 시 첫날 또는 기본일 선택
+      const data = monthlyScheduleDB[monthKey];
+      if (monthKey === '2026-11') {
+        selectedScheduleDay = 3; // 11월 3일
+      } else if (monthKey === '2026-10') {
+        selectedScheduleDay = 28; // 10월 28일
+      } else {
+        selectedScheduleDay = 1;
+      }
+
+      renderScheduleMonthTabs();
+      updateScheduleBanner();
+      renderScheduleCalendar();
+      renderScheduleDayEvents(selectedScheduleDay);
+      if (window.lucide) lucide.createIcons();
+    }
+
+    function renderScheduleMonthTabs() {
+      const container = document.getElementById('schedule-month-tabs');
+      if (!container) return;
+
+      const keys = Object.keys(monthlyScheduleDB).sort();
+      let html = '';
+      keys.forEach(k => {
+        const item = monthlyScheduleDB[k];
+        const isCurrent = (k === currentScheduleMonthKey);
+        const label = `${item.month}월${k === '2026-11' ? ' (최신)' : ''}`;
+        if (isCurrent) {
+          html += `<button onclick="switchScheduleMonth('${k}')" data-month="${k}" class="month-tab-btn px-2.5 py-1 rounded-lg text-[10px] font-bold bg-emerald-500 text-white shadow transition">${label}</button>`;
+        } else {
+          html += `<button onclick="switchScheduleMonth('${k}')" data-month="${k}" class="month-tab-btn px-2.5 py-1 rounded-lg text-[10px] font-bold bg-slate-800 text-slate-400 hover:text-white transition">${label}</button>`;
+        }
+      });
+      container.innerHTML = html;
+    }
+
+    function updateScheduleBanner() {
+      const data = monthlyScheduleDB[currentScheduleMonthKey];
+      if (!data) return;
+
+      const badge = document.getElementById('sched-banner-badge');
+      const title = document.getElementById('sched-banner-title');
+      const calTitle = document.getElementById('calendar-month-title');
+      const modalTitle = document.getElementById('schedule-modal-title');
+      const modalImg = document.getElementById('schedule-modal-img');
+
+      if (badge) badge.innerText = `${data.year}년 ${data.month}월`;
+      if (title) title.innerText = data.title;
+      if (calTitle) calTitle.innerHTML = `<i data-lucide="calendar" class="w-3.5 h-3.5 text-emerald-400"></i> ${data.year}. ${data.month}`;
+      if (modalTitle) modalTitle.innerText = `${data.title} (${data.subTitle})`;
+      if (modalImg) {
+        modalImg.src = data.image;
+        modalImg.alt = data.title;
+      }
     }
 
     function renderHomeTodaySchedule() {
       const container = document.getElementById('home-today-schedule-list');
       if (!container) return;
 
-      const todayData = monthlyScheduleData.find(d => d.day === 28);
-      const tomorrowData = monthlyScheduleData.find(d => d.day === 29);
+      // 실시간 날짜 기준 (2026년 11월 3일 화요일)
+      const novData = monthlyScheduleDB['2026-11'];
+      if (!novData) return;
+
+      const todayData = novData.days.find(d => d.day === 3);
+      const tomorrowData = novData.days.find(d => d.day === 4);
 
       let html = '';
 
@@ -2738,7 +3469,7 @@
               <div class="flex gap-3 min-w-0">
                 <div class="flex flex-col items-center justify-center w-11 h-11 rounded-xl bg-emerald-500/10 text-emerald-400 border border-emerald-500/20 shrink-0 font-outfit">
                   <span class="text-[9px] font-bold uppercase">TODAY</span>
-                  <span class="text-sm font-extrabold leading-none mt-0.5">28</span>
+                  <span class="text-sm font-extrabold leading-none mt-0.5">3</span>
                 </div>
                 <div class="min-w-0">
                   <div class="flex items-center gap-1.5 flex-wrap">
@@ -2755,9 +3486,15 @@
             </div>
           `;
         });
+      } else {
+        html += `
+          <div class="bg-[#131923] p-3 rounded-2xl border border-white/5 text-center text-slate-400 text-xs">
+            오늘 예정된 교육 일정이 없습니다.
+          </div>
+        `;
       }
 
-      // 내일 일정 미리보기
+      // 내일(11월 4일) 일정 미리보기
       if (tomorrowData && tomorrowData.events && tomorrowData.events.length > 0) {
         const ev = tomorrowData.events[0];
         const typeBadgeClass = getScheduleTypeBadge(ev.type);
@@ -2766,7 +3503,7 @@
             <div class="flex gap-3 min-w-0">
               <div class="flex flex-col items-center justify-center w-11 h-11 rounded-xl bg-amber-500/10 text-amber-400 border border-amber-500/20 shrink-0 font-outfit">
                 <span class="text-[9px] font-bold uppercase">내일</span>
-                <span class="text-sm font-extrabold leading-none mt-0.5">29</span>
+                <span class="text-sm font-extrabold leading-none mt-0.5">4</span>
               </div>
               <div class="min-w-0">
                 <div class="flex items-center gap-1.5 flex-wrap">
@@ -2789,32 +3526,34 @@
     }
 
     function getScheduleTypeBadge(type) {
-      switch(type) {
-        case 'fune_offline': return 'bg-amber-400/15 text-amber-300 border-amber-400/30';
-        case 'fune_online': return 'bg-sky-400/15 text-sky-300 border-sky-400/30';
-        case 'da_offline': return 'bg-rose-400/15 text-rose-300 border-rose-400/30';
-        case 'da_online': return 'bg-emerald-400/15 text-emerald-300 border-emerald-400/30';
-        case 'abc_meeting': return 'bg-purple-400/15 text-purple-300 border-purple-400/30';
-        default: return 'bg-slate-700/30 text-slate-300 border-slate-600/30';
-      }
+      if (type.includes('fune_offline')) return 'bg-amber-400/15 text-amber-300 border-amber-400/30';
+      if (type.includes('fune_online')) return 'bg-sky-400/15 text-sky-300 border-sky-400/30';
+      if (type.includes('da_offline')) return 'bg-rose-400/15 text-rose-300 border-rose-400/30';
+      if (type.includes('da_online')) return 'bg-emerald-400/15 text-emerald-300 border-emerald-400/30';
+      if (type.includes('abc_meeting')) return 'bg-purple-400/15 text-purple-300 border-purple-400/30';
+      return 'bg-slate-700/30 text-slate-300 border-slate-600/30';
     }
 
     function renderScheduleCalendar() {
       const grid = document.getElementById('calendar-days-grid');
       if (!grid) return;
 
-      // 2026년 10월 1일은 목요일 (Day of week: 일=0, 월=1, 화=2, 수=3, 목=4, 금=5, 토=6)
-      // 앞선 빈칸 4칸 (일, 월, 화, 수)
+      const currentData = monthlyScheduleDB[currentScheduleMonthKey];
+      if (!currentData) return;
+
+      const firstDayDow = currentData.firstDayDow || 0; // 0=일, 1=월, 2=화, 3=수, 4=목, 5=금, 6=토
+      const totalDays = currentData.totalDays || 30;
+
       let html = '';
-      for (let i = 0; i < 4; i++) {
+      for (let i = 0; i < firstDayDow; i++) {
         html += `<span class="py-2 text-slate-700 select-none text-[11px]">-</span>`;
       }
 
-      for (let d = 1; d <= 31; d++) {
-        const item = monthlyScheduleData.find(x => x.day === d);
+      for (let d = 1; d <= totalDays; d++) {
+        const item = currentData.days.find(x => x.day === d);
         const hasEvents = item && item.events && item.events.length > 0;
         const isSelected = (d === selectedScheduleDay);
-        const isToday = (d === 28);
+        const isToday = (currentScheduleMonthKey === '2026-11' && d === 3);
         const isHoliday = item && item.holiday;
 
         let dotColor = '';
@@ -2871,15 +3610,18 @@
       const headerDateEl = document.getElementById('selected-date-display');
       if (!container) return;
 
-      const item = monthlyScheduleData.find(x => x.day === day);
+      const currentData = monthlyScheduleDB[currentScheduleMonthKey];
+      if (!currentData) return;
+
+      const item = currentData.days.find(x => x.day === day);
       if (headerDateEl && item) {
-        headerDateEl.innerText = `10월 ${day}일 (${item.dow}) 일정 목록`;
+        headerDateEl.innerText = `${currentData.month}월 ${day}일 (${item.dow}) 일정 목록`;
       }
 
       if (!item || !item.events || item.events.length === 0) {
         let emptyMsg = "등록된 일정이 없습니다.";
         if (item && item.holiday) {
-          emptyMsg = `🎉 ${item.holiday} (공휴일) - 등록된 교육 일정이 없습니다.`;
+          emptyMsg = `🎉 ${item.holiday} - 등록된 교육 일정이 없습니다.`;
         }
         container.innerHTML = `
           <div class="py-8 text-center text-slate-500 bg-slate-900/30 rounded-2xl border border-white/5">
@@ -2949,8 +3691,99 @@
       }
     }
 
+    function openScheduleUploadModal() {
+      const modal = document.getElementById('schedule-upload-modal');
+      if (modal) {
+        modal.classList.remove('hidden');
+        modal.classList.add('flex');
+      }
+    }
+
+    function closeScheduleUploadModal() {
+      const modal = document.getElementById('schedule-upload-modal');
+      if (modal) {
+        modal.classList.add('hidden');
+        modal.classList.remove('flex');
+      }
+    }
+
+    function handleAdminUploadSchedule() {
+      const ym = document.getElementById('upload-sched-yearmonth').value;
+      const titleInput = document.getElementById('upload-sched-title').value.trim();
+      const fileInput = document.getElementById('upload-sched-file');
+
+      if (!ym) {
+        alert('연월을 선택해 주세요.');
+        return;
+      }
+
+      const [yearStr, monthStr] = ym.split('-');
+      const year = parseInt(yearStr);
+      const month = parseInt(monthStr);
+      const defaultTitle = `${year}년 ${month}월 교육일정표`;
+      const title = titleInput || defaultTitle;
+
+      if (!fileInput.files || fileInput.files.length === 0) {
+        alert('일정표 이미지 파일을 선택해 주세요.');
+        return;
+      }
+
+      const file = fileInput.files[0];
+      const reader = new FileReader();
+      reader.onload = function(e) {
+        const imageDataUrl = e.target.result;
+        
+        // 해당 월의 1일 요일 및 일수 계산
+        const firstDayObj = new Date(year, month - 1, 1);
+        const lastDayObj = new Date(year, month, 0);
+        const firstDayDow = firstDayObj.getDay();
+        const totalDays = lastDayObj.getDate();
+        const dowNames = ['일', '월', '화', '수', '목', '금', '토'];
+
+        // 빈 일자 생성
+        const days = [];
+        for (let d = 1; d <= totalDays; d++) {
+          const dow = dowNames[new Date(year, month - 1, d).getDay()];
+          days.push({
+            day: d,
+            dow: dow,
+            events: []
+          });
+        }
+
+        monthlyScheduleDB[ym] = {
+          year: year,
+          month: month,
+          title: title,
+          subTitle: "퓨네 & DA",
+          image: imageDataUrl,
+          firstDayDow: firstDayDow,
+          totalDays: totalDays,
+          days: days
+        };
+
+        // LocalStorage에 저장
+        try {
+          const customSchedules = {};
+          customSchedules[ym] = monthlyScheduleDB[ym];
+          localStorage.setItem('abo_monthly_schedules', JSON.stringify(customSchedules));
+        } catch(err) {
+          console.warn('LocalStorage save failed', err);
+        }
+
+        closeScheduleUploadModal();
+        switchScheduleMonth(ym);
+        showToastAlert(`🎉 ${title}가 성공적으로 등록되었습니다!`);
+      };
+      reader.readAsDataURL(file);
+    }
+
     window.openScheduleImageModal = openScheduleImageModal;
     window.closeScheduleImageModal = closeScheduleImageModal;
+    window.openScheduleUploadModal = openScheduleUploadModal;
+    window.closeScheduleUploadModal = closeScheduleUploadModal;
+    window.handleAdminUploadSchedule = handleAdminUploadSchedule;
+    window.switchScheduleMonth = switchScheduleMonth;
     window.filterScheduleType = filterScheduleType;
     window.selectScheduleDate = selectScheduleDate;
 
