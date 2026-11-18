@@ -1954,7 +1954,26 @@
 
     let partnersData = [...defaultPartnersData];
 
-    // localStorage 불러오기 및 최병근 리더 총괄 마스터 계정 필수 동기화
+    let useRemoteApi = window.location.protocol.startsWith('http');
+
+    async function apiRequest(path, options = {}) {
+      if (!useRemoteApi) {
+        throw new Error('Local file mode');
+      }
+      const res = await fetch(path, {
+        headers: { 'Content-Type': 'application/json', ...(options.headers || {}) },
+        ...options
+      });
+      const data = await res.json().catch(() => ({}));
+      if (!res.ok) {
+        const err = new Error(data.error || '요청 처리 중 오류가 발생했습니다.');
+        err.status = res.status;
+        throw err;
+      }
+      return data;
+    }
+
+    // localStorage 캐시 불러오기 및 최병근 리더 총괄 마스터 계정 동기화
     function loadStoredData() {
       const savedPartners = localStorage.getItem('abo_partners_data');
       if (savedPartners) {
@@ -1968,7 +1987,6 @@
         partnersData = [...defaultPartnersData];
       }
 
-      // 최병근 리더 총괄마스터(geun0123@naver.com / 1234) 계정 무조건 최신 동기화 (기존 캐시 덮어쓰기)
       const existingSuperAdmin = partnersData.find(u => u.email === 'geun0123@naver.com');
       if (!existingSuperAdmin) {
         partnersData.unshift({
@@ -1980,11 +1998,6 @@
           status: "approved",
           date: "2026-01-01"
         });
-      } else {
-        existingSuperAdmin.name = "최병근 리더(총괄마스터)";
-        existingSuperAdmin.password = "1234";
-        existingSuperAdmin.role = "super_admin";
-        existingSuperAdmin.status = "approved";
       }
       savePartnersData();
 
@@ -1995,6 +2008,38 @@
       const savedDriveUrl = localStorage.getItem('abo_drive_url');
       if (savedDriveUrl) {
         googleDriveFolderUrl = savedDriveUrl;
+      }
+    }
+
+    async function syncFromServer() {
+      if (!useRemoteApi) return;
+      try {
+        const data = await apiRequest('/api/bootstrap', { method: 'GET' });
+        if (Array.isArray(data.partners) && data.partners.length > 0) {
+          partnersData = data.partners;
+          savePartnersData();
+        }
+        if (data.teamInviteCode) {
+          teamInviteCode = data.teamInviteCode;
+          saveInviteCode();
+          const inviteDisplay = document.getElementById('current-invite-code-display');
+          if (inviteDisplay) inviteDisplay.innerText = teamInviteCode;
+        }
+        if (data.googleDriveFolderUrl) {
+          googleDriveFolderUrl = data.googleDriveFolderUrl;
+          localStorage.setItem('abo_drive_url', googleDriveFolderUrl);
+        }
+        if (data.customSchedules && typeof data.customSchedules === 'object') {
+          Object.keys(data.customSchedules).forEach(ym => {
+            monthlyScheduleDB[ym] = data.customSchedules[ym];
+          });
+          localStorage.setItem('abo_monthly_schedules', JSON.stringify(data.customSchedules));
+          if (typeof initScheduleModule === 'function') {
+            initScheduleModule();
+          }
+        }
+      } catch (e) {
+        console.warn('[API] 서버 동기화 건너뜀 (오프라인 또는 로컬 캐시 사용):', e.message);
       }
     }
 
@@ -2011,9 +2056,10 @@
     let authMode = 'login';
     let kickPartnerId = null;
 
-    // 초기 실행 시 저장된 세션 복원 및 초기화
-    window.addEventListener('DOMContentLoaded', () => {
+    // 초기 실행 시 저장된 세션 복원 및 서버 DB 동기화
+    window.addEventListener('DOMContentLoaded', async () => {
       loadStoredData();
+      await syncFromServer();
       initRealClock();
       initScheduleModule();
 
@@ -2021,9 +2067,10 @@
       if (savedUser) {
         try {
           const parsed = JSON.parse(savedUser);
-          const validUser = partnersData.find(u => u.email === parsed.email && u.password === parsed.password);
+          const validUser = partnersData.find(u => u.email.toLowerCase() === String(parsed.email || '').toLowerCase() && u.status !== 'pending');
           if (validUser) {
             currentUser = validUser;
+            localStorage.setItem('abo_current_user', JSON.stringify(currentUser));
             updateUIAfterLogin();
           } else {
             handleLogout(false);
@@ -2083,7 +2130,7 @@
       }
     }
 
-    function handleAuthAction() {
+    async function handleAuthAction() {
       const emailEl = document.getElementById('auth-email');
       const passwordEl = document.getElementById('auth-password');
       const emailInput = (emailEl ? emailEl.value : '').trim();
@@ -2095,15 +2142,33 @@
       }
 
       if (authMode === 'login') {
-        // 데이터가 아직 안 읽혔을 경우 즉시 로드
+        if (useRemoteApi) {
+          try {
+            const data = await apiRequest('/api/auth', {
+              method: 'POST',
+              body: JSON.stringify({ action: 'login', email: emailInput, password: passwordInput })
+            });
+            currentUser = data.user;
+            localStorage.setItem('abo_current_user', JSON.stringify(currentUser));
+            await syncFromServer();
+            updateUIAfterLogin();
+            showToast(`${currentUser.name} 님, 환영합니다!`);
+            return;
+          } catch (err) {
+            if (err.status && err.status < 500) {
+              showToast(err.message);
+              return;
+            }
+            console.warn('[API] 로그인 서버 연결 실패, 로컬 모드로 전환:', err.message);
+          }
+        }
+
         if (!partnersData || partnersData.length === 0) {
           loadStoredData();
         }
 
-        // 로그인 처리 (이메일 대소문자 무시 비교)
         const user = partnersData.find(u => u.email.toLowerCase() === emailInput.toLowerCase() && u.password === passwordInput);
         if (user) {
-          // 승인 대기 계정 체크
           if (user.status === 'pending') {
             showToast("현재 총괄 관리자(2인) 승인 대기 중인 계정입니다. 승인 후 이용 가능합니다.");
             return;
@@ -2116,7 +2181,6 @@
           showToast("이메일 또는 비밀번호가 일치하지 않습니다.");
         }
       } else {
-        // 회원가입 처리
         const nameInput = (document.getElementById('auth-name')?.value || '').trim();
         const inviteInput = (document.getElementById('auth-invite-code')?.value || '').trim().toUpperCase();
 
@@ -2125,15 +2189,44 @@
           return;
         }
 
-        // 중복 가입 체크
+        if (useRemoteApi) {
+          try {
+            const data = await apiRequest('/api/auth', {
+              method: 'POST',
+              body: JSON.stringify({
+                action: 'register',
+                name: nameInput,
+                email: emailInput,
+                password: passwordInput,
+                inviteCode: inviteInput
+              })
+            });
+            await syncFromServer();
+            if (data.autoApproved) {
+              currentUser = data.user;
+              localStorage.setItem('abo_current_user', JSON.stringify(currentUser));
+              updateUIAfterLogin();
+              showToast("팀 초대 코드 확인 완료! 정회원으로 즉시 자동 승인되었습니다.");
+            } else {
+              showToast("가입 신청 완료! 총괄 관리자 2인의 승인 대기 목록에 등록되었습니다.");
+              toggleLoginMode('login');
+            }
+            return;
+          } catch (err) {
+            if (err.status && err.status < 500) {
+              showToast(err.message);
+              return;
+            }
+            console.warn('[API] 회원가입 서버 연결 실패, 로컬 모드로 전환:', err.message);
+          }
+        }
+
         if (partnersData.some(u => u.email.toLowerCase() === emailInput.toLowerCase())) {
           showToast("이미 가입된 이메일 주소입니다.");
           return;
         }
 
-        // 비밀 초대 코드 검증
-        let isCodeValid = (inviteInput === teamInviteCode);
-
+        const isCodeValid = (inviteInput === teamInviteCode);
         const newUser = {
           id: partnersData.length + 1,
           name: nameInput,
@@ -2159,8 +2252,22 @@
       }
     }
 
-    function handleSocialMock(platform) {
-      // 소셜 간편 로그인 MOCK 처리 -> 총괄마스터 계정으로 기본 로그인
+    async function handleSocialMock(platform) {
+      if (useRemoteApi) {
+        try {
+          const data = await apiRequest('/api/auth', {
+            method: 'POST',
+            body: JSON.stringify({ action: 'social_mock' })
+          });
+          currentUser = data.user;
+          localStorage.setItem('abo_current_user', JSON.stringify(currentUser));
+          updateUIAfterLogin();
+          showToast(`${platform} 간편 로그인 성공! ${currentUser.name} 계정으로 접속합니다.`);
+          return;
+        } catch (err) {
+          console.warn('[API] 간편 로그인 서버 연결 실패:', err.message);
+        }
+      }
       currentUser = partnersData.find(u => u.email === 'geun0123@naver.com') || partnersData.find(u => u.email === 'user@abo.com');
       localStorage.setItem('abo_current_user', JSON.stringify(currentUser));
       updateUIAfterLogin();
@@ -3762,13 +3869,20 @@
           days: days
         };
 
-        // LocalStorage에 저장
+        // LocalStorage 캐시 및 서버 DB 저장
         try {
           const customSchedules = {};
           customSchedules[ym] = monthlyScheduleDB[ym];
           localStorage.setItem('abo_monthly_schedules', JSON.stringify(customSchedules));
         } catch(err) {
           console.warn('LocalStorage save failed', err);
+        }
+
+        if (useRemoteApi) {
+          apiRequest('/api/schedules', {
+            method: 'POST',
+            body: JSON.stringify({ ym, schedule: monthlyScheduleDB[ym] })
+          }).catch(err => console.warn('[API] 일정 서버 저장 실패:', err.message));
         }
 
         closeScheduleUploadModal();
@@ -3847,11 +3961,21 @@
       lucide.createIcons();
     }
 
-    function setGoogleDriveLink() {
+    async function setGoogleDriveLink() {
       const newUrl = prompt("연결할 5TB 구글 드라이브 공유 폴더의 링크(URL)를 입력하세요:", googleDriveFolderUrl);
       if (newUrl && newUrl.trim()) {
         googleDriveFolderUrl = newUrl.trim();
         localStorage.setItem('abo_drive_url', googleDriveFolderUrl);
+        if (useRemoteApi) {
+          try {
+            await apiRequest('/api/settings', {
+              method: 'POST',
+              body: JSON.stringify({ key: 'google_drive_url', value: googleDriveFolderUrl })
+            });
+          } catch (err) {
+            console.warn('[API] 드라이브 URL 저장 실패:', err.message);
+          }
+        }
         showToast("구글 드라이브 공유 링크가 성공적으로 갱신되었습니다!");
       }
     }
@@ -3865,12 +3989,22 @@
       });
     }
 
-    function changeTeamInviteCode() {
+    async function changeTeamInviteCode() {
       const newCode = prompt("새로운 팀 비밀 초대 코드를 입력하세요:", teamInviteCode);
       if (newCode && newCode.trim()) {
         teamInviteCode = newCode.trim().toUpperCase();
         saveInviteCode();
         document.getElementById('current-invite-code-display').innerText = teamInviteCode;
+        if (useRemoteApi) {
+          try {
+            await apiRequest('/api/settings', {
+              method: 'POST',
+              body: JSON.stringify({ key: 'team_invite_code', value: teamInviteCode })
+            });
+          } catch (err) {
+            console.warn('[API] 초대 코드 저장 실패:', err.message);
+          }
+        }
         showToast(`초대 코드가 [${teamInviteCode}] 로 변경되었습니다!`);
       }
     }
@@ -3892,58 +4026,22 @@
     }
 
     // 가입 승인 처리
-    function approvePartner(id) {
+    async function approvePartner(id) {
       const partner = partnersData.find(p => p.id === id);
       if (partner) {
         partner.status = 'approved';
         partner.role = 'user';
         savePartnersData();
-        showToast(`'${partner.name}' 파트너 가입이 정회원으로 승인되었습니다!`);
-        renderAdminPartnersList();
-      }
-    }
-
-
-    // 팀 초대 코드 복사 및 변경
-    function copyInviteCode() {
-      navigator.clipboard.writeText(teamInviteCode).then(() => {
-        showToast(`팀 초대 코드 [${teamInviteCode}] 가 클립보드에 복사되었습니다!`);
-      }).catch(() => {
-        showToast(`초대 코드: ${teamInviteCode}`);
-      });
-    }
-
-    function changeTeamInviteCode() {
-      const newCode = prompt("새로운 팀 비밀 초대 코드를 입력하세요:", teamInviteCode);
-      if (newCode && newCode.trim()) {
-        teamInviteCode = newCode.trim().toUpperCase();
-        document.getElementById('current-invite-code-display').innerText = teamInviteCode;
-        showToast(`초대 코드가 [${teamInviteCode}] 로 변경되었습니다!`);
-      }
-    }
-
-    // 어드민 탭 전환 (정회원 목록 vs 승인 대기자)
-    function switchAdminTab(tab) {
-      currentAdminTab = tab;
-      const btnPartners = document.getElementById('btn-admin-tab-partners');
-      const btnPending = document.getElementById('btn-admin-tab-pending');
-      
-      if (tab === 'partners') {
-        btnPartners.className = 'flex-1 py-1.5 text-[11px] font-bold rounded-lg bg-emerald-500 text-white transition';
-        btnPending.className = 'flex-1 py-1.5 text-[11px] font-bold rounded-lg text-slate-400 hover:text-white transition flex items-center justify-center gap-1';
-      } else {
-        btnPartners.className = 'flex-1 py-1.5 text-[11px] font-bold rounded-lg text-slate-400 hover:text-white transition';
-        btnPending.className = 'flex-1 py-1.5 text-[11px] font-bold rounded-lg bg-amber-500 text-slate-950 font-bold transition flex items-center justify-center gap-1';
-      }
-      renderAdminPartnersList();
-    }
-
-    // 가입 승인 처리
-    function approvePartner(id) {
-      const partner = partnersData.find(p => p.id === id);
-      if (partner) {
-        partner.status = 'approved';
-        partner.role = 'user';
+        if (useRemoteApi) {
+          try {
+            await apiRequest('/api/partners', {
+              method: 'POST',
+              body: JSON.stringify({ action: 'approve', id })
+            });
+          } catch (err) {
+            console.warn('[API] 승인 저장 실패:', err.message);
+          }
+        }
         showToast(`'${partner.name}' 파트너 가입이 정회원으로 승인되었습니다!`);
         renderAdminPartnersList();
       }
@@ -4013,10 +4111,21 @@
       document.getElementById('admin-confirm-modal').classList.add('hidden');
     }
 
-    function confirmKickOutAction() {
+    async function confirmKickOutAction() {
       if (kickPartnerId !== null) {
-        partnersData = partnersData.filter(p => p.id !== kickPartnerId);
+        const targetId = kickPartnerId;
+        partnersData = partnersData.filter(p => p.id !== targetId);
         savePartnersData();
+        if (useRemoteApi) {
+          try {
+            await apiRequest('/api/partners', {
+              method: 'POST',
+              body: JSON.stringify({ action: 'kick', id: targetId })
+            });
+          } catch (err) {
+            console.warn('[API] 탈퇴 처리 실패:', err.message);
+          }
+        }
         showToast("탈퇴 처리가 완료되었습니다.");
         closeAdminConfirmModal();
         renderAdminPartnersList();
