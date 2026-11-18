@@ -8,7 +8,7 @@ export default async function handler(req, res) {
   try {
     const db = await ensureSchema();
     const [partnersRes, settingsRes, schedulesRes] = await Promise.all([
-      db.execute('SELECT id, name, email, role, status, date FROM partners ORDER BY id ASC'),
+      db.execute('SELECT id, name, email, role, status, date, google_email FROM partners ORDER BY id ASC'),
       db.execute('SELECT key, value FROM app_settings'),
       db.execute('SELECT ym, data FROM monthly_schedules')
     ]);
@@ -31,6 +31,7 @@ export default async function handler(req, res) {
       partners: partnersRes.rows.map(sanitizePartner),
       teamInviteCode: settings.team_invite_code || 'DIAMOND2026',
       googleDriveFolderUrl: settings.google_drive_url || '',
+      googleClientId: process.env.GOOGLE_CLIENT_ID || '',
       customSchedules
     });
   } catch (err) {

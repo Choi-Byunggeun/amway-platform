@@ -21,7 +21,7 @@ export default async function handler(req, res) {
         args: [partnerId]
       });
       const updated = await db.execute({
-        sql: 'SELECT id, name, email, role, status, date FROM partners WHERE id = ? LIMIT 1',
+        sql: 'SELECT id, name, email, role, status, date, google_email FROM partners WHERE id = ? LIMIT 1',
         args: [partnerId]
       });
       if (updated.rows.length === 0) {
@@ -30,7 +30,7 @@ export default async function handler(req, res) {
       return res.status(200).json({ partner: sanitizePartner(updated.rows[0]) });
     }
 
-    if (action === 'kick') {
+    if (action === 'reject' || action === 'kick') {
       await db.execute({
         sql: "DELETE FROM partners WHERE id = ? AND role NOT IN ('super_admin', 'admin')",
         args: [partnerId]

@@ -23,6 +23,8 @@
   <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;700;900&family=Outfit:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
   <!-- Lucide Icons (Web Component & Script) -->
   <script src="https://unpkg.com/lucide@latest"></script>
+  <!-- Google Identity Services (Google Sign-In) -->
+  <script src="https://accounts.google.com/gsi/client" async defer></script>
   
   <script>
     tailwind.config = {
@@ -154,6 +156,10 @@
         <!-- 👑 Admin Button (hidden by default) -->
         <button id="admin-menu-btn" onclick="openAdminPanel()" class="hidden px-2.5 py-1.5 rounded-xl bg-amber-500/10 text-amber-400 hover:bg-amber-500/20 transition text-[10px] font-bold flex items-center gap-1">
           <i data-lucide="crown" class="w-3.5 h-3.5"></i> 파트너 관리
+        </button>
+        <!-- Google Link Button -->
+        <button id="link-google-btn" onclick="linkGoogleAccount()" class="px-2 py-1.5 rounded-xl bg-sky-500/10 text-sky-400 hover:bg-sky-500/20 transition text-[10px] font-bold flex items-center gap-1" title="구글 계정 연동">
+          <i data-lucide="globe" class="w-3.5 h-3.5"></i> 구글연동
         </button>
         <!-- Logout Button -->
         <button id="logout-btn" onclick="handleLogout()" class="p-2 rounded-full hover:bg-white/5 text-slate-400 hover:text-slate-200 transition" title="로그아웃">
@@ -1077,10 +1083,10 @@
 
           <!-- Email Field -->
           <div class="space-y-1">
-            <label class="text-[10px] text-slate-400 font-bold">이메일 주소</label>
+            <label class="text-[10px] text-slate-400 font-bold">아이디 (이메일)</label>
             <div class="relative">
               <span class="absolute inset-y-0 left-0 pl-3 flex items-center text-slate-500"><i data-lucide="mail" class="w-4 h-4"></i></span>
-              <input type="email" id="auth-email" value="geun0123@naver.com" placeholder="geun0123@naver.com" onkeydown="if(event.key==='Enter') handleAuthAction()" class="w-full pl-9 pr-4 py-2.5 bg-slate-900 border border-white/10 rounded-xl text-xs text-white focus:outline-none focus:border-emerald-500 placeholder-slate-600">
+              <input type="email" id="auth-email" value="" placeholder="example@gmail.com" onkeydown="if(event.key==='Enter') handleAuthAction()" class="w-full pl-9 pr-4 py-2.5 bg-slate-900 border border-white/10 rounded-xl text-xs text-white focus:outline-none focus:border-emerald-500 placeholder-slate-600">
             </div>
           </div>
 
@@ -1089,8 +1095,20 @@
             <label class="text-[10px] text-slate-400 font-bold">비밀번호</label>
             <div class="relative">
               <span class="absolute inset-y-0 left-0 pl-3 flex items-center text-slate-500"><i data-lucide="lock" class="w-4 h-4"></i></span>
-              <input type="password" id="auth-password" value="1234" placeholder="••••••••" onkeydown="if(event.key==='Enter') handleAuthAction()" class="w-full pl-9 pr-4 py-2.5 bg-slate-900 border border-white/10 rounded-xl text-xs text-white focus:outline-none focus:border-emerald-500 placeholder-slate-600">
+              <input type="password" id="auth-password" value="" placeholder="••••••••" onkeydown="if(event.key==='Enter') handleAuthAction()" class="w-full pl-9 pr-4 py-2.5 bg-slate-900 border border-white/10 rounded-xl text-xs text-white focus:outline-none focus:border-emerald-500 placeholder-slate-600">
             </div>
+          </div>
+
+          <!-- Optional Google Email Link Field (Register Only) -->
+          <div id="form-group-google-email" class="hidden space-y-1">
+            <label class="text-[10px] text-sky-400 font-bold flex items-center gap-1">
+              <i data-lucide="globe" class="w-3 h-3"></i> 연동할 구글 아이디 (선택)
+            </label>
+            <div class="relative">
+              <span class="absolute inset-y-0 left-0 pl-3 flex items-center text-sky-500"><i data-lucide="at-sign" class="w-4 h-4"></i></span>
+              <input type="email" id="auth-google-email" placeholder="yourname@gmail.com" onkeydown="if(event.key==='Enter') handleAuthAction()" class="w-full pl-9 pr-4 py-2.5 bg-slate-900 border border-sky-500/30 rounded-xl text-xs text-sky-200 focus:outline-none focus:border-sky-400 placeholder-slate-600">
+            </div>
+            <p class="text-[8px] text-slate-500 pl-1">구글 이메일을 입력해 두면 추후 구글 계정으로도 바로 로그인할 수 있습니다.</p>
           </div>
 
           <!-- Team Invite Code Field (Register Only) -->
@@ -1099,32 +1117,29 @@
               <label class="text-[10px] text-amber-400 font-bold flex items-center gap-1">
                 <i data-lucide="key" class="w-3 h-3"></i> 팀 비밀 초대 코드 (선택)
               </label>
-              <span class="text-[8px] text-slate-500">입력 시 즉시 자동 승인</span>
+              <span class="text-[8px] text-slate-500">코드가 없으면 관리자 승인 후 이용</span>
             </div>
             <div class="relative">
               <span class="absolute inset-y-0 left-0 pl-3 flex items-center text-amber-500"><i data-lucide="shield-check" class="w-4 h-4"></i></span>
-              <input type="text" id="auth-invite-code" placeholder="예: DIAMOND2026" onkeydown="if(event.key==='Enter') handleAuthAction()" class="w-full pl-9 pr-4 py-2.5 bg-slate-900 border border-amber-500/30 rounded-xl text-xs text-amber-200 focus:outline-none focus:border-amber-400 uppercase placeholder-slate-600">
+              <input type="text" id="auth-invite-code" placeholder="초대 코드가 있는 경우 입력" onkeydown="if(event.key==='Enter') handleAuthAction()" class="w-full pl-9 pr-4 py-2.5 bg-slate-900 border border-amber-500/30 rounded-xl text-xs text-amber-200 focus:outline-none focus:border-amber-400 uppercase placeholder-slate-600">
             </div>
-            <p class="text-[8px] text-slate-500 pl-1">초대 코드가 없으면 가입 후 2인 총괄 관리자의 승인을 기다려야 합니다.</p>
+            <p class="text-[8px] text-slate-500 pl-1">가입 신청 후 총괄 관리자가 승인해야 정회원으로 로그인할 수 있습니다.</p>
           </div>
 
           <!-- Login Submit Button -->
           <button onclick="handleAuthAction()" id="btn-auth-submit" type="button" class="w-full py-3 bg-emerald-500 hover:bg-emerald-600 active:scale-98 text-white font-bold text-xs rounded-xl shadow-lg transition cursor-pointer">로그인하기</button>
         </div>
 
-        <!-- Social Mocks -->
+        <!-- Google Sign-In -->
         <div class="space-y-3">
           <div class="flex items-center gap-2 text-slate-600 text-[10px] font-bold">
             <div class="h-[1px] bg-slate-800 flex-1"></div>
-            <span>또는 간편 로그인</span>
+            <span>또는 구글 계정으로 로그인 / 가입 신청</span>
             <div class="h-[1px] bg-slate-800 flex-1"></div>
           </div>
-          <div class="grid grid-cols-2 gap-2">
-            <button onclick="handleSocialMock('카카오톡')" class="py-2.5 bg-[#FEE500] hover:bg-[#FDD835] text-[#3c1e1e] font-bold text-[10px] rounded-xl flex items-center justify-center gap-1.5 transition">
-              <i data-lucide="message-circle" class="w-3.5 h-3.5 fill-current"></i> 카카오 로그인
-            </button>
-            <button onclick="handleSocialMock('구글')" class="py-2.5 bg-white hover:bg-slate-100 text-slate-800 border border-slate-200 font-bold text-[10px] rounded-xl flex items-center justify-center gap-1.5 transition">
-              <i data-lucide="globe" class="w-3.5 h-3.5 text-blue-400"></i> 구글 로그인
+          <div id="google-signin-container" class="flex justify-center">
+            <button onclick="handleGoogleLoginClick()" type="button" class="w-full py-2.5 bg-white hover:bg-slate-100 text-slate-800 border border-slate-200 font-bold text-[11px] rounded-xl flex items-center justify-center gap-2 transition shadow-sm">
+              <i data-lucide="globe" class="w-4 h-4 text-blue-500"></i> Google 계정으로 계속하기
             </button>
           </div>
         </div>
@@ -1138,42 +1153,14 @@
         </div>
       </div>
 
-      <!-- Test Tip Panel -->
-      <div class="p-3 bg-slate-900 border border-purple-500/30 rounded-2xl shadow-xl">
-        <div class="flex items-center justify-between mb-2">
-          <h5 class="text-[10px] font-bold text-purple-300 flex items-center gap-1">
-            <i data-lucide="crown" class="w-3.5 h-3.5 text-amber-400"></i> 계정 안내 및 원클릭 자동입력
-          </h5>
-          <span class="text-[8px] text-slate-400">아래 카드를 누르면 즉시 입력됩니다</span>
-        </div>
-        <div class="grid grid-cols-3 gap-2 text-[8px] text-slate-400">
-          <div onclick="quickFillLogin('geun0123@naver.com', '1234')" class="p-2.5 rounded-xl bg-purple-950/60 border border-purple-500/40 hover:border-purple-300 hover:bg-purple-900/50 cursor-pointer transition shadow-md group">
-            <div class="flex items-center justify-between">
-              <p class="font-bold text-purple-300 group-hover:text-purple-200">👑 총괄 마스터(나)</p>
-              <span class="px-1 py-0.2 rounded bg-purple-500/30 text-purple-200 text-[7px] font-bold">선택</span>
-            </div>
-            <p class="mt-1 text-white font-mono font-bold text-[9px] truncate">geun0123@naver.com</p>
-            <p class="text-purple-300/80 font-mono">PW: 1234</p>
-          </div>
-          <div onclick="quickFillLogin('master2@abo.com', 'manager')" class="p-2.5 rounded-xl bg-slate-800/40 border border-white/10 hover:border-slate-500 hover:bg-slate-800/80 cursor-pointer transition group">
-            <div class="flex items-center justify-between">
-              <p class="font-bold text-slate-300 group-hover:text-white">👑 마스터 2(파트너)</p>
-            </div>
-            <p class="mt-1 text-slate-300 font-mono text-[9px] truncate">master2@abo.com</p>
-            <p class="text-slate-400 font-mono">PW: manager</p>
-          </div>
-          <div onclick="quickFillLogin('user@abo.com', 'user')" class="p-2.5 rounded-xl bg-slate-800/40 border border-white/10 hover:border-slate-500 hover:bg-slate-800/80 cursor-pointer transition group">
-            <div class="flex items-center justify-between">
-              <p class="font-bold text-emerald-400 group-hover:text-emerald-300">👤 일반 파트너</p>
-            </div>
-            <p class="mt-1 text-slate-300 font-mono text-[9px] truncate">user@abo.com</p>
-            <p class="text-slate-400 font-mono">PW: user</p>
-          </div>
-        </div>
-        <div class="mt-2 pt-2 border-t border-white/5 flex justify-between items-center text-[8px]">
-          <span class="text-amber-400 font-bold">🔑 현재 팀 비밀 초대 코드:</span>
-          <span class="bg-amber-500/20 text-amber-300 font-mono font-bold px-2 py-0.5 rounded border border-amber-500/30">DIAMOND2026</span>
-        </div>
+      <!-- Security & Approval Info Panel -->
+      <div class="p-3 bg-slate-900/80 border border-emerald-500/20 rounded-2xl text-center space-y-1">
+        <p class="text-[10px] font-bold text-emerald-400 flex items-center justify-center gap-1">
+          <i data-lucide="shield-check" class="w-3.5 h-3.5"></i> 관리자 승인 기반 파트너 전용 플랫폼
+        </p>
+        <p class="text-[9px] text-slate-400 leading-relaxed">
+          신규 회원가입 또는 구글 계정 연동 신청 시,<br>총괄 관리자의 승인 완료 후 서비스를 이용하실 수 있습니다.
+        </p>
       </div>
     </div>
 
@@ -2029,6 +2016,10 @@
           googleDriveFolderUrl = data.googleDriveFolderUrl;
           localStorage.setItem('abo_drive_url', googleDriveFolderUrl);
         }
+        if (data.googleClientId) {
+          googleClientId = data.googleClientId;
+          initGoogleSignIn();
+        }
         if (data.customSchedules && typeof data.customSchedules === 'object') {
           Object.keys(data.customSchedules).forEach(ym => {
             monthlyScheduleDB[ym] = data.customSchedules[ym];
@@ -2038,9 +2029,20 @@
             initScheduleModule();
           }
         }
+        updatePendingBadgeCount();
       } catch (e) {
         console.warn('[API] 서버 동기화 건너뜀 (오프라인 또는 로컬 캐시 사용):', e.message);
       }
+    }
+
+    let googleClientId = '';
+
+    function updatePendingBadgeCount() {
+      const badge = document.getElementById('badge-pending-count');
+      if (!badge) return;
+      const pendingCnt = partnersData.filter(p => p.status === 'pending').length;
+      badge.innerText = String(pendingCnt);
+      badge.classList.toggle('hidden', pendingCnt === 0);
     }
 
     // localStorage 저장 헬퍼
@@ -2090,29 +2092,28 @@
       const nameGroup = document.getElementById('form-group-name');
       const submitBtn = document.getElementById('btn-auth-submit');
       const inviteGroup = document.getElementById('form-group-invite');
+      const googleEmailGroup = document.getElementById('form-group-google-email');
 
       if (mode === 'login') {
         btnLogin.className = 'flex-1 py-2 text-xs font-bold rounded-xl bg-emerald-500 text-white transition-all';
         btnRegister.className = 'flex-1 py-2 text-xs font-bold rounded-xl text-slate-400 hover:text-slate-200 transition-all';
         nameGroup.classList.add('hidden');
         if (inviteGroup) inviteGroup.classList.add('hidden');
+        if (googleEmailGroup) googleEmailGroup.classList.add('hidden');
         submitBtn.innerText = '로그인하기';
-
-        // 기본 추천 계정 자동 채우기 (비어있을 때)
-        const emailEl = document.getElementById('auth-email');
-        const pwEl = document.getElementById('auth-password');
-        if (emailEl && !emailEl.value) emailEl.value = 'geun0123@naver.com';
-        if (pwEl && !pwEl.value) pwEl.value = '1234';
       } else {
         btnLogin.className = 'flex-1 py-2 text-xs font-bold rounded-xl text-slate-400 hover:text-slate-200 transition-all';
         btnRegister.className = 'flex-1 py-2 text-xs font-bold rounded-xl bg-emerald-500 text-white transition-all';
         nameGroup.classList.remove('hidden');
         if (inviteGroup) inviteGroup.classList.remove('hidden');
+        if (googleEmailGroup) googleEmailGroup.classList.remove('hidden');
         submitBtn.innerText = '회원가입 신청하기';
 
         document.getElementById('auth-email').value = '';
         document.getElementById('auth-password').value = '';
         document.getElementById('auth-name').value = '';
+        const gEl = document.getElementById('auth-google-email');
+        if (gEl) gEl.value = '';
       }
       lucide.createIcons();
     }
@@ -2183,6 +2184,7 @@
       } else {
         const nameInput = (document.getElementById('auth-name')?.value || '').trim();
         const inviteInput = (document.getElementById('auth-invite-code')?.value || '').trim().toUpperCase();
+        const googleEmailInput = (document.getElementById('auth-google-email')?.value || '').trim().toLowerCase();
 
         if (!nameInput) {
           showToast("이름을 입력해주세요.");
@@ -2198,7 +2200,8 @@
                 name: nameInput,
                 email: emailInput,
                 password: passwordInput,
-                inviteCode: inviteInput
+                inviteCode: inviteInput,
+                googleEmail: googleEmailInput
               })
             });
             await syncFromServer();
@@ -2252,26 +2255,86 @@
       }
     }
 
-    async function handleSocialMock(platform) {
+    function initGoogleSignIn() {
+      if (!googleClientId || !window.google || !window.google.accounts || !window.google.accounts.id) return;
+      const container = document.getElementById('google-signin-container');
+      if (!container) return;
+      try {
+        window.google.accounts.id.initialize({
+          client_id: googleClientId,
+          callback: handleGoogleCredentialResponse
+        });
+        container.innerHTML = '';
+        window.google.accounts.id.renderButton(container, {
+          theme: 'outline',
+          size: 'large',
+          width: 320,
+          text: 'continue_with',
+          locale: 'ko'
+        });
+      } catch (e) {
+        console.warn('[Google Sign-In] 초기화 실패:', e);
+      }
+    }
+
+    async function handleGoogleCredentialResponse(response) {
+      if (!response || !response.credential) return;
+      try {
+        const data = await apiRequest('/api/auth', {
+          method: 'POST',
+          body: JSON.stringify({ action: 'google_login', idToken: response.credential })
+        });
+        await syncFromServer();
+        if (data.pending) {
+          showToast(data.message || '구글 계정으로 가입 신청이 완료되었습니다. 관리자 승인 후 로그인할 수 있습니다.');
+          return;
+        }
+        currentUser = data.user;
+        localStorage.setItem('abo_current_user', JSON.stringify(currentUser));
+        updateUIAfterLogin();
+        showToast(`${currentUser.name} 님, 구글 계정으로 로그인되었습니다!`);
+      } catch (err) {
+        showToast(err.message || '구글 로그인 처리 중 오류가 발생했습니다.');
+      }
+    }
+
+    function handleGoogleLoginClick() {
+      if (googleClientId && window.google && window.google.accounts && window.google.accounts.id) {
+        initGoogleSignIn();
+        window.google.accounts.id.prompt();
+        return;
+      }
+      showToast('구글 OAuth 연동(GOOGLE_CLIENT_ID)이 아직 설정되지 않았습니다. 회원가입 탭에서 구글 이메일을 입력해 신청해 주세요.');
+    }
+
+    async function linkGoogleAccount() {
+      if (!currentUser) return;
+      const input = prompt('연동할 본인 구글 이메일 주소를 입력하세요:', currentUser.googleEmail || '');
+      if (!input || !input.trim()) return;
+      const cleanGoogle = input.trim().toLowerCase();
+      if (!cleanGoogle.includes('@')) {
+        showToast('올바른 구글 이메일 주소를 입력해주세요.');
+        return;
+      }
       if (useRemoteApi) {
         try {
           const data = await apiRequest('/api/auth', {
             method: 'POST',
-            body: JSON.stringify({ action: 'social_mock' })
+            body: JSON.stringify({ action: 'link_google', email: currentUser.email, googleEmail: cleanGoogle })
           });
           currentUser = data.user;
           localStorage.setItem('abo_current_user', JSON.stringify(currentUser));
-          updateUIAfterLogin();
-          showToast(`${platform} 간편 로그인 성공! ${currentUser.name} 계정으로 접속합니다.`);
+          await syncFromServer();
+          showToast(`구글 계정(${cleanGoogle})이 연동되었습니다!`);
           return;
         } catch (err) {
-          console.warn('[API] 간편 로그인 서버 연결 실패:', err.message);
+          showToast(err.message || '구글 계정 연동에 실패했습니다.');
+          return;
         }
       }
-      currentUser = partnersData.find(u => u.email === 'geun0123@naver.com') || partnersData.find(u => u.email === 'user@abo.com');
+      currentUser.googleEmail = cleanGoogle;
       localStorage.setItem('abo_current_user', JSON.stringify(currentUser));
-      updateUIAfterLogin();
-      showToast(`${platform} 간편 로그인 성공! ${currentUser.name} 계정으로 접속합니다.`);
+      showToast(`구글 계정(${cleanGoogle})이 연동되었습니다!`);
     }
 
     function updateUIAfterLogin() {
@@ -2320,12 +2383,12 @@
       currentUser = null;
       localStorage.removeItem('abo_current_user');
       
-      // 1. 입력 폼 초기화 (총괄 관리자 계정 기본 세팅)
+      // 1. 입력 폼 초기화
       const emailEl = document.getElementById('auth-email');
       const passEl = document.getElementById('auth-password');
       const nameEl = document.getElementById('auth-name');
-      if (emailEl) emailEl.value = 'geun0123@naver.com';
-      if (passEl) passEl.value = '1234';
+      if (emailEl) emailEl.value = '';
+      if (passEl) passEl.value = '';
       if (nameEl) nameEl.value = '';
       
       // 2. 로그인 스크린 복원 (style.display flex !important 및 class 동시 복원)
@@ -4047,6 +4110,26 @@
       }
     }
 
+    // 가입 거절(삭제) 처리
+    async function rejectPartner(id) {
+      const partner = partnersData.find(p => p.id === id);
+      if (!partner) return;
+      partnersData = partnersData.filter(p => p.id !== id);
+      savePartnersData();
+      if (useRemoteApi) {
+        try {
+          await apiRequest('/api/partners', {
+            method: 'POST',
+            body: JSON.stringify({ action: 'reject', id })
+          });
+        } catch (err) {
+          console.warn('[API] 거절 처리 실패:', err.message);
+        }
+      }
+      showToast(`'${partner.name}' 가입 신청이 거절되었습니다.`);
+      renderAdminPartnersList();
+    }
+
     // 파트너 렌더링
     function renderAdminPartnersList() {
       const searchVal = document.getElementById('admin-search-input').value.toLowerCase().trim();
@@ -4057,8 +4140,9 @@
       let userCount = 0;
       let adminCount = 0;
 
-      // 통계 계산
+      // 통계 계산 (승인된 회원 기준)
       partnersData.forEach(p => {
+        if (p.status === 'pending') return;
         totalCount++;
         if (p.role === 'admin' || p.role === 'super_admin') adminCount++;
         else userCount++;
@@ -4067,34 +4151,74 @@
       document.getElementById('admin-stat-total').innerText = `${totalCount}명`;
       document.getElementById('admin-stat-users').innerText = `${userCount}명`;
       document.getElementById('admin-stat-admins').innerText = `${adminCount}명`;
+      updatePendingBadgeCount();
 
-      // 필터링 적용 및 목록 출력
-      partnersData.forEach(p => {
-        if (p.name.toLowerCase().includes(searchVal) || p.email.toLowerCase().includes(searchVal)) {
-          const item = document.createElement('div');
-          item.className = 'glass-card rounded-2xl p-4 flex justify-between items-center border border-white/5 hover:border-white/10 transition-all';
-          
-          const isMaster = (p.role === 'admin' || p.role === 'super_admin');
-          const roleBadgeColor = isMaster ? 'bg-amber-500/10 text-amber-400 border-amber-500/20' : 'bg-emerald-500/10 text-emerald-400 border-emerald-500/20';
-          const roleBadgeName = p.role === 'super_admin' ? '총괄마스터' : p.role === 'admin' ? '관리자' : '일반';
+      const filtered = partnersData.filter(p => {
+        const matchTab = currentAdminTab === 'pending' ? p.status === 'pending' : p.status !== 'pending';
+        const matchSearch = p.name.toLowerCase().includes(searchVal) ||
+          p.email.toLowerCase().includes(searchVal) ||
+          (p.googleEmail && p.googleEmail.toLowerCase().includes(searchVal));
+        return matchTab && matchSearch;
+      });
 
-          item.innerHTML = `
-            <div class="space-y-1">
-              <div class="flex items-center gap-2">
-                <span class="text-xs font-bold text-slate-200">${p.name}</span>
-                <span class="text-[8px] px-1.5 py-0.5 rounded border ${roleBadgeColor} font-bold">${roleBadgeName}</span>
-              </div>
-              <p class="text-[10px] text-slate-500 font-outfit">${p.email}</p>
-              <p class="text-[9px] text-slate-600">가입일: ${p.date}</p>
+      if (filtered.length === 0) {
+        listContainer.innerHTML = `
+          <div class="p-6 text-center text-xs text-slate-500 glass-card rounded-2xl border border-white/5">
+            ${currentAdminTab === 'pending' ? '현재 승인 대기 중인 신청자가 없습니다.' : '검색 결과가 없습니다.'}
+          </div>
+        `;
+        return;
+      }
+
+      filtered.forEach(p => {
+        const item = document.createElement('div');
+        item.className = 'glass-card rounded-2xl p-4 flex justify-between items-center border border-white/5 hover:border-white/10 transition-all gap-2';
+
+        const isMaster = (p.role === 'admin' || p.role === 'super_admin');
+        const isPending = p.status === 'pending';
+        const roleBadgeColor = isPending
+          ? 'bg-amber-500/10 text-amber-400 border-amber-500/20'
+          : isMaster
+            ? 'bg-amber-500/10 text-amber-400 border-amber-500/20'
+            : 'bg-emerald-500/10 text-emerald-400 border-emerald-500/20';
+        const roleBadgeName = isPending
+          ? '승인대기'
+          : p.role === 'super_admin'
+            ? '총괄마스터'
+            : p.role === 'admin'
+              ? '관리자'
+              : '정회원';
+
+        const actionButtons = isPending
+          ? `
+            <div class="flex items-center gap-1.5 shrink-0">
+              <button onclick="approvePartner(${p.id})" class="px-2.5 py-1.5 bg-emerald-500/20 hover:bg-emerald-500/30 text-emerald-300 rounded-xl text-[10px] font-bold transition flex items-center gap-1">
+                <i data-lucide="check" class="w-3.5 h-3.5"></i> 승인
+              </button>
+              <button onclick="rejectPartner(${p.id})" class="px-2.5 py-1.5 bg-red-500/10 hover:bg-red-500/20 text-red-400 rounded-xl text-[10px] font-bold transition flex items-center gap-1">
+                <i data-lucide="x" class="w-3.5 h-3.5"></i> 거절
+              </button>
             </div>
-            ${!isMaster ? `
-            <button onclick="openAdminConfirmModal(${p.id}, '${p.name}')" class="px-2.5 py-1.5 bg-red-500/10 hover:bg-red-500/20 text-red-400 hover:text-red-300 rounded-xl text-[10px] font-bold transition flex items-center gap-1">
+          `
+          : (!isMaster ? `
+            <button onclick="openAdminConfirmModal(${p.id}, '${p.name}')" class="px-2.5 py-1.5 bg-red-500/10 hover:bg-red-500/20 text-red-400 hover:text-red-300 rounded-xl text-[10px] font-bold transition flex items-center gap-1 shrink-0">
               <i data-lucide="user-minus" class="w-3.5 h-3.5"></i> 탈퇴
             </button>
-            ` : ''}
-          `;
-          listContainer.appendChild(item);
-        }
+          ` : '');
+
+        item.innerHTML = `
+          <div class="space-y-1 min-w-0">
+            <div class="flex items-center gap-2">
+              <span class="text-xs font-bold text-slate-200 truncate">${p.name}</span>
+              <span class="text-[8px] px-1.5 py-0.5 rounded border ${roleBadgeColor} font-bold shrink-0">${roleBadgeName}</span>
+            </div>
+            <p class="text-[10px] text-slate-500 font-outfit truncate">${p.email}</p>
+            ${p.googleEmail ? `<p class="text-[9px] text-sky-400 truncate">Google 연동: ${p.googleEmail}</p>` : ''}
+            <p class="text-[9px] text-slate-600">신청/가입일: ${p.date}</p>
+          </div>
+          ${actionButtons}
+        `;
+        listContainer.appendChild(item);
       });
       lucide.createIcons();
     }

@@ -1,3 +1,4 @@
+import crypto from 'node:crypto';
 import { createClient } from '@libsql/client';
 
 let client = null;
@@ -11,6 +12,26 @@ const DEFAULT_PARTNERS = [
   ['박파트너', 'partner2@abo.com', 'password', 'user', 'approved', '2026-08-10'],
   ['신규신청자(코드없음)', 'pending@abo.com', 'password', 'guest', 'pending', '2026-10-23']
 ];
+
+export function hashPassword(password) {
+  const salt = crypto.randomBytes(16).toString('hex');
+  const derived = crypto.scryptSync(String(password), salt, 64).toString('hex');
+  return `scrypt:${salt}:${derived}`;
+}
+
+export function verifyPassword(password, stored) {
+  const plain = String(password || '');
+  const saved = String(stored || '');
+  if (!saved.startsWith('scrypt:')) {
+    return plain === saved;
+  }
+  const [, salt, hexHash] = saved.split(':');
+  if (!salt || !hexHash) return false;
+  const derived = crypto.scryptSync(plain, salt, 64);
+  const expected = Buffer.from(hexHash, 'hex');
+  if (derived.length !== expected.length) return false;
+  return crypto.timingSafeEqual(derived, expected);
+}
 
 export function getDb() {
   if (!process.env.TURSO_DATABASE_URL) {
@@ -37,7 +58,8 @@ export async function ensureSchema() {
       password TEXT NOT NULL,
       role TEXT NOT NULL DEFAULT 'guest',
       status TEXT NOT NULL DEFAULT 'pending',
-      date TEXT NOT NULL
+      date TEXT NOT NULL,
+      google_email TEXT
     )`,
     `CREATE TABLE IF NOT EXISTS app_settings (
       key TEXT PRIMARY KEY,
@@ -49,13 +71,20 @@ export async function ensureSchema() {
     )`
   ], 'write');
 
+  // Safely add google_email column if migrating from an earlier schema
+  const cols = await db.execute('PRAGMA table_info(partners)');
+  const hasGoogleEmail = cols.rows.some(r => String(r.name) === 'google_email');
+  if (!hasGoogleEmail) {
+    await db.execute('ALTER TABLE partners ADD COLUMN google_email TEXT');
+  }
+
   const countRes = await db.execute('SELECT COUNT(*) AS cnt FROM partners');
   const count = Number(countRes.rows[0]?.cnt ?? 0);
   if (count === 0) {
-    for (const row of DEFAULT_PARTNERS) {
+    for (const [name, email, pw, role, status, date] of DEFAULT_PARTNERS) {
       await db.execute({
         sql: 'INSERT OR IGNORE INTO partners (name, email, password, role, status, date) VALUES (?, ?, ?, ?, ?, ?)',
-        args: row
+        args: [name, email, hashPassword(pw), role, status, date]
       });
     }
   }
@@ -76,6 +105,7 @@ export function sanitizePartner(row) {
     email: String(row.email),
     role: String(row.role),
     status: String(row.status),
-    date: String(row.date)
+    date: String(row.date),
+    googleEmail: row.google_email ? String(row.google_email) : ''
   };
 }
